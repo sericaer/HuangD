@@ -40,7 +40,14 @@ public class MainScene : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetAxis("Mouse ScrollWheel") > 0)
+        {
+            mapLogic.ScrollWheel(true);
+        }
+        if (Input.GetAxis("Mouse ScrollWheel") < 0)
+        {
+            mapLogic.ScrollWheel(false);
+        }
     }
 }
 

@@ -6,6 +6,9 @@ using UnityEngine;
 
 public class MapLogic : MonoBehaviour
 {
+    public Camera mapCamera;
+    public Grid mapGrid;
+
     public BlockMap blockMap;
     public EdgeMap edgeMap;
     public TerrainMap terrainMap;
@@ -20,6 +23,18 @@ public class MapLogic : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void OnMove(Vector3 pos)
+    {
+        Vector3 move = CaclMoveOffset(pos);
+
+        mapCamera.transform.position = mapCamera.transform.position + move;
+    }
+
+    public void ScrollWheel(bool flag)
+    {
+        mapGrid.transform.localScale = CalcNextScale(flag);
     }
 
     internal void SetBlocks(Dictionary<Block, Color> block2Color)
@@ -97,5 +112,68 @@ public class MapLogic : MonoBehaviour
         }
 
         return rlst;
+    }
+
+    private Vector3 CaclMoveOffset(Vector3 pos)
+    {
+        Vector3 move = (pos - new Vector3(0.5f, 0.5f)) * 0.1f;
+        Debug.Log(move);
+        if (move.x < 0)
+        {
+            var leftEdgeCenter = mapCamera.ViewportToWorldPoint(new Vector3(0f, 0.5f));
+            var cellIndex = blockMap.tilemap.WorldToCell(leftEdgeCenter);
+            if (!blockMap.tilemap.HasTile(new Vector3Int(cellIndex.x, cellIndex.y)))
+            {
+                move = new Vector3(0, move.y);
+            }
+        }
+        else if (move.x > 0)
+        {
+            var leftEdgeCenter = mapCamera.ViewportToWorldPoint(new Vector3(1f, 0.5f));
+            var cellIndex = blockMap.tilemap.WorldToCell(leftEdgeCenter);
+            if (!blockMap.tilemap.HasTile(new Vector3Int(cellIndex.x, cellIndex.y)))
+            {
+                move = new Vector3(0, move.y);
+            }
+        }
+
+        if (move.y < 0)
+        {
+            var leftEdgeCenter = mapCamera.ViewportToWorldPoint(new Vector3(0.5f, 0f));
+            var cellIndex =blockMap.tilemap.WorldToCell(leftEdgeCenter);
+            if (!blockMap.tilemap.HasTile(new Vector3Int(cellIndex.x, cellIndex.y)))
+            {
+                move = new Vector3(move.x, 0);
+            }
+        }
+        else if (move.y > 0)
+        {
+            var leftEdgeCenter = mapCamera.ViewportToWorldPoint(new Vector3(0.5f, 1f));
+            var cellIndex = blockMap.tilemap.WorldToCell(leftEdgeCenter);
+            if (!blockMap.tilemap.HasTile(new Vector3Int(cellIndex.x, cellIndex.y)))
+            {
+                move = new Vector3(move.x, 0);
+            }
+        }
+
+        return move;
+    }
+
+    private Vector3 CalcNextScale(bool flag)
+    {
+        var newScale = mapGrid.transform.localScale * (flag ? 1.1f : 0.9f);
+        if (newScale.x < 0.3f || newScale.x > 1.0f)
+        {
+            return mapGrid.transform.localScale;
+        }
+
+        var center = mapCamera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f));
+        var cellIndex = blockMap.tilemap.WorldToCell(center);
+        if (!blockMap.tilemap.HasTile(new Vector3Int(cellIndex.x, cellIndex.y)))
+        {
+            return mapGrid.transform.localScale;
+        }
+
+        return newScale;
     }
 }
