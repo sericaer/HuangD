@@ -11,7 +11,7 @@ public class MainScene : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        var mapSize = 100;
+        var mapSize = 150;
         var builder = new Block.BuilderGroup(mapSize);
         var blocks = builder.Build();
 
