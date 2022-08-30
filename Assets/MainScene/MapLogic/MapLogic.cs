@@ -13,6 +13,8 @@ public class MapLogic : MonoBehaviour
     public EdgeMap edgeMap;
     public TerrainMap terrainMap;
 
+    public ProvinceNames provinceNames;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,11 +32,13 @@ public class MapLogic : MonoBehaviour
         Vector3 move = CaclMoveOffset(pos);
 
         mapCamera.transform.position = mapCamera.transform.position + move;
+        provinceNames.UpdateNamePosition();
     }
 
     public void ScrollWheel(bool flag)
     {
         mapGrid.transform.localScale = CalcNextScale(flag);
+        provinceNames.UpdateNamePosition();
     }
 
     internal void SetBlocks(Dictionary<Block, Color> block2Color)
@@ -60,6 +64,11 @@ public class MapLogic : MonoBehaviour
         {
             terrainMap.SetCell(new Vector3Int(pair.Key.x, pair.Key.y), pair.Value);
         }
+    }
+
+    internal void SetProvinces(IEnumerable<Province> provinces)
+    {
+        provinceNames.provinces = provinces;
     }
 
     private Dictionary<(int x, int y), int> GenerateEdges(Block[] blocks)

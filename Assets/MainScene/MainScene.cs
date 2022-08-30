@@ -35,6 +35,16 @@ public class MainScene : MonoBehaviour
 
         mapLogic.SetBlocks(block2Color);
         mapLogic.SetTerrain(pos2Terrain);
+
+        var names = "³ä Ò« Ã¼ Ëà ¸ð ¸Ç °Ø ·® À¥ »Ô Ó¢ Ó¦ áª ºã Íð Ò¢ Ë´ Óí Ñã ÑÓ ²Ô Ô­ ÔË å« ×Í Îµ »ª Í¬ ·» µ¤ Äþ Çì ¶¨ Ëç Òø Áé ÑÎ Í­ ·á »á å¶ Ê¤ ÷ë ÃÏ ë½ Ðí ²Ì Ùñ å§ ãô º£ Ùð ËÞ ÃÜ Çà é¦ ´È á° Ê¯ Ë· ÔÆ »³ Ïà å¤ ²© ±´ Âå ´Å ÐÏ ¼½ Éî ²× ¾° µÂ Æî Ò× å­ Äª ÓÄ äÃ Ì´ Æ½ Ë³ ¹é Óª Íþ É÷ Ðþ ³ç ÒÄ Ê¦ ÏÊ ´ø Àè ÎÖ ²ý Òå Èð ÐÅ ÁÝ Ïå ÐË ·ï Àû Ñó Ôó ºÏ ¼¯ °Í Åî ±Ú ÉÌ ½ð ¿ª Çþ Óå µË ¾ù ·¿ Û« ¸´ Ùç Íò ÖÒ ³þ ºÍ å© ÊÙ ¹â Þ­ Éê »Æ °² Êæ Èó ºþ Ô½ Ã÷ ÄÀ ½¨ Í¡ Ðû ³Ø ºé ò¯ ¸§ ¼ª ½­ Ô¬ ÔÀ Ì¶ ºâ ÀÊ ÓÀ µÀ ÉÛ Á¬ ³½ Ê© Î× ²¥ Ë¼ ·Ñ Ïª Õä Û· ³É ÁÙ ºÓ Îä Àª µþ å´ ¸Ê Åí ½£ è÷ Ëì ÆÕ Áê ×Ê ÈÙ ¼ò ¼Î Úö ÑÅ Ã¯ Í¿ Ñ× ³¹ Ïò È½ ñ· óÐ ÈÖ áÔ ËÉ ÎÄ ·ö µ± Ï¤ ¹§ ±£ Õæ °Ô èÏ Ñ­ ºØ ¶Ë ¿µ ·â ¸ß ÌÙ ñ¼ ÇÚ ÕÑ ¸» Îà ÃÉ ¹¨ ä± Óô ÇÙ ±ö ³Î Ïó ÈÚ çß ºá ÑÏ ÂÍ ÈÝ ÑÒ Ö¥ Â» ³¤ Á® À× »¯ Õñ"
+            .Split(" ")
+            .OrderBy(_ => System.Guid.NewGuid());
+
+        var nameQueue = new Queue<string>(names);
+
+        var provinces = blocks.Select(b => new Province(nameQueue.Dequeue(), b)).ToArray();
+
+        mapLogic.SetProvinces(provinces);
     }
 
     // Update is called once per frame
@@ -48,6 +58,18 @@ public class MainScene : MonoBehaviour
         {
             mapLogic.ScrollWheel(false);
         }
+    }
+}
+
+public class Province
+{
+    public string name { get; }
+    public Block block { get; }
+
+    public Province(string name, Block block)
+    {
+        this.name = name;
+        this.block = block;
     }
 }
 
