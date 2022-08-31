@@ -42,7 +42,7 @@ public class ProvinceNames : MonoBehaviour
         {
             var worldPos = mapGrid.CellToWorld(new Vector3Int(elem.cellPos.x, elem.cellPos.y));
 
-            elem.label.transform.position = worldPos;
+            elem.transform.position = worldPos;
         }
 
     }
