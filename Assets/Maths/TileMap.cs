@@ -1,3 +1,4 @@
+using Maths;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -167,9 +168,12 @@ namespace Math.TileMap
             const int step = 10;
 
             private List<Builder> builders;
+            private GRandom random;
 
-            public BuilderGroup(int size)
+            public BuilderGroup(int size, string seed)
             {
+                random = new GRandom(seed);
+
                 Builder.isExist = (n) =>
                 {
                     return builders.Any(x => x.centers.Contains(n) || x.edges.Contains(n));
@@ -179,11 +183,11 @@ namespace Math.TileMap
                 builders = new List<Builder>();
                 for (int i = step; i < size; i += step)
                 {
-                    var directRandoms = new int[] { 1, 2, 3, 8, 9, 10 };
+                    var directFactors = new int[] { 1, 2, 3, 8, 9, 10 };
                     for (int j = step; j < size; j += step)
                     {
-                        var startPos = (i + UnityEngine.Random.Range(step / -2, step / 2), j + UnityEngine.Random.Range(step / -2, step / 2));
-                        builders.Add(new Builder(size, startPos, directRandoms.OrderBy(x => Guid.NewGuid()).ToArray()));
+                        var startPos = (i + random.getNum(step / -2, step / 2), j + random.getNum(step / -2, step / 2));
+                        builders.Add(new Builder(size, startPos, directFactors.OrderBy(x => random.getNum(0,1000)).ToArray(), random));
                     }
                 }
             }
@@ -226,10 +230,12 @@ namespace Math.TileMap
             private (int x, int y) originPoint;
             private int[] weightDirectValues;
 
-            public Builder(int size, (int x, int y) originPoint, int[] weightDirectValues)
+            private GRandom random;
+
+            public Builder(int size, (int x, int y) originPoint, int[] weightDirectValues, GRandom random)
             {
                 edges = new HashSet<(int x, int y)>();
-
+                this.random = random;
                 this.centers = new HashSet<(int x, int y)>();
                 this.originPoint = originPoint;
                 this.size = size;
@@ -263,7 +269,7 @@ namespace Math.TileMap
 
                     var value = oldEdges.Max(e => weightDirectValues[Hexagon.GetDirectIndex(e, edge)]);
 
-                    var real = UnityEngine.Random.Range(1, 10);
+                    var real = random.getNum(1, 10);
                     if (real <= value)
                     {
                         newEdges.Add(edge);

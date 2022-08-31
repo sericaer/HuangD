@@ -1,3 +1,5 @@
+using HuangD.Interfaces;
+using HuangD.Maps;
 using Math.TileMap;
 using System.Collections;
 using System.Collections.Generic;
@@ -41,86 +43,29 @@ public class MapLogic : MonoBehaviour
         provinceNames.UpdateNamePosition();
     }
 
-    internal void SetBlocks(Dictionary<Block, Color> block2Color)
+    internal void SetMapData(IMap map)
     {
-        foreach(var pair in block2Color)
-        {
-            foreach(var pos in pair.Key.elements)
-            {
-                blockMap.SetCell(new Vector3Int(pos.x, pos.y), pair.Value);
-            }
-        }
-
-        var edges = GenerateEdges(block2Color.Keys.ToArray());
-        foreach(var pair in edges)
-        {
-            edgeMap.SetCell(new Vector3Int(pair.Key.x, pair.Key.y), pair.Value);
-        }
-    }
-
-    internal void SetTerrain(Dictionary<(int x, int y), TerrainType> pos2Terrain)
-    {
-        foreach (var pair in pos2Terrain)
+        foreach (var pair in map.terrains)
         {
             terrainMap.SetCell(new Vector3Int(pair.Key.x, pair.Key.y), pair.Value);
         }
-    }
 
-    internal void SetProvinces(IEnumerable<Province> provinces)
-    {
-        provinceNames.provinces = provinces;
-    }
-
-    private Dictionary<(int x, int y), int> GenerateEdges(Block[] blocks)
-    {
-        var dict = new Dictionary<(int x, int y), Block>();
-        foreach (var block in blocks)
+        foreach (var pair in map.province2Block)
         {
-            foreach (var edge in block.edges.Select(e => Hexagon.ScaleOffset(e, 2)))
+            var color = new Color(pair.Key.color.r, pair.Key.color.g, pair.Key.color.b);
+            foreach (var pos in pair.Value.elements)
             {
-                if (dict.ContainsKey(edge))
-                {
-                    continue;
-                }
-                dict.Add(edge, block);
+                blockMap.SetCell(new Vector3Int(pos.x, pos.y), color);
             }
         }
 
-        var rlst = new Dictionary<(int x, int y), int>();
-        var edgeCenters = blocks.SelectMany(x => x.edges)
-            .Select(x => Hexagon.ScaleOffset(x, 2))
-            .ToHashSet();
+        provinceNames.SetProvinces(map.province2Block);
 
-        var mirrorDrects = new (int d1, int d2)[]
+        var edges = Utilty.GenerateEdges(map.blocks);
+        foreach (var pair in edges)
         {
-            (0, 3),
-            (2, 5),
-            (1, 4),
-        };
-
-        foreach (var egde in edgeCenters.SelectMany(e => Hexagon.GetNeighbors(e)).Distinct())
-        {
-            for (int i = 0; i < mirrorDrects.Length; i++)
-            {
-                var mirrorDiect = mirrorDrects[i];
-
-                var neighbor1 = Hexagon.GetNeighbor(egde, mirrorDiect.d1);
-                var neighbor2 = Hexagon.GetNeighbor(egde, mirrorDiect.d2);
-
-                if (!dict.ContainsKey(neighbor1) || !dict.ContainsKey(neighbor2))
-                {
-                    continue;
-                }
-
-                if (dict[neighbor1] != dict[neighbor2])
-                {
-                    rlst.Add(egde, i);
-                    break;
-                }
-            }
+            edgeMap.SetCell(new Vector3Int(pair.Key.x, pair.Key.y), pair.Value);
         }
-
-        return rlst;
     }
 
     private Vector3 CaclMoveOffset(Vector3 pos)
