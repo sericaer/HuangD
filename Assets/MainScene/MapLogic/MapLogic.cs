@@ -39,7 +39,7 @@ public class MapLogic : MonoBehaviour
 
     public void ScrollWheel(bool flag)
     {
-        mapGrid.transform.localScale = CalcNextScale(flag);
+        mapCamera.orthographicSize = CalcNextScale(flag);
         provinceNames.UpdateNamePosition();
     }
 
@@ -49,6 +49,10 @@ public class MapLogic : MonoBehaviour
         {
             terrainMap.SetCell(new Vector3Int(pair.Key.x, pair.Key.y), pair.Value);
         }
+
+        var bound = terrainMap.tilemap.cellBounds;
+        var mapCenterPos = mapGrid.CellToWorld(new Vector3Int((bound.xMax - bound.xMin) / 2, (bound.yMax - bound.yMin) / 2));
+        mapCamera.transform.position = new Vector3(mapCenterPos.x, mapCenterPos.y, mapCamera.transform.position.z);
 
         foreach (var pair in map.province2Block)
         {
@@ -113,21 +117,21 @@ public class MapLogic : MonoBehaviour
         return move;
     }
 
-    private Vector3 CalcNextScale(bool flag)
+    private float CalcNextScale(bool flag)
     {
-        var newScale = mapGrid.transform.localScale * (flag ? 1.1f : 0.9f);
-        if (newScale.x < 0.3f || newScale.x > 1.0f)
-        {
-            return mapGrid.transform.localScale;
-        }
-
         var center = mapCamera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f));
         var cellIndex = blockMap.tilemap.WorldToCell(center);
         if (!blockMap.tilemap.HasTile(new Vector3Int(cellIndex.x, cellIndex.y)))
         {
-            return mapGrid.transform.localScale;
+            return mapCamera.orthographicSize;
         }
 
-        return newScale;
+        var newSize = mapCamera.orthographicSize + 0.5f * (flag ? 1 : -1);
+        if (newSize < 3f || newSize > 10f)
+        {
+            return mapCamera.orthographicSize;
+        }
+
+        return newSize;
     }
 }
