@@ -170,9 +170,9 @@ namespace Math.TileMap
             private List<Builder> builders;
             private GRandom random;
 
-            public BuilderGroup(int size, string seed)
+            public BuilderGroup(int size, GRandom random)
             {
-                random = new GRandom(seed);
+                this.random = random;
 
                 Builder.isExist = (n) =>
                 {

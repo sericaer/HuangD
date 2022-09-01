@@ -14,8 +14,11 @@ public class MapLogic : MonoBehaviour
     public BlockMap blockMap;
     public EdgeMap edgeMap;
     public TerrainMap terrainMap;
+    public CountryMap countryMap;
 
     public ProvinceNames provinceNames;
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -50,25 +53,47 @@ public class MapLogic : MonoBehaviour
             terrainMap.SetCell(new Vector3Int(pair.Key.x, pair.Key.y), pair.Value);
         }
 
+        MoveCameraToMapCenter();
+    }
+
+    private void MoveCameraToMapCenter()
+    {
         var bound = terrainMap.tilemap.cellBounds;
         var mapCenterPos = mapGrid.CellToWorld(new Vector3Int((bound.xMax - bound.xMin) / 2, (bound.yMax - bound.yMin) / 2));
         mapCamera.transform.position = new Vector3(mapCenterPos.x, mapCenterPos.y, mapCamera.transform.position.z);
+    }
 
-        foreach (var pair in map.province2Block)
+    internal void SetProvinces(IEnumerable<IProvince> provinces)
+    {
+        provinceNames.Clear();
+
+        foreach (var province in provinces)
         {
-            var color = new Color(pair.Key.color.r, pair.Key.color.g, pair.Key.color.b);
-            foreach (var pos in pair.Value.elements)
+            var color = new Color(province.color.r, province.color.g, province.color.b);
+            foreach (var pos in province.block.elements)
             {
                 blockMap.SetCell(new Vector3Int(pos.x, pos.y), color);
             }
+
+            provinceNames.AddProvince(province);
         }
 
-        provinceNames.SetProvinces(map.province2Block);
-
-        var edges = Utilty.GenerateEdges(map.blocks);
+        var edges = Utilty.GenerateEdges(provinces.Select(x=>x.block));
         foreach (var pair in edges)
         {
             edgeMap.SetCell(new Vector3Int(pair.Key.x, pair.Key.y), pair.Value);
+        }
+    }
+
+    internal void SetCountries(IEnumerable<ICountry> countries)
+    {
+        foreach(var country in countries)
+        {
+            var color = new Color(country.color.r, country.color.g, country.color.b);
+            foreach (var cellIndex in country.provinces.SelectMany(x => x.block.elements))
+            {
+                countryMap.SetCell(new Vector3Int(cellIndex.x, cellIndex.y), color);
+            }
         }
     }
 

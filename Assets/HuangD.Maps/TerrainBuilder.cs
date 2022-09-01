@@ -9,22 +9,47 @@ namespace HuangD.Maps
 {
     static class TerrainBuilder
     {
-        public static GRandom random { get; set; }
+        private static GRandom random { get; set; }
 
-        public static Dictionary<(int x, int y), TerrainType>  Build(IEnumerable<Block> blocks, int mapSize)
+        //public static Dictionary<(int x, int y), TerrainType>  Build(IEnumerable<Block> blocks, int mapSize, string seed)
+        //{
+        //    random = new Maths.GRandom(seed);
+
+        //    var rslt = new Dictionary<(int x, int y), TerrainType>();
+
+        //    var terrainBlocks = GroupByTerrainType(blocks, mapSize);
+
+        //    foreach (var dict in terrainBlocks.Select(x => GenrateTerrain(x.Key, x.Value)))
+        //    {
+        //        foreach (var pair in dict)
+        //        {
+        //            rslt.Add(pair.Key, pair.Value);
+        //        }
+        //    }
+
+        //    return rslt;
+        //}
+
+        internal static Dictionary<(int x, int y), TerrainType> Build(Dictionary<Block, TerrainType> block2Terrain, GRandom random)
         {
+            TerrainBuilder.random = random;
+
             var rslt = new Dictionary<(int x, int y), TerrainType>();
 
-            var terrainBlocks = GroupByTerrainType(blocks, mapSize);
-
-            foreach (var dict in terrainBlocks.Select(x => GenrateTerrain(x.Key, x.Value)))
+            var lookup = block2Terrain.ToLookup(x => x.Value);
+            foreach (TerrainType terrainType in Enum.GetValues(typeof(TerrainType)))
             {
-                foreach (var pair in dict)
+                if(!lookup.Contains(terrainType))
+                {
+                    continue;
+                }
+
+                foreach(var pair in GenrateTerrain(terrainType, lookup[terrainType].Select(x=>x.Key)))
                 {
                     rslt.Add(pair.Key, pair.Value);
                 }
             }
-
+           
             return rslt;
         }
 
@@ -227,74 +252,6 @@ namespace HuangD.Maps
             {
                 rslt.Add(elem, TerrainType.Mount);
             }
-
-            return rslt;
-        }
-
-        internal static Dictionary<TerrainType, IEnumerable<Block>> GroupByTerrainType(IEnumerable<Block> blocks, int mapSize)
-        {
-            var rslt = new Dictionary<TerrainType, IEnumerable<Block>>();
-
-            var waters = blocks.Where(x => x.edges.Any(r => r.y == mapSize - 1 || r.x == 0));
-
-            blocks = blocks.Except(waters).ToArray();
-
-            var mounts = blocks.Where(x => x.edges.Any(r => r.y == 0));
-
-            blocks = blocks.Except(mounts).ToArray();
-
-            var hills = new List<Block>();
-            var plains = new List<Block>();
-            var mountPlus = new List<Block>();
-
-            foreach (var block in blocks)
-            {
-                if (mounts.Any(m => block.isNeighbor(m)))
-                {
-                    if (random.getNum(0, 3) < 1)
-                    {
-                        hills.Add(block);
-                    }
-                    else
-                    {
-                        mountPlus.Add(block);
-                    }
-                }
-
-                else if (waters.Any(m => block.isNeighbor(m)))
-                {
-                    plains.Add(block);
-                }
-                else
-                {
-                    var hillPercent = 50;
-                    var plainPercent = 50;
-
-                    if (hills.Any(m => block.isNeighbor(m)))
-                    {
-                        hillPercent += 50;
-                    }
-                    if (hills.Any(m => block.isNeighbor(m)))
-                    {
-                        plainPercent += 100;
-                    }
-
-                    var randomValue = random.getNum(0, hillPercent + plainPercent);
-                    if (randomValue < hillPercent)
-                    {
-                        hills.Add(block);
-                    }
-                    else
-                    {
-                        plains.Add(block);
-                    }
-                }
-            }
-
-            rslt.Add(TerrainType.Hill, hills);
-            rslt.Add(TerrainType.Plain, plains);
-            rslt.Add(TerrainType.Water, waters);
-            rslt.Add(TerrainType.Mount, mounts.Union(mountPlus));
 
             return rslt;
         }

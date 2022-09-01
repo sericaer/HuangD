@@ -16,7 +16,7 @@ namespace HuangD.Entities
 
         public static class Builder
         {
-            public static IEnumerable<IProvince> build(int count, string seed)
+            public static IEnumerable<IProvince> Build(int count, string seed)
             {
                 var random = new GRandom(seed);
                 GenerateRandomColor(random);

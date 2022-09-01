@@ -17,6 +17,9 @@ public class MainScene : MonoBehaviour
         var session = Session.Builder.Build(mapSize, "DEFAULT");
 
         mapLogic.SetMapData(session.map);
+        mapLogic.SetProvinces(session.provinces);
+        mapLogic.SetCountries(session.countries);
+
     }
 
     // Update is called once per frame

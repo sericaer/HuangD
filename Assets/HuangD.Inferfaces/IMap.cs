@@ -7,10 +7,14 @@ namespace HuangD.Interfaces
     {
         public Dictionary<(int x, int y), TerrainType> terrains { get; set; }
 
-        public IEnumerable<Block> blocks { get; set; }
-        public IEnumerable<IProvince> provinces { get; set; }
+        public Dictionary<Block, TerrainType> blocks { get; set; }
+    }
 
-        public Dictionary<IProvince, Block> province2Block { get; set; }
+    public interface ICountry
+    {
+        public string name { get; }
+        IEnumerable<IProvince> provinces { get; }
+        public (float r, float g, float b) color { get; }
     }
 }
 

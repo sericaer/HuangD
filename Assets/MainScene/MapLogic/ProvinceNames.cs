@@ -12,29 +12,29 @@ public class ProvinceNames : MonoBehaviour
 
     public Grid mapGrid;
 
-    private List<ProvinceMapUI> list;
+    private List<ProvinceMapUI> list { get; } = new List<ProvinceMapUI>();
 
-    internal void SetProvinces(Dictionary<IProvince, Block> province2Block)
-    {
-        list = new List<ProvinceMapUI>();
+    //internal void SetProvinces(Dictionary<IProvince, Block> province2Block)
+    //{
+    //    list = new List<ProvinceMapUI>();
 
-        foreach (var pair in province2Block)
-        {
-            var pos = HuangD.Maps.Utilty.GetCenterPos(pair.Value.elements);
+    //    foreach (var pair in province2Block)
+    //    {
+    //        var pos = HuangD.Maps.Utilty.GetCenterPos(pair.Value.elements);
 
-            var provMapUI = Instantiate<ProvinceMapUI>(provMapUITemplate, this.transform);
-            list.Add(provMapUI);
+    //        var provMapUI = Instantiate<ProvinceMapUI>(provMapUITemplate, this.transform);
+    //        list.Add(provMapUI);
 
-            provMapUI.gmData = pair.Key;
-            provMapUI.cellPos = pos;
+    //        provMapUI.gmData = pair.Key;
+    //        provMapUI.cellPos = pos;
 
-            list.Add(provMapUI);
-        }
+    //        list.Add(provMapUI);
+    //    }
 
-        provMapUITemplate.gameObject.SetActive(false);
+    //    provMapUITemplate.gameObject.SetActive(false);
 
-        UpdateNamePosition();
-    }
+    //    UpdateNamePosition();
+    //}
 
     public void UpdateNamePosition()
     {
@@ -50,6 +50,8 @@ public class ProvinceNames : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        provMapUITemplate.gameObject.SetActive(false);
+
         UpdateNamePosition();
     }
 
@@ -57,5 +59,33 @@ public class ProvinceNames : MonoBehaviour
     void Update()
     {
 
+    }
+
+    internal void AddProvince(IProvince province)
+    {
+        var pos = HuangD.Maps.Utilty.GetCenterPos(province.block.elements);
+
+        var provMapUI = Instantiate<ProvinceMapUI>(provMapUITemplate, this.transform);
+        provMapUI.gmData = province;
+        provMapUI.cellPos = pos;
+
+
+        provMapUI.gameObject.SetActive(true);
+        list.Add(provMapUI);
+    }
+
+    internal void Clear()
+    {
+        if(list == null)
+        {
+            return;
+        }
+
+        foreach(var elem in list)
+        {
+            Destroy(elem.gameObject);
+        }
+
+        list.Clear();
     }
 }
