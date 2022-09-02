@@ -19,46 +19,46 @@ namespace CommandTerminal
     {
         public string String { get; set; }
 
-        public int Int {
-            get {
-                int int_value;
+        //public int Int {
+        //    get {
+        //        int int_value;
 
-                if (int.TryParse(String, out int_value)) {
-                    return int_value;
-                }
+        //        if (int.TryParse(String, out int_value)) {
+        //            return int_value;
+        //        }
 
-                TypeError("int");
-                return 0;
-            }
-        }
+        //        TypeError("int");
+        //        return 0;
+        //    }
+        //}
 
-        public float Float {
-            get {
-                float float_value;
+        //public float Float {
+        //    get {
+        //        float float_value;
 
-                if (float.TryParse(String, out float_value)) {
-                    return float_value;
-                }
+        //        if (float.TryParse(String, out float_value)) {
+        //            return float_value;
+        //        }
 
-                TypeError("float");
-                return 0;
-            }
-        }
+        //        TypeError("float");
+        //        return 0;
+        //    }
+        //}
 
-        public bool Bool {
-            get {
-                if (string.Compare(String, "TRUE", ignoreCase: true) == 0) {
-                    return true;
-                }
+        //public bool Bool {
+        //    get {
+        //        if (string.Compare(String, "TRUE", ignoreCase: true) == 0) {
+        //            return true;
+        //        }
 
-                if (string.Compare(String, "FALSE", ignoreCase: true) == 0) {
-                    return false;
-                }
+        //        if (string.Compare(String, "FALSE", ignoreCase: true) == 0) {
+        //            return false;
+        //        }
 
-                TypeError("bool");
-                return false;
-            }
-        }
+        //        TypeError("bool");
+        //        return false;
+        //    }
+        //}
 
         public override string ToString() {
             return String;
