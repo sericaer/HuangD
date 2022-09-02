@@ -11,7 +11,7 @@ public class MainScene : MonoBehaviour
     public MapLogic mapLogic;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         var mapSize = 100;
         var session = Session.Builder.Build(mapSize, "DEFAULT");
@@ -19,7 +19,6 @@ public class MainScene : MonoBehaviour
         mapLogic.SetMapData(session.map);
         mapLogic.SetProvinces(session.provinces);
         mapLogic.SetCountries(session.countries);
-
     }
 
     // Update is called once per frame

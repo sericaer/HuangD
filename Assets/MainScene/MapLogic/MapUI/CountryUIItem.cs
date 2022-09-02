@@ -1,14 +1,12 @@
 ﻿using HuangD.Interfaces;
-using UnityEngine;
 using UnityEngine.UI;
 
-public class ProvinceMapUI : MonoBehaviour
+public class CountryUIItem : MapUIItem
 {
     public Text label;
 
-    public (int x, int y) cellPos { get; set; }
 
-    public IProvince gmData
+    public ICountry gmData
     {
         get
         {
@@ -22,5 +20,5 @@ public class ProvinceMapUI : MonoBehaviour
     }
 
 
-    private IProvince _gmData;
+    private ICountry _gmData;
 }

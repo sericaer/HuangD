@@ -16,9 +16,7 @@ public class MapLogic : MonoBehaviour
     public TerrainMap terrainMap;
     public CountryMap countryMap;
 
-    public ProvinceNames provinceNames;
-
-
+    public MapUIContainer mapUIContainer;
 
     // Start is called before the first frame update
     void Start()
@@ -37,13 +35,13 @@ public class MapLogic : MonoBehaviour
         Vector3 move = CaclMoveOffset(pos);
 
         mapCamera.transform.position = mapCamera.transform.position + move;
-        provinceNames.UpdateNamePosition();
+        mapUIContainer.UpdateItemsPosition();
     }
 
     public void ScrollWheel(bool flag)
     {
         mapCamera.orthographicSize = CalcNextScale(flag);
-        provinceNames.UpdateNamePosition();
+        mapUIContainer.UpdateItemsPosition();
     }
 
     internal void SetMapData(IMap map)
@@ -65,8 +63,6 @@ public class MapLogic : MonoBehaviour
 
     internal void SetProvinces(IEnumerable<IProvince> provinces)
     {
-        provinceNames.Clear();
-
         foreach (var province in provinces)
         {
             var color = new Color(province.color.r, province.color.g, province.color.b);
@@ -74,8 +70,6 @@ public class MapLogic : MonoBehaviour
             {
                 blockMap.SetCell(new Vector3Int(pos.x, pos.y), color);
             }
-
-            provinceNames.AddProvince(province);
         }
 
         var edges = Utilty.GenerateEdges(provinces.Select(x=>x.block));
@@ -83,11 +77,13 @@ public class MapLogic : MonoBehaviour
         {
             edgeMap.SetCell(new Vector3Int(pair.Key.x, pair.Key.y), pair.Value);
         }
+
+        mapUIContainer.SetProvinces(provinces);
     }
 
     internal void SetCountries(IEnumerable<ICountry> countries)
     {
-        foreach(var country in countries)
+        foreach (var country in countries)
         {
             var color = new Color(country.color.r, country.color.g, country.color.b);
             foreach (var cellIndex in country.provinces.SelectMany(x => x.block.elements))
@@ -95,6 +91,8 @@ public class MapLogic : MonoBehaviour
                 countryMap.SetCell(new Vector3Int(cellIndex.x, cellIndex.y), color);
             }
         }
+
+        mapUIContainer.SetCountries(countries);
     }
 
     private Vector3 CaclMoveOffset(Vector3 pos)

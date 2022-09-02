@@ -58,13 +58,13 @@ namespace HuangD.Maps
             return rlst;
         }
 
-        public static (int x, int y) GetCenterPos(HashSet<(int x, int y)> elements)
+        public static (int x, int y) GetCenterPos(IEnumerable<(int x, int y)> elements)
         {
             IEnumerable<(int x, int y)> rings;
 
             int max = 0;
             int index = -1;
-            for (int i = 0; i < elements.Count; i++)
+            for (int i = 0; i < elements.Count(); i++)
             {
                 var elem = elements.ElementAt(i);
                 int distance = 1;
