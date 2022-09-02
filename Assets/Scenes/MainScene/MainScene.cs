@@ -23,7 +23,7 @@ public class MainScene : MonoBehaviour
             Terminal.Shell.AddCommand(command);
         }
 
-        var mapSize = 50;
+        var mapSize = 100;
         var session = Session.Builder.Build(mapSize, "DEFAULT");
 
         //emperorPanel.SetEmperor(session.playerCountry.leader);

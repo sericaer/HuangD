@@ -57,16 +57,16 @@ namespace HuangD.Sessions
                 .Take(countries.Count())
                 .ToArray();
 
-            var originProvinces = new List<IProvince>(provinces);
-
             country2Provinces = new Dictionary<ICountry, List<IProvince>>();
             for (int i = 0; i < countries.Count(); i++)
             {
                 var list = new List<IProvince>();
-                list.Add(originProvinces.ElementAt(originIndexs[i]));
+                list.Add(provinces.ElementAt(originIndexs[i]));
 
                 country2Provinces.Add(countries.ElementAt(i), list);
             }
+
+            var originProvinces = new List<IProvince>(provinces.Except(countries.SelectMany(x=>x.provinces)));
 
             while (originProvinces.Count() != 0)
             {

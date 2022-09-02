@@ -16,6 +16,7 @@ public class ProvinceUIItem : MapUIItem
         {
             _gmData = value;
             label.text = _gmData.name;
+            name = _gmData.name;
         }
     }
 
