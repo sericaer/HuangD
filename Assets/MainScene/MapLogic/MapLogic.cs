@@ -21,7 +21,7 @@ public class MapLogic : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        MoveCameraToMapCenter();
     }
 
     // Update is called once per frame
@@ -50,8 +50,6 @@ public class MapLogic : MonoBehaviour
         {
             terrainMap.SetCell(new Vector3Int(pair.Key.x, pair.Key.y), pair.Value);
         }
-
-        MoveCameraToMapCenter();
     }
 
     private void MoveCameraToMapCenter()

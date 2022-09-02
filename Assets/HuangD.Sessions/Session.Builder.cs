@@ -29,6 +29,8 @@ namespace HuangD.Sessions
                 session.provinces = provinces;
                 session.countries = countries;
 
+                session.playerCountry = countries.First();
+
                 session.AssocateData(seed);
 
                 return session;

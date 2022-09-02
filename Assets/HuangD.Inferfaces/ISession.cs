@@ -7,10 +7,12 @@ namespace HuangD.Interfaces
     public interface ISession
     {
         public string seed { get; }
+
         public IMap map { get; set; }
         public IEnumerable<ICountry> countries { get; }
         public IEnumerable<IProvince> provinces { get; }
-        public Dictionary<ICountry, List<IProvince>> country2Provinces { get; }
+
+        public ICountry playerCountry { get; }
     }
 }
 

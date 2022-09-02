@@ -9,13 +9,6 @@ namespace HuangD.Interfaces
 
         public Dictionary<Block, TerrainType> blocks { get; set; }
     }
-
-    public interface ICountry
-    {
-        public string name { get; }
-        IEnumerable<IProvince> provinces { get; }
-        public (float r, float g, float b) color { get; }
-    }
 }
 
 
