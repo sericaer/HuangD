@@ -4,7 +4,7 @@ using HuangD.Interfaces;
 
 public static class CommandShellExtentions
 {
-    public static void AddCommand(this CommandShell shell, string key, ICommand command)
+    public static void AddCommand(this CommandShell shell, ICommand command)
     {
         System.Action<CommandArg[]> adapter = (args) =>
         {
@@ -12,7 +12,7 @@ public static class CommandShellExtentions
             commandClone.Exec(args.Select(x => x.String).ToArray());
         };
 
-        shell.AddCommand(key, new CommandInfo() { proc = adapter, help = command.help, min_arg_count = command.minArgCount, max_arg_count = command.maxArgCount });
+        shell.AddCommand(command.key, new CommandInfo() { proc = adapter, help = command.help, min_arg_count = command.minArgCount, max_arg_count = command.maxArgCount });
     }
 
     public static void AddCommand(this CommandShell shell, string key, System.Action<string[]> command)

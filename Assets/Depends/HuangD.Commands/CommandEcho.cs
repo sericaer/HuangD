@@ -4,6 +4,8 @@ namespace HuangD.Commands
 {
     public class CommandEcho : ICommand
     {
+        public string key => "Echo";
+
         public string help => "这是一个回声";
 
         public int minArgCount => 1;
@@ -16,4 +18,3 @@ namespace HuangD.Commands
         }
     }
 }
-

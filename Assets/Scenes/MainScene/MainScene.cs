@@ -18,6 +18,10 @@ public class MainScene : MonoBehaviour
         HuangD.Commands.Log.ERRO = (erro) => Terminal.Log(TerminalLogType.Error, erro);
 
         var commandMgr = new CommandMgr();
+        foreach(var command in commandMgr.all)
+        {
+            Terminal.Shell.AddCommand(command);
+        }
 
         var mapSize = 50;
         var session = Session.Builder.Build(mapSize, "DEFAULT");
@@ -29,7 +33,7 @@ public class MainScene : MonoBehaviour
         mapLogic.SetProvinces(session.provinces);
         mapLogic.SetCountries(session.countries);
 
-        Terminal.Shell.AddCommand("Echo", new CommandEcho());
+
     }
 
     // Update is called once per frame
