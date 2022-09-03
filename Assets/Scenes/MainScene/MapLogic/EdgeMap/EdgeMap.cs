@@ -8,22 +8,40 @@ using UnityEngine.Tilemaps;
 
 public class EdgeMap : MonoBehaviour
 {
-    public Tilemap tileMap;
-
-    public Sprite[] egdes;
-
-    private Tile[] _tiles;
-
-    internal void SetCell(Vector3Int pos, int value)
+    public enum EdgeType
     {
-        tileMap.SetTileColor(pos, GetTile(value), Color.white);
+        Province,
+        Country
     }
 
-    private Tile GetTile(int index)
+    public Tilemap tileMap;
+
+    public Sprite[] provinceEgdes;
+
+    public Sprite[] countryEgdes;
+
+    private Tile[] _provinceEdgeTiles;
+    private Tile[] _countryEdgeTiles;
+
+    internal void SetCell(Vector3Int pos, int value, EdgeType edgeType)
     {
-        if (_tiles == null)
+        switch(edgeType)
         {
-            _tiles = egdes.Select(x =>
+            case EdgeType.Country:
+                tileMap.SetTileColor(pos, GetCountryTile(value), Color.white);
+                break;
+            case EdgeType.Province:
+                tileMap.SetTileColor(pos, GetProvinceTile(value), Color.white);
+                break;
+        }
+
+    }
+
+    private Tile GetProvinceTile(int index)
+    {
+        if (_provinceEdgeTiles == null)
+        {
+            _provinceEdgeTiles = provinceEgdes.Select(x =>
             {
                 var _tile = ScriptableObject.CreateInstance<Tile>();
                 _tile.sprite = x;
@@ -31,7 +49,21 @@ public class EdgeMap : MonoBehaviour
             }).ToArray();
         }
 
-        return _tiles[index];
+        return _provinceEdgeTiles[index];
     }
 
+    private Tile GetCountryTile(int index)
+    {
+        if (_countryEdgeTiles == null)
+        {
+            _countryEdgeTiles = countryEgdes.Select(x =>
+            {
+                var _tile = ScriptableObject.CreateInstance<Tile>();
+                _tile.sprite = x;
+                return _tile;
+            }).ToArray();
+        }
+
+        return _countryEdgeTiles[index];
+    }
 }

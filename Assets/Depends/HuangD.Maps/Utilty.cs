@@ -6,23 +6,23 @@ namespace HuangD.Maps
 {
     public static class Utilty
     {
-        public static Dictionary<(int x, int y), int> GenerateEdges(IEnumerable<Block> blocks)
+        public static Dictionary<(int x, int y), int> GenerateEdges(IEnumerable<IEnumerable<(int x, int y)>> edgeGroups)
         {
-            var dict = new Dictionary<(int x, int y), Block>();
-            foreach (var block in blocks)
+            var dict = new Dictionary<(int x, int y), IEnumerable<(int x, int y)>>();
+            foreach (var group in edgeGroups)
             {
-                foreach (var edge in block.edges.Select(e => Hexagon.ScaleOffset(e, 2)))
+                foreach (var edge in group.Select(e => Hexagon.ScaleOffset(e, 2)))
                 {
                     if (dict.ContainsKey(edge))
                     {
                         continue;
                     }
-                    dict.Add(edge, block);
+                    dict.Add(edge, group);
                 }
             }
 
             var rlst = new Dictionary<(int x, int y), int>();
-            var edgeCenters = blocks.SelectMany(x => x.edges)
+            var edgeCenters = edgeGroups.SelectMany(x => x)
                 .Select(x => Hexagon.ScaleOffset(x, 2))
                 .ToHashSet();
 

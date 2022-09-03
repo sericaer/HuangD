@@ -70,10 +70,10 @@ public class MapLogic : MonoBehaviour
             }
         }
 
-        var edges = Utilty.GenerateEdges(provinces.Select(x=>x.block));
+        var edges = Utilty.GenerateEdges(provinces.Select(x => x.block.edges));
         foreach (var pair in edges)
         {
-            edgeMap.SetCell(new Vector3Int(pair.Key.x, pair.Key.y), pair.Value);
+            edgeMap.SetCell(new Vector3Int(pair.Key.x, pair.Key.y), pair.Value, EdgeMap.EdgeType.Province);
         }
 
         mapUIContainer.SetProvinces(provinces);
@@ -88,6 +88,19 @@ public class MapLogic : MonoBehaviour
             {
                 countryMap.SetCell(new Vector3Int(cellIndex.x, cellIndex.y), color);
             }
+        }
+
+        var countryEgdes = countries.Select(country =>
+        {
+            return country.provinces.SelectMany(prov => prov.block.edges)
+                .Where(egde => Hexagon.GetNeighbors(egde).Any(n => country.provinces.All(x => !x.block.elements.Contains(n))));
+          
+        });
+
+        var edges = Utilty.GenerateEdges(countryEgdes);
+        foreach (var pair in edges)
+        {
+            edgeMap.SetCell(new Vector3Int(pair.Key.x, pair.Key.y), pair.Value, EdgeMap.EdgeType.Country);
         }
 
         mapUIContainer.SetCountries(countries);
