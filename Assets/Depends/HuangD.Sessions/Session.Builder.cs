@@ -22,23 +22,20 @@ namespace HuangD.Sessions
 
                 var provinces = Province.Builder.Build(noWaterBlocks.Count(), seed);
                 var countries = Country.Builder.Build(provinces.Count() / 3, seed);
+                var persons = Person.Builder.Build(countries.SelectMany(x=>x.officeGroup.offices).Count(), seed);
 
                 var session = new Session();
                 session.seed = seed;
                 session.map = map;
                 session.provinces = provinces;
                 session.countries = countries;
+                session.persons = persons;
 
                 session.playerCountry = countries.First();
 
                 session.AssocateData(seed);
 
                 return session;
-            }
-
-            private static IDictionary<ICountry, List<IProvince>> BuildCountry2Provinces(IEnumerable<ICountry> countries, IEnumerable<IProvince> provinces)
-            {
-                throw new System.NotImplementedException();
             }
         }
 
@@ -48,6 +45,31 @@ namespace HuangD.Sessions
 
             SetProvince2Block(random);
             SetCountry2Provinces(random);
+            SetPerson2Office(random);
+        }
+
+        private void SetPerson2Office(GRandom random)
+        {
+            person2Office = new HashSet<Peson2OfficeItem>();
+
+            var person = persons.FirstOrDefault(x => x.office == null);
+            while(person != null)
+            {
+                foreach (var country in countries)
+                {
+                    var emptyOffice = country.officeGroup.offices.FirstOrDefault(x => x.person == null);
+                    if (emptyOffice == null)
+                    {
+                        continue;
+                    }
+
+                    person2Office.Add(new Peson2OfficeItem(person, emptyOffice));
+
+                    person = persons.FirstOrDefault(x => x.office == null);
+                }
+
+                person = persons.FirstOrDefault(x => x.office == null);
+            }
         }
 
         private void SetCountry2Provinces(GRandom random)

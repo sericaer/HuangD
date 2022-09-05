@@ -7,6 +7,10 @@ namespace HuangD.Interfaces
         public (float r, float g, float b) color { get; }
         public string name { get; }
         public IEnumerable<IProvince> provinces { get; }
+
+        public IPerson leader { get; }
+
+        public IOfficeGroup officeGroup { get; }
     }
 }
 
