@@ -1,11 +1,8 @@
-using HuangD.Interfaces;
-using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CountryPanel : MonoBehaviour
+public class ProvinceCountPanel : MonoBehaviour
 {
     public Text label;
 
@@ -13,12 +10,12 @@ public class CountryPanel : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        label.text = Facade.session.playerCountry.name;
+        label.text = Facade.session.playerCountry.provinces.Count().ToString();
     }
 }

@@ -7,7 +7,7 @@
         int minArgCount { get; }
         int maxArgCount { get; }
 
-        void Exec(string[] argc);
+        void Exec(ISession session, string[] argc);
     }
 }
 

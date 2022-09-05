@@ -5,6 +5,7 @@ using Math.TileMap;
 using HuangD.Sessions;
 using CommandTerminal;
 using HuangD.Commands;
+using HuangD.Interfaces;
 
 public class MainScene : MonoBehaviour
 {
@@ -23,15 +24,15 @@ public class MainScene : MonoBehaviour
             Terminal.Shell.AddCommand(command);
         }
 
-        var mapSize = 100;
-        var session = Session.Builder.Build(mapSize, "DEFAULT");
+        var mapSize = 80;
+        Facade.session = Session.Builder.Build(mapSize, "DEFAULT");
 
         //emperorPanel.SetEmperor(session.playerCountry.leader);
-        countryPanel.SetCountry(session.playerCountry);
+        //countryPanel.SetCountry(session.playerCountry);
 
-        mapLogic.SetMapData(session.map);
-        mapLogic.SetProvinces(session.provinces);
-        mapLogic.SetCountries(session.countries);
+        mapLogic.SetMapData(Facade.session.map);
+        mapLogic.SetProvinces(Facade.session.provinces);
+        mapLogic.SetCountries(Facade.session.countries);
 
 
     }

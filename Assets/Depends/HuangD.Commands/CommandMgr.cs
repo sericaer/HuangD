@@ -13,7 +13,7 @@ namespace HuangD.Commands
         public CommandMgr()
         {
             all = Assembly.GetExecutingAssembly().GetTypes()
-                .Where(t => t.Namespace == nameof(HuangD.Commands) && typeof(ICommand).IsAssignableFrom(t))
+                .Where(t => t.Namespace == "HuangD.Commands" && typeof(ICommand).IsAssignableFrom(t))
                 .Select(t => Activator.CreateInstance(t) as ICommand);
         }
     }

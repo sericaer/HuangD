@@ -19,7 +19,7 @@ namespace HuangD.Sessions
         public Dictionary<ICountry, List<IProvince>> country2Provinces { get; private set; }
         public Dictionary<IProvince, Block> province2Block { get; private set; }
 
-        public ICountry playerCountry { get; private set; }
+        public ICountry playerCountry { get; set; }
 
         public Session()
         {

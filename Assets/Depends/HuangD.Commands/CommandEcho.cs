@@ -12,7 +12,7 @@ namespace HuangD.Commands
 
         public int maxArgCount => 2;
 
-        public void Exec(string[] argc)
+        public void Exec(ISession session, string[] argc)
         {
             Log.INFO(string.Join(",", argc));
         }

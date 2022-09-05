@@ -12,7 +12,7 @@ namespace HuangD.Interfaces
         public IEnumerable<ICountry> countries { get; }
         public IEnumerable<IProvince> provinces { get; }
 
-        public ICountry playerCountry { get; }
+        public ICountry playerCountry { get; set; }
     }
 }
 
