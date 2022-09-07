@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HuangD.Mods.Inferfaces
+namespace HuangD.Mods.Interfaces
 {
     public interface IMod
     {
@@ -14,6 +14,8 @@ namespace HuangD.Mods.Inferfaces
     public interface IDefs
     {
         public IPersonDef personDef { get; }
+        public ICountryDef countryDef { get; }
+        public IProvinceDef provinceDef { get; }
     }
 
     public interface IPersonDef

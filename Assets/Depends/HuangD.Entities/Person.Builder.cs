@@ -1,5 +1,5 @@
 ﻿using HuangD.Interfaces;
-using HuangD.Mods.Inferfaces;
+using HuangD.Mods.Interfaces;
 using Maths;
 using System.Collections.Generic;
 

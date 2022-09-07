@@ -1,4 +1,4 @@
-﻿using HuangD.Mods.Inferfaces;
+﻿using HuangD.Mods.Interfaces;
 using System.Collections.Generic;
 
 namespace HuangD.Mods

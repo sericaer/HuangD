@@ -1,7 +1,7 @@
 ﻿using HuangD.Entities;
 using HuangD.Interfaces;
 using HuangD.Maps;
-using HuangD.Mods.Inferfaces;
+using HuangD.Mods.Interfaces;
 using Maths;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,8 +18,8 @@ namespace HuangD.Sessions
 
                 var noWaterBlocks = map.blocks.Where(x => x.Value != TerrainType.Water).Select(x => x.Key);
 
-                var provinces = Province.Builder.Build(noWaterBlocks.Count(), seed);
-                var countries = Country.Builder.Build(provinces.Count() / 3, seed);
+                var provinces = Province.Builder.Build(noWaterBlocks.Count(), seed, defs.provinceDef);
+                var countries = Country.Builder.Build(provinces.Count() / 3, seed, defs.countryDef);
                 var persons = Person.Builder.Build(countries.SelectMany(x=>x.officeGroup.offices).Count(), seed, defs.personDef);
 
                 var session = new Session();

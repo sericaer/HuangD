@@ -1,4 +1,6 @@
 ﻿using HuangD.Interfaces;
+using HuangD.Mods;
+using HuangD.Mods.Interfaces;
 using Maths;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,14 +16,18 @@ namespace HuangD.Entities
         private static float[]  greens;
         private static float[]  blues;
 
+        private static IProvinceDef def;
+
         public static class Builder
         {
-            public static IEnumerable<IProvince> Build(int count, string seed)
+            public static IEnumerable<IProvince> Build(int count, string seed, IProvinceDef def)
             {
+                Province.def = def;
+
                 var random = new GRandom(seed);
                 GenerateRandomColor(random);
 
-                var randomNames = names.OrderBy(_ => random.getNum(0, int.MaxValue)).ToArray();
+                var randomNames = Province.def.names.OrderBy(_ => random.getNum(0, int.MaxValue)).ToArray();
 
                 var list = new List<IProvince>();
                 for (int i = 0; i < count; i++)
