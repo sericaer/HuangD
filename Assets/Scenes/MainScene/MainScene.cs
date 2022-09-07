@@ -1,11 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Math.TileMap;
-using HuangD.Sessions;
 using CommandTerminal;
 using HuangD.Commands;
-using HuangD.Interfaces;
+using HuangD.Mods;
+using HuangD.Sessions;
+using UnityEngine;
 
 public class MainScene : MonoBehaviour
 {
@@ -24,8 +21,10 @@ public class MainScene : MonoBehaviour
             Terminal.Shell.AddCommand(command);
         }
 
+
         var mapSize = 80;
-        Facade.session = Session.Builder.Build(mapSize, "DEFAULT");
+        Facade.mod = Mod.Default;
+        Facade.session = Session.Builder.Build(mapSize, "DEFAULT", Facade.mod.defs);
 
         //emperorPanel.SetEmperor(session.playerCountry.leader);
         //countryPanel.SetCountry(session.playerCountry);

@@ -1,4 +1,6 @@
-﻿namespace HuangD.Interfaces
+﻿using System.Collections.Generic;
+
+namespace HuangD.Interfaces
 {
     public interface ICommand
     {

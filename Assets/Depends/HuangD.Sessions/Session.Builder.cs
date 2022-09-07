@@ -1,7 +1,7 @@
 ﻿using HuangD.Entities;
 using HuangD.Interfaces;
 using HuangD.Maps;
-using Math.TileMap;
+using HuangD.Mods.Inferfaces;
 using Maths;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +10,9 @@ namespace HuangD.Sessions
 {
     public partial class Session
     {
-        static TerrainType[] vaildProvinceTerrains { get; } = new TerrainType[] { TerrainType.Hill, TerrainType.Mount, TerrainType.Plain };
-
         public static class Builder
         {
-            public static ISession Build(int mapSize, string seed)
+            public static ISession Build(int mapSize, string seed, IDefs defs)
             {
                 var map = Map.Builder.Build(mapSize, seed);
 
@@ -22,7 +20,7 @@ namespace HuangD.Sessions
 
                 var provinces = Province.Builder.Build(noWaterBlocks.Count(), seed);
                 var countries = Country.Builder.Build(provinces.Count() / 3, seed);
-                var persons = Person.Builder.Build(countries.SelectMany(x=>x.officeGroup.offices).Count(), seed);
+                var persons = Person.Builder.Build(countries.SelectMany(x=>x.officeGroup.offices).Count(), seed, defs.personDef);
 
                 var session = new Session();
                 session.seed = seed;
@@ -112,6 +110,8 @@ namespace HuangD.Sessions
 
         private void SetProvince2Block(GRandom random)
         {
+            var vaildProvinceTerrains = new TerrainType[] { TerrainType.Hill, TerrainType.Mount, TerrainType.Plain };
+
             var vaildProvinceBlocks = map.blocks.Where(x => vaildProvinceTerrains.Contains(x.Value)).Select(x => x.Key);
 
             province2Block = Enumerable.Range(0, provinces.Count())

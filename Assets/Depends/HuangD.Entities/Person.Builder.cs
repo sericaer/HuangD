@@ -1,18 +1,29 @@
 ﻿using HuangD.Interfaces;
-using System;
+using HuangD.Mods.Inferfaces;
+using Maths;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace HuangD.Entities
 {
     public partial class Person
     {
+        private static IPersonDef def;
 
         public static class Builder
         {
-            internal static IEnumerable<IPerson> Build(int count, string seed)
+            internal static IEnumerable<IPerson> Build(int count, string seed, IPersonDef personDef)
             {
-                return Enumerable.Range(0, count).Select(x => new Person($"F{x}", $"G{x}")).ToArray();
+                var random = new GRandom(seed);
+
+                Person.def = personDef;
+
+                var persons = new List<IPerson>();
+                for(int i=0; i<count; i++)
+                {
+                    persons.Add(new Person(random.Get(Person.def.familyNames), random.Get(Person.def.givenNames)));
+                }
+
+                return persons;
             }
         }
 
