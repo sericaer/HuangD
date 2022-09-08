@@ -7,11 +7,11 @@ namespace HuangD.Entities
 {
     public partial class Person
     {
-        private static IPersonDef def;
+        private static IPersonNameDef def;
 
         public static class Builder
         {
-            internal static IEnumerable<IPerson> Build(int count, string seed, IPersonDef personDef)
+            internal static IEnumerable<IPerson> Build(int count, string seed, IPersonNameDef personDef)
             {
                 var random = new GRandom(seed);
 
@@ -20,7 +20,7 @@ namespace HuangD.Entities
                 var persons = new List<IPerson>();
                 for(int i=0; i<count; i++)
                 {
-                    persons.Add(new Person(random.Get(Person.def.familyNames), random.Get(Person.def.givenNames)));
+                    persons.Add(new Person(random.Get(Person.def.familys), random.Get(Person.def.givens)));
                 }
 
                 return persons;

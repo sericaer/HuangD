@@ -13,14 +13,14 @@ namespace HuangD.Mods.Interfaces
 
     public interface IDefs
     {
-        public IPersonDef personDef { get; }
-        public ICountryDef countryDef { get; }
-        public IProvinceDef provinceDef { get; }
+        public IPersonNameDef personNameDef { get; }
+        public ICountryNameDef countryNameDef { get; }
+        public IProvinceNameDef provinceNameDef { get; }
     }
 
-    public interface IPersonDef
+    public interface IPersonNameDef
     {
-        public IEnumerable<string> familyNames { get; }
-        public IEnumerable<string> givenNames { get; }
+        public IEnumerable<string> familys { get; }
+        public IEnumerable<string> givens { get; }
     }
 }

@@ -9,16 +9,16 @@ namespace HuangD.Mods
         {
             defs = new Defs()
             {
-                personDef = new PersonDef()
+                personNameDef = new PersonNameDef()
                 {
-                    familyNames = Enumerable.Range(0,100).Select(x=>$"F{x}"),
-                    givenNames = Enumerable.Range(0, 500).Select(x=>$"G{x}")
+                    familys = Enumerable.Range(0,100).Select(x=>$"F{x}"),
+                    givens = Enumerable.Range(0, 500).Select(x=>$"G{x}")
                 },
-                provinceDef = new ProvinceDef()
+                provinceNameDef = new ProvinceNameDef()
                 {
                     names = Enumerable.Range(0, 500).Select(x => $"P{x}")
                 },
-                countryDef = new CountryDef()
+                countryNameDef = new CountryNameDef()
                 {
                     names = Enumerable.Range(0,100).Select(x=> $"C{x}")
                 }

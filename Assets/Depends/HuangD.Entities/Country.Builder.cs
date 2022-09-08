@@ -9,7 +9,7 @@ namespace HuangD.Entities
 {
     public partial class Country
     {
-        private static ICountryDef def;
+        private static ICountryNameDef def;
 
         public static class Builder
         {
@@ -20,7 +20,7 @@ namespace HuangD.Entities
             private static float[] greens;
             private static float[] blues;
 
-            public static IEnumerable<ICountry> Build(int count, string seed, ICountryDef def)
+            public static IEnumerable<ICountry> Build(int count, string seed, ICountryNameDef def)
             {
                 Country.def = def;
 

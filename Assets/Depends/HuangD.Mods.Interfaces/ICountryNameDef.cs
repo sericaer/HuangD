@@ -2,7 +2,7 @@
 
 namespace HuangD.Mods.Interfaces
 {
-    public interface ICountryDef
+    public interface ICountryNameDef
     {
         IEnumerable<string> names { get; }
     }

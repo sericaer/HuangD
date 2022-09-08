@@ -12,7 +12,7 @@ namespace HuangD.Mods
             {
                 var modPath = Path.Combine(rootPath, "native");
 
-                var native = new Mod();
+                var native = new Mod(modPath);
 
                 return native;
             }

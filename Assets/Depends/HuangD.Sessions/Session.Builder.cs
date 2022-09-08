@@ -18,9 +18,9 @@ namespace HuangD.Sessions
 
                 var noWaterBlocks = map.blocks.Where(x => x.Value != TerrainType.Water).Select(x => x.Key);
 
-                var provinces = Province.Builder.Build(noWaterBlocks.Count(), seed, defs.provinceDef);
-                var countries = Country.Builder.Build(provinces.Count() / 3, seed, defs.countryDef);
-                var persons = Person.Builder.Build(countries.SelectMany(x=>x.officeGroup.offices).Count(), seed, defs.personDef);
+                var provinces = Province.Builder.Build(noWaterBlocks.Count(), seed, defs.provinceNameDef);
+                var countries = Country.Builder.Build(provinces.Count() / 3, seed, defs.countryNameDef);
+                var persons = Person.Builder.Build(countries.SelectMany(x=>x.officeGroup.offices).Count(), seed, defs.personNameDef);
 
                 var session = new Session();
                 session.seed = seed;

@@ -23,7 +23,7 @@ public class MainScene : MonoBehaviour
 
 
         var mapSize = 80;
-        Facade.mod = Mod.Default;
+
         Facade.session = Session.Builder.Build(mapSize, "DEFAULT", Facade.mod.defs);
 
         //emperorPanel.SetEmperor(session.playerCountry.leader);

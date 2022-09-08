@@ -2,7 +2,7 @@
 
 namespace HuangD.Mods.Interfaces
 {
-    public interface IProvinceDef
+    public interface IProvinceNameDef
     {
         public IEnumerable<string> names { get; }
     }

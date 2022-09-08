@@ -16,11 +16,11 @@ namespace HuangD.Entities
         private static float[]  greens;
         private static float[]  blues;
 
-        private static IProvinceDef def;
+        private static IProvinceNameDef def;
 
         public static class Builder
         {
-            public static IEnumerable<IProvince> Build(int count, string seed, IProvinceDef def)
+            public static IEnumerable<IProvince> Build(int count, string seed, IProvinceNameDef def)
             {
                 Province.def = def;
 
