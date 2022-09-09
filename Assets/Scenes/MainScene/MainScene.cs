@@ -12,19 +12,19 @@ public class MainScene : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+
         HuangD.Commands.Log.INFO = (info) => Terminal.Log(TerminalLogType.Message, info);
         HuangD.Commands.Log.ERRO = (erro) => Terminal.Log(TerminalLogType.Error, erro);
 
         var commandMgr = new CommandMgr();
-        foreach(var command in commandMgr.all)
+        foreach (var command in commandMgr.all)
         {
             Terminal.Shell.AddCommand(command);
         }
 
+        //var mapSize = 80;
 
-        var mapSize = 80;
-
-        Facade.session = Session.Builder.Build(mapSize, "DEFAULT", Facade.mod.defs);
+        //Facade.session = Session.Builder.Build(mapSize, "DEFAULT", Facade.mod.defs);
 
         //emperorPanel.SetEmperor(session.playerCountry.leader);
         //countryPanel.SetCountry(session.playerCountry);
