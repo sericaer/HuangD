@@ -3,6 +3,7 @@ using HuangD.Interfaces;
 using HuangD.Maps;
 using HuangD.Mods.Interfaces;
 using Maths;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,14 +13,19 @@ namespace HuangD.Sessions
     {
         public static class Builder
         {
-            public static ISession Build(int mapSize, string seed, IDefs defs)
+            public static ISession Build(int mapSize, string seed, IDefs defs, Action<string> processInfo)
             {
-                var map = Map.Builder.Build(mapSize, seed);
+                var map = Map.Builder.Build(mapSize, seed, processInfo);
 
                 var noWaterBlocks = map.blocks.Where(x => x.Value != TerrainType.Water).Select(x => x.Key);
 
+                processInfo.Invoke("创建省份");
                 var provinces = Province.Builder.Build(noWaterBlocks.Count(), seed, defs.provinceNameDef);
+
+                processInfo.Invoke("创建国家");
                 var countries = Country.Builder.Build(provinces.Count() / 3, seed, defs.countryNameDef);
+
+                processInfo.Invoke("创建人物");
                 var persons = Person.Builder.Build(countries.SelectMany(x=>x.officeGroup.offices).Count(), seed, defs.personNameDef);
 
                 var session = new Session();
@@ -31,6 +37,7 @@ namespace HuangD.Sessions
 
                 session.playerCountry = countries.First();
 
+                processInfo.Invoke("关联数据");
                 session.AssocateData(seed);
 
                 return session;

@@ -165,7 +165,7 @@ namespace Math.TileMap
         public class BuilderGroup
         {
 
-            const int step = 10;
+            const int step = 5;
 
             private List<Builder> builders;
             private GRandom random;

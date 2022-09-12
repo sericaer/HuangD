@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class LuanchScene: MonoBehaviour
 {
@@ -30,9 +31,14 @@ public class LuanchScene: MonoBehaviour
 
             var mapSize = 80;
 
-            Facade.session = Session.Builder.Build(mapSize, "DEFAULT", Facade.mod.defs);
+            Facade.session = Session.Builder.Build(mapSize, "DEFAULT", Facade.mod.defs,
+                (info)=> RunOnMainThread.Enqueue(() => UpdateBroad(info)));
 
-            RunOnMainThread.Enqueue(() => SceneManager.LoadScene(nameof(MainScene), LoadSceneMode.Single));
+            RunOnMainThread.Enqueue(() =>
+            {
+                UpdateBroad("Ω¯»Î”Œœ∑");
+                SceneManager.LoadScene(nameof(MainScene), LoadSceneMode.Single);
+            });
         });
 
         //SceneManager.LoadSceneAsync(nameof(MainScene), LoadSceneMode.Single);
@@ -47,6 +53,11 @@ public class LuanchScene: MonoBehaviour
         //Facade.session = task.Result;
 
         //SceneManager.LoadSceneAsync(nameof(MainScene), LoadSceneMode.Single);
+    }
+
+    void UpdateBroad(string info)
+    {
+        board.GetComponentInChildren<Text>().text = info;
     }
 
     // Start is called before the first frame update
