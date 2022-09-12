@@ -9,10 +9,6 @@ public class CountryPanel : MonoBehaviour
 {
     public Text label;
 
-    internal void SetCountry(ICountry country)
-    {
-        label.text = country.name;
-    }
 
     // Start is called before the first frame update
     void Start()
@@ -21,10 +17,8 @@ public class CountryPanel : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        
+        label.text = Facade.session.playerCountry.name;
     }
-
-    
 }

@@ -1,4 +1,6 @@
-﻿namespace HuangD.Interfaces
+﻿using System.Collections.Generic;
+
+namespace HuangD.Interfaces
 {
     public interface ICommand
     {
@@ -7,7 +9,7 @@
         int minArgCount { get; }
         int maxArgCount { get; }
 
-        void Exec(string[] argc);
+        void Exec(ISession session, string[] argc);
     }
 }
 

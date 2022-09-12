@@ -11,8 +11,9 @@ namespace HuangD.Interfaces
         public IMap map { get; set; }
         public IEnumerable<ICountry> countries { get; }
         public IEnumerable<IProvince> provinces { get; }
+        public IEnumerable<IPerson> persons { get; }
 
-        public ICountry playerCountry { get; }
+        public ICountry playerCountry { get; set; }
     }
 }
 

@@ -11,6 +11,7 @@ namespace Maths
         int getNum(int min, int max);
         bool isTrue(int randomValue);
         T RandomInGroup<T>(IEnumerable<(int value, T obj)> group);
+        T Get<T>(IEnumerable<T> items);
     }
 
     public class GRandom : IGRandom
@@ -57,5 +58,10 @@ namespace Maths
             return _random.Next(min, max);
         }
 
+        public T Get<T>(IEnumerable<T> items)
+        {
+            var index = _random.Next(0, items.Count());
+            return items.ElementAt(index);
+        }
     }
 }

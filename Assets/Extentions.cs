@@ -9,7 +9,7 @@ public static class CommandShellExtentions
         System.Action<CommandArg[]> adapter = (args) =>
         {
             var commandClone = System.Activator.CreateInstance(command.GetType()) as ICommand;
-            commandClone.Exec(args.Select(x => x.String).ToArray());
+            commandClone.Exec(Facade.session, args.Select(x => x.String).ToArray());
         };
 
         shell.AddCommand(command.key, new CommandInfo() { proc = adapter, help = command.help, min_arg_count = command.minArgCount, max_arg_count = command.maxArgCount });

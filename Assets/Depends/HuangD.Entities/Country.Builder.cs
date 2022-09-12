@@ -1,4 +1,5 @@
 ﻿using HuangD.Interfaces;
+using HuangD.Mods.Interfaces;
 using Maths;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,8 @@ namespace HuangD.Entities
 {
     public partial class Country
     {
+        private static ICountryNameDef def;
+
         public static class Builder
         {
             private static IEnumerable<string> names = "夏 周 齐 楚 燕 韩 赵 魏 秦 汉 晋 吴 宋 唐 梁 陈 代 郑 卫 鲁 徐 许 隋 殷 顺 申 虢 虞 雍"
@@ -17,12 +20,14 @@ namespace HuangD.Entities
             private static float[] greens;
             private static float[] blues;
 
-            public static IEnumerable<ICountry> Build(int count, string seed)
+            public static IEnumerable<ICountry> Build(int count, string seed, ICountryNameDef def)
             {
+                Country.def = def;
+
                 var random = new GRandom(seed);
                 GenerateRandomColor(random);
 
-                var randomNames = names.OrderBy(_ => random.getNum(0, int.MaxValue)).ToArray();
+                var randomNames = Country.def.names.OrderBy(_ => random.getNum(0, int.MaxValue)).ToArray();
 
                 var list = new List<ICountry>();
                 for (int i = 0; i < count; i++)

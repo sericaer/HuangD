@@ -1,7 +1,7 @@
 ﻿using HuangD.Entities;
 using HuangD.Interfaces;
 using HuangD.Maps;
-using Math.TileMap;
+using HuangD.Mods.Interfaces;
 using Maths;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,35 +10,30 @@ namespace HuangD.Sessions
 {
     public partial class Session
     {
-        static TerrainType[] vaildProvinceTerrains { get; } = new TerrainType[] { TerrainType.Hill, TerrainType.Mount, TerrainType.Plain };
-
         public static class Builder
         {
-            public static ISession Build(int mapSize, string seed)
+            public static ISession Build(int mapSize, string seed, IDefs defs)
             {
                 var map = Map.Builder.Build(mapSize, seed);
 
                 var noWaterBlocks = map.blocks.Where(x => x.Value != TerrainType.Water).Select(x => x.Key);
 
-                var provinces = Province.Builder.Build(noWaterBlocks.Count(), seed);
-                var countries = Country.Builder.Build(provinces.Count() / 3, seed);
+                var provinces = Province.Builder.Build(noWaterBlocks.Count(), seed, defs.provinceNameDef);
+                var countries = Country.Builder.Build(provinces.Count() / 3, seed, defs.countryNameDef);
+                var persons = Person.Builder.Build(countries.SelectMany(x=>x.officeGroup.offices).Count(), seed, defs.personNameDef);
 
                 var session = new Session();
                 session.seed = seed;
                 session.map = map;
                 session.provinces = provinces;
                 session.countries = countries;
+                session.persons = persons;
 
                 session.playerCountry = countries.First();
 
                 session.AssocateData(seed);
 
                 return session;
-            }
-
-            private static IDictionary<ICountry, List<IProvince>> BuildCountry2Provinces(IEnumerable<ICountry> countries, IEnumerable<IProvince> provinces)
-            {
-                throw new System.NotImplementedException();
             }
         }
 
@@ -48,6 +43,31 @@ namespace HuangD.Sessions
 
             SetProvince2Block(random);
             SetCountry2Provinces(random);
+            SetPerson2Office(random);
+        }
+
+        private void SetPerson2Office(GRandom random)
+        {
+            person2Office = new HashSet<Peson2OfficeItem>();
+
+            var person = persons.FirstOrDefault(x => x.office == null);
+            while(person != null)
+            {
+                foreach (var country in countries)
+                {
+                    var emptyOffice = country.officeGroup.offices.FirstOrDefault(x => x.person == null);
+                    if (emptyOffice == null)
+                    {
+                        continue;
+                    }
+
+                    person2Office.Add(new Peson2OfficeItem(person, emptyOffice));
+
+                    person = persons.FirstOrDefault(x => x.office == null);
+                }
+
+                person = persons.FirstOrDefault(x => x.office == null);
+            }
         }
 
         private void SetCountry2Provinces(GRandom random)
@@ -90,6 +110,8 @@ namespace HuangD.Sessions
 
         private void SetProvince2Block(GRandom random)
         {
+            var vaildProvinceTerrains = new TerrainType[] { TerrainType.Hill, TerrainType.Mount, TerrainType.Plain };
+
             var vaildProvinceBlocks = map.blocks.Where(x => vaildProvinceTerrains.Contains(x.Value)).Select(x => x.Key);
 
             province2Block = Enumerable.Range(0, provinces.Count())

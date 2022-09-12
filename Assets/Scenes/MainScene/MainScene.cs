@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Math.TileMap;
-using HuangD.Sessions;
 using CommandTerminal;
 using HuangD.Commands;
+using HuangD.Mods;
+using HuangD.Sessions;
+using UnityEngine;
 
 public class MainScene : MonoBehaviour
 {
@@ -14,24 +12,26 @@ public class MainScene : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+
         HuangD.Commands.Log.INFO = (info) => Terminal.Log(TerminalLogType.Message, info);
         HuangD.Commands.Log.ERRO = (erro) => Terminal.Log(TerminalLogType.Error, erro);
 
         var commandMgr = new CommandMgr();
-        foreach(var command in commandMgr.all)
+        foreach (var command in commandMgr.all)
         {
             Terminal.Shell.AddCommand(command);
         }
 
-        var mapSize = 100;
-        var session = Session.Builder.Build(mapSize, "DEFAULT");
+        //var mapSize = 80;
+
+        //Facade.session = Session.Builder.Build(mapSize, "DEFAULT", Facade.mod.defs);
 
         //emperorPanel.SetEmperor(session.playerCountry.leader);
-        countryPanel.SetCountry(session.playerCountry);
+        //countryPanel.SetCountry(session.playerCountry);
 
-        mapLogic.SetMapData(session.map);
-        mapLogic.SetProvinces(session.provinces);
-        mapLogic.SetCountries(session.countries);
+        mapLogic.SetMapData(Facade.session.map);
+        mapLogic.SetProvinces(Facade.session.provinces);
+        mapLogic.SetCountries(Facade.session.countries);
 
 
     }
