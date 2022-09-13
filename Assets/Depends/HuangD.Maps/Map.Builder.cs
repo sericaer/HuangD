@@ -7,6 +7,7 @@ using System.Linq;
 
 namespace HuangD.Maps
 {
+
     public partial class Map
     {
         public static class Builder
@@ -25,9 +26,13 @@ namespace HuangD.Maps
                 var block2Terrain = GroupByTerrainType(blocks, mapSize, random);
                 var terrains = TerrainBuilder.Build(block2Terrain, random);
 
+                processInfo.Invoke("创建河流");
+                var rivers = RiverBuilder.Build(block2Terrain, terrains, random);
+
                 var map = new Map();
                 map.blocks = block2Terrain;
                 map.terrains = terrains;
+                map.rivers = rivers;
 
                 return map;
             }
@@ -94,52 +99,6 @@ namespace HuangD.Maps
                             break;
                     }
                 }
-
-                //var mountPlus = new List<Block>();
-
-                //foreach (var block in blocks)
-                //{
-                //    if (mounts.Any(m => block.isNeighbor(m)))
-                //    {
-                //        if (random.getNum(0, 3) < 1)
-                //        {
-                //            hills.Add(block);
-                //        }
-                //        else
-                //        {
-                //            mountPlus.Add(block);
-                //        }
-                //    }
-
-                //    else if (waters.Any(m => block.isNeighbor(m)))
-                //    {
-                //        plains.Add(block);
-                //    }
-                //    else
-                //    {
-                //        var hillPercent = 50;
-                //        var plainPercent = 50;
-
-                //        if (hills.Any(m => block.isNeighbor(m)))
-                //        {
-                //            hillPercent += 50;
-                //        }
-                //        if (hills.Any(m => block.isNeighbor(m)))
-                //        {
-                //            plainPercent += 100;
-                //        }
-
-                //        var randomValue = random.getNum(0, hillPercent + plainPercent);
-                //        if (randomValue < hillPercent)
-                //        {
-                //            hills.Add(block);
-                //        }
-                //        else
-                //        {
-                //            plains.Add(block);
-                //        }
-                //    }
-                //}
 
                 var rslt = new Dictionary<Block, TerrainType>();
                 foreach(var hill in hills)

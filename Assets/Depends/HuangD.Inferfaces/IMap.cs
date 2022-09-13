@@ -7,6 +7,8 @@ namespace HuangD.Interfaces
     {
         public Dictionary<(int x, int y), TerrainType> terrains { get; set; }
 
+        public Dictionary<(int x, int y), int> rivers { get; set; }
+
         public Dictionary<Block, TerrainType> blocks { get; set; }
     }
 }

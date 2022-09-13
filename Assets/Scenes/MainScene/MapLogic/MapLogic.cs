@@ -15,6 +15,7 @@ public class MapLogic : MonoBehaviour
     public EdgeMap edgeMap;
     public TerrainMap terrainMap;
     public CountryMap countryMap;
+    public RiverMap riverMap;
 
     public MapUIContainer mapUIContainer;
 
@@ -49,6 +50,10 @@ public class MapLogic : MonoBehaviour
         foreach (var pair in map.terrains)
         {
             terrainMap.SetCell(new Vector3Int(pair.Key.x, pair.Key.y), pair.Value);
+        }
+        foreach (var pos in map.rivers.Keys)
+        {
+            riverMap.SetCell(new Vector3Int(pos.x, pos.y));
         }
     }
 
