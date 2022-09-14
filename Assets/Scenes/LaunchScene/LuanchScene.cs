@@ -39,6 +39,15 @@ public class LuanchScene: MonoBehaviour
                 UpdateBroad("½øÈëÓÎÏ·");
                 SceneManager.LoadScene(nameof(MainScene), LoadSceneMode.Single);
             });
+        }).ContinueWith(_=>
+        {
+            if (_.Exception?.InnerException is { } inner)
+            {
+                Debug.Log(String.Format("{0}: {1} \n {2}",
+                    inner.GetType().Name,
+                    inner.Message,
+                    inner.StackTrace));
+            }
         });
 
         //SceneManager.LoadSceneAsync(nameof(MainScene), LoadSceneMode.Single);

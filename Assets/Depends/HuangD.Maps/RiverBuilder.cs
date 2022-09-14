@@ -8,11 +8,252 @@ namespace HuangD.Maps
 {
     static class RiverBuilder
     {
+        public class River
+        {
+            public LinkedList<Line> lines = new LinkedList<Line>();
+            public class Line
+            {
+                public List<(int x, int y)> indexs;
+                public bool isForward;
+
+                public Line(List<(int x, int y)> indexs, bool isForward)
+                {
+                    this.indexs = indexs;
+                    this.isForward = isForward;
+                }
+
+                internal (int x, int y) EndPoint()
+                {
+                    return isForward ? indexs.Last() : indexs.First();
+                }
+            }
+        }
+
         internal static Dictionary<(int x, int y), int> Build(Dictionary<Block, TerrainType> block2Terrain, Dictionary<(int x, int y), TerrainType> terrains, GRandom random)
         {
-            var dictScaleTerrain = terrains.ToDictionary(k => Hexagon.ScaleOffset(k.Key, 2), v => v.Value);
+            var terrainsScales = terrains.ToDictionary(x => Hexagon.ScaleOffset(x.Key, 2), y=>y.Value);
 
-            var edges = Utilty.GenerateEdges(block2Terrain.Select(x => x.Key.edges));
+            var dictEdgeHeight = GenerateEdge2Height(terrainsScales);
+
+            var lineHeightOrders = dictEdgeHeight.OrderByDescending(x => x.Value).Select(x => x.Key).ToList();
+
+            var select = lineHeightOrders.First();
+            var river = new List<(int x, int y)>() { select };
+
+            while(true)
+            {
+                var nexts = Hexagon.GetNeighbors(river.Last())
+                    .Where(x => dictEdgeHeight.ContainsKey(x) && !river.Contains(x))
+                    .Where(x => !Hexagon.GetNeighbors(x).Any(y=> y != river.Last() && river.Contains(y)))
+                    .OrderBy(x => dictEdgeHeight[x]);
+
+                if(nexts.Count() == 0)
+                {
+                    break;
+                }
+
+                select = nexts.First();
+                river.Add(select);
+
+                if(Hexagon.GetNeighbors(select).Any(x=> terrainsScales.ContainsKey(x) && terrainsScales[x] == TerrainType.Water))
+                {
+                    break;
+                }
+            }
+
+            return river.ToDictionary(k => k, v=>0);
+        }
+
+        private static Dictionary<(int x, int y), int> GenerateEdge2Height(Dictionary<(int x, int y), TerrainType> terrainsScales)
+        {
+            var dictEdgeHeight = new Dictionary<(int x, int y), int>();
+
+            foreach(var pair in terrainsScales)
+            {
+                int value = 0;
+                switch (pair.Value)
+                {
+                    case TerrainType.Plain:
+                        value = 1;
+                        break;
+                    case TerrainType.Hill:
+                        value = 10;
+                        break;
+                    case TerrainType.Mount:
+                        value = 100;
+                        break;
+                    case TerrainType.Water:
+                        value = 0;
+                        break;
+                    default:
+                        throw new System.Exception();
+                }
+
+                foreach (var neighbor in Hexagon.GetNeighbors(pair.Key))
+                {
+                    if(!dictEdgeHeight.ContainsKey(neighbor))
+                    {
+                        dictEdgeHeight.Add(neighbor, 0);
+                    }
+
+
+                    dictEdgeHeight[neighbor] += value;
+                }
+            }
+
+            return dictEdgeHeight;
+        }
+
+
+
+        //internal static Dictionary<(int x, int y), int> Build(Dictionary<Block, TerrainType> block2Terrain, Dictionary<(int x, int y), TerrainType> terrains, GRandom random)
+        //{
+        //    var edges = Utilty.GenerateEdges(block2Terrain.Select(x => x.Key.edges));
+
+        //    var waterScales = terrains.Where(x => x.Value == TerrainType.Water).Select(x => Hexagon.ScaleOffset(x.Key, 2));
+
+        //    var dictEdgeHegiht = GenerateEdge2Height(terrains, edges);
+
+        //    var lines = GenerateEdgeLines(edges);
+
+        //    var dictLineHegiht = lines.ToDictionary(k => k, v => v.Average(e => dictEdgeHegiht[e]));
+        //    var lineHeightOrders = dictLineHegiht.OrderByDescending(x => x.Value).Select(x => x.Key).ToList();
+
+        //    var rivers = new List<River>();
+
+        //    while(rivers.SelectMany(x=>x.lines).SelectMany(x=>x.indexs).Count() < 100)
+        //    {
+        //        var highestLine = lineHeightOrders[0];
+        //        lineHeightOrders.RemoveAt(0);
+
+        //        var nextLines = GetIntersectLine(highestLine, dictLineHegiht.Keys).OrderBy(x => dictLineHegiht[x.indexs]);
+
+        //        River river = new River();
+        //        rivers.Add(river);
+
+        //        river.lines.AddLast(nextLines.First());
+
+        //        var selectLine = river.lines.Last.Value;
+
+        //        while (true)
+        //        {
+        //            var intersectLines = GetNextIntersectLine(river.lines.Last.Value, dictLineHegiht.Keys)
+        //                .Where(l => !rivers.SelectMany(x => x.lines).Any(al=>al.indexs == l.indexs));
+        //            if (intersectLines.Count() == 0)
+        //            {
+        //                break;
+        //            }
+
+        //            selectLine = intersectLines
+        //                .OrderBy(l => dictLineHegiht[l.indexs]).First();
+
+        //            if (Hexagon.GetNeighbors(selectLine.EndPoint()).Any(n => waterScales.Contains(n)))
+        //            {
+        //                break;
+        //            }
+
+        //            river.lines.AddLast(selectLine);
+
+        //            //if(selectLine.Any(p=> Hexagon.GetNeighbors(p).Any(n=> waterScales.Contains(n))))
+
+        //        }
+        //    }
+
+        //    return rivers.SelectMany(x => x.lines).SelectMany(x => x.indexs).ToDictionary(k => k, v => edges[v]);
+        //}
+
+        private static IEnumerable<River.Line> GetIntersectLine(List<(int x, int y)> currLine, IEnumerable<List<(int x, int y)>> allLines)
+        {
+            var list = new List<River.Line>();
+            foreach(var line in allLines)
+            {
+                if(Hexagon.GetNeighbors(currLine.First()).Any(n => n == line.First()))
+                {
+                    list.Add(new River.Line(line, true));
+                }
+                if (Hexagon.GetNeighbors(currLine.First()).Any(n => n == line.Last()))
+                {
+                    list.Add(new River.Line(line, false));
+                }
+            }
+
+            return list;
+        }
+
+        private static IEnumerable<River.Line> GetNextIntersectLine(River.Line currLine, IEnumerable<List<(int x, int y)>> allLines)
+        {
+            var list = new List<River.Line>();
+            foreach (var line in allLines)
+            {
+                if (Hexagon.GetNeighbors(currLine.EndPoint()).Any(n => n == line.First()))
+                {
+                    list.Add(new River.Line(line, true));
+                }
+                if (Hexagon.GetNeighbors(currLine.EndPoint()).Any(n => n == line.Last()))
+                {
+                    list.Add(new River.Line(line, false));
+                }
+            }
+
+            return list;
+        }
+
+        private static List<List<(int x, int y)>> GenerateEdgeLines(Dictionary<(int x, int y), int> edges)
+        {
+            var joinInPoints = edges.Keys.Where(e => Hexagon.GetNeighbors(e).Count(n => edges.ContainsKey(n)) > 2).ToList();
+
+            //return joinInPoints.ToDictionary(k => k, v => edges[v]);
+
+            var usedJoinPoints = new HashSet<(int x, int y)>();
+            var lines = new List<List<(int x, int y)>>();
+
+            while (joinInPoints.Count() != usedJoinPoints.Count())
+            {
+                var line = new List<(int x, int y)>();
+                lines.Add(line);
+
+                var curr = joinInPoints.Except(usedJoinPoints).First();
+                line.Add(curr);
+                usedJoinPoints.Add(curr);
+
+                while (true)
+                {
+                    var nextPoints = Hexagon.GetNeighbors(curr).Where(n => edges.Keys.Contains(n) && !lines.SelectMany(x => x).Contains(n)).ToArray();
+                    if (nextPoints.Count() < 1)
+                    {
+                        break;
+                    }
+
+                    var notJoinPoints = nextPoints.Where(n => !joinInPoints.Contains(n)).ToArray();
+                    if (notJoinPoints.Length == 1)
+                    {
+                        curr = notJoinPoints[0];
+                        line.Add(curr);
+                        continue;
+                    }
+                    else if (notJoinPoints.Length == 0)
+                    {
+                        if (nextPoints.Length == 1 && joinInPoints.Contains(nextPoints[0]))
+                        {
+                            line.Add(nextPoints[0]);
+                            usedJoinPoints.Add(nextPoints[0]);
+                        }
+
+                        break;
+                    }
+                    else
+                    {
+                        throw new System.Exception();
+                    }
+                }
+            }
+
+            return lines;
+        }
+
+        private static Dictionary<(int x, int y), int> GenerateEdge2Height(Dictionary<(int x, int y), TerrainType> terrains, Dictionary<(int x, int y), int> edges)
+        {
+            var dictScaleTerrain = terrains.ToDictionary(k => Hexagon.ScaleOffset(k.Key, 2), v => v.Value);
 
             var dictEdgeHegiht = new Dictionary<(int x, int y), int>();
             foreach (var edge in edges.Keys)
@@ -21,7 +262,7 @@ namespace HuangD.Maps
                 {
                     if (!dictScaleTerrain.ContainsKey(x))
                     {
-                        return 1000;
+                        return 0;
                     }
 
                     switch (dictScaleTerrain[x])
@@ -40,94 +281,7 @@ namespace HuangD.Maps
                 dictEdgeHegiht.Add(edge, height);
             }
 
-            var rivers = new List<(int x, int y)>();
-
-            var heigihOrders = dictEdgeHegiht.OrderBy(_=>random.getNum(0, int.MaxValue)).OrderByDescending(x => x.Value).Select(x => x.Key);
-
-            while (rivers.Count() < 100 )
-            {
-                var startPoint = heigihOrders.First(x => !rivers.Contains(x));
-                var currRivers = new List<(int x, int y)>() { startPoint };
-                while (true)
-                {
-                    var vailds = currRivers.SelectMany(x => Hexagon.GetNeighbors(x).Where(n => !rivers.Concat(currRivers).Contains(n) && edges.ContainsKey(n))).OrderBy(x => dictEdgeHegiht[x]).ToArray();
-                    if (vailds.Length == 0)
-                    {
-                        break;
-                    }
-                    if (Hexagon.GetNeighbors(vailds[0]).Any(x => dictScaleTerrain.ContainsKey(x) && dictScaleTerrain[x] == TerrainType.Water))
-                    {
-                        break;
-                    }
-
-                    currRivers.Add(vailds[0]);
-                }
-                rivers.AddRange(currRivers);
-            }
-
-
-            return rivers.ToDictionary(k => k, v => edges[v]);
-
-            //var edges = Utilty.GenerateEdges(block2Terrain.Keys.Select(x => x.edges));
-
-            //var land2WaterEdges = edges.Where(e =>
-            //{
-            //    var neighorTerrains = Hexagon.GetNeighbors(e.Key).Where(n => dictScaleTerrain.ContainsKey(n)).Select(n => dictScaleTerrain[n]);
-            //    return neighorTerrains.Contains(TerrainType.Water) && neighorTerrains.Any(t => t != TerrainType.Water);
-            //}).Select(x=>x.Key);
-
-            //var landEdges = edges.Where(e => Hexagon.GetNeighbors(e.Key).All(n => dictScaleTerrain.ContainsKey(n) && dictScaleTerrain[n] != TerrainType.Water)).Select(x => x.Key);
-
-            //var startPoint = land2WaterEdges.Where(x=>Hexagon.GetNeighbors(x).Any(n=> landEdges.Contains(n))).OrderBy(_ => random.getNum(0, int.MaxValue)).First();
-
-            //var rivers = new List<(int x, int y)>() { startPoint };
-            //while(true)
-            //{
-            //    var valids = Hexagon.GetNeighbors(startPoint).Where(x => landEdges.Contains(x) && !rivers.Contains(x)).ToArray();
-            //    if(valids.Length == 0)
-            //    {
-            //        break;
-            //    }
-
-            //    rivers.Add(valids[0]);
-
-            //    startPoint = valids[0];
-            //}
-
-            //return rivers.ToDictionary(k=>k, v=> edges[v]);
-
-            //var waterEdges = block2Terrain.Where(x => x.Value == TerrainType.Water).Select(x => x.Key.edges);
-            //var landEdges = block2Terrain.Where(x => x.Value != TerrainType.Water).Select(x => x.Key.edges);
-
-
-            //foreach(var edge in waterEdges)
-            //{
-            //    var list = new List<(int x, int y)>();
-            //}
-
-            //var water2LandEdges = waterEdges.SelectMany(x => Hexagon.GetNeighbors(x).Where(n => landEdges.Contains(n)).Append(x));
-
-            //waterEdges.Where
-            //var edgesLand2Land = Utilty.GenerateEdges(block2Terrain.Where(x=>x.Value != TerrainType.Water).Select(x => x.Key.edges));
-            //var edgesLand2Water = Utilty.GenerateEdges(block2Terrain.Where(x =>
-            //{
-            //    if (x.Value == TerrainType.Water)
-            //    {
-            //        return block2Terrain.Any(other => other.Value != TerrainType.Water && x.Key.isNeighbor(other.Key));
-            //    }
-            //    if (x.Value != TerrainType.Water)
-            //    {
-            //        return block2Terrain.Any(other => other.Value == TerrainType.Water && x.Key.isNeighbor(other.Key));
-            //    }
-            //    return false;
-
-            //}).Select(x => x.Key.edges));
-
-            //return edges.Where(e=>
-            //{
-            //    var neighorTerrains = Hexagon.GetNeighbors(e.Key).Where(n => dictScaleTerrain.ContainsKey(n)).Select(n => dictScaleTerrain[n]);
-            //    return neighorTerrains.Contains(TerrainType.Water) && neighorTerrains.Any(t => t != TerrainType.Water);
-            //}).ToDictionary(e=>e.Key, e=>e.Value);
+            return dictEdgeHegiht;
         }
     }
 }
