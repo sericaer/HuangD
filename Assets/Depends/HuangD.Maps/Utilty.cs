@@ -84,5 +84,98 @@ namespace HuangD.Maps
             return elements.ElementAt(index);
         }
 
+        public static IEnumerable<(int x, int y)> FindPath((int x, int y) startPos, System.Func<(int x, int y), bool> endCondition, IEnumerable<(int x, int y)> baseMap, Dictionary<(int x, int y), int> costMap = null)
+        {
+            var visitMap = costMap == null ? GenrateVisitMap(startPos, endCondition, baseMap.ToHashSet()) : GenrateVisitMapWithCost(startPos, endCondition, baseMap.ToHashSet(), costMap);
+
+            var path = new List<(int x, int y)>();
+            var currPos = visitMap.Keys.First(x=>endCondition(x));
+            path.Add(currPos);
+
+            while (currPos != startPos)
+            {
+                var nextPos = visitMap[currPos];
+                path.Add(nextPos);
+
+                currPos = nextPos;
+            }
+
+            path.Reverse();
+            return path;
+        }
+
+        private static Dictionary<(int x, int y), (int x, int y)> GenrateVisitMapWithCost((int x, int y) startPos, System.Func<(int x, int y), bool> endCondition, HashSet<(int x, int y)> baseMap, Dictionary<(int x, int y), int> costMap)
+        {
+            var queue = new PriorityQueue<(int x, int y)>();
+            queue.Enqueue(startPos, 0);
+
+            var costRecord = new Dictionary<(int x, int y), int>();
+            costRecord[startPos] = 0;
+
+            var dict = new Dictionary<(int x, int y), (int x, int y)>();
+            dict.Add(startPos, (-1, -1));
+
+            while (queue.Count != 0)
+            {
+                var currPos = queue.Dequeue();
+
+                if (endCondition(currPos))
+                {
+                    break;
+                }
+
+                foreach (var neighor in Hexagon.GetNeighbors(currPos).Where(n => baseMap.Contains(n)))
+                {
+                    var newCost = costRecord[currPos] + costMap[neighor];
+
+                    if (dict.ContainsKey(neighor) && costRecord[neighor] <= newCost)
+                    {
+                        continue;
+                    }
+
+                    costRecord[neighor] = newCost;
+                    queue.Enqueue(neighor, newCost);
+
+                    dict.Add(neighor, currPos);
+                }
+            }
+
+            return dict;
+        }
+
+        private  static Dictionary<(int x, int y), (int x, int y)> GenrateVisitMap((int x, int y) startPos, System.Func<(int x, int y), bool> endCondition, HashSet<(int x, int y)> baseMap)
+        {
+            var queue = new Queue<(int x, int y)>();
+            queue.Enqueue(startPos);
+
+            var dict = new Dictionary<(int x, int y), (int x, int y)>();
+            dict.Add(startPos, (-1, -1));
+
+            while (queue.Count != 0)
+            {
+                var currPos = queue.Dequeue();
+
+                if (endCondition(currPos))
+                {
+                    break;
+                }
+
+                foreach (var neighor in Hexagon.GetNeighbors(currPos).Where(n => baseMap.Contains(n)))
+                {
+                    if (dict.ContainsKey(neighor))
+                    {
+                        continue;
+                    }
+
+                    queue.Enqueue(neighor);
+                    dict.Add(neighor, currPos);
+
+
+                }
+            }
+
+            return dict;
+        }
+
     }
 }

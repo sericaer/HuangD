@@ -90,6 +90,30 @@ namespace Math.TileMap
             return Length(sub);
         }
 
+        internal static IEnumerable<(int x, int y)> GetRange((int x, int y) center, int radius)
+        {
+      
+            var axial = ToAxial(center);
+
+            var list = new List<(int q, int r)>();
+
+            for(int q = radius*-1; q <=radius; q++)
+            {
+                for (int r = radius * -1; r <= radius; r++)
+                {
+                    for (int s = radius * -1; s <= radius; s++)
+                    {
+                        if(q + r + s ==0)
+                        {
+                            list.Add((q, r));
+                        }
+                    }
+                }
+            }
+
+            return list.Select(x => ToOffset((x.q + axial.q, x.r+ axial.r)));
+        }
+
         private static int Length((int q, int r) axial)
         {
             return (int)((System.Math.Abs(axial.q) + System.Math.Abs(axial.r) + System.Math.Abs(CalcSValue(axial))) / 2);
