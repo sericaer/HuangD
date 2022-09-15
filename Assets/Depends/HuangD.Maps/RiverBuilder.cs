@@ -14,7 +14,7 @@ namespace HuangD.Maps
 
             var dictEdgeHeight = GenerateEdge2Height(terrainsScales, random);
 
-            var lineHeightOrders = dictEdgeHeight.OrderBy(_=>random.getNum(0, int.MaxValue)).OrderByDescending(x => x.Value).Select(x => x.Key).ToArray();
+            var lineHeightOrders = dictEdgeHeight.OrderBy(_=>random.getNum(0, int.MaxValue)).OrderByDescending(x => x.Value).Select(x => x.Key).ToList();
 
             var rivers = new List<IEnumerable<(int x, int y)>>();
             while (rivers.Count < 15)
@@ -23,11 +23,17 @@ namespace HuangD.Maps
 
                 var path = Utilty.FindPath(select,
                         (pos) => Hexagon.GetNeighbors(pos).Any(x => terrainsScales.ContainsKey(x) && terrainsScales[x] == TerrainType.Water),
-                        dictEdgeHeight.Keys.Where(x=> !rivers.Any(r=>r.Contains(x))).ToArray(),
-                        dictEdgeHeight).ToArray();
+                        dictEdgeHeight.Keys.Where(x => !rivers.Any(r => r.Contains(x))).ToArray(),
+                        dictEdgeHeight);
+                if (path == null)
+                {
+                    lineHeightOrders.Remove(select);
+                    continue;
+                }
+
                 rivers.Add(path);
 
-                lineHeightOrders = lineHeightOrders.Except(path.SelectMany(x=>Hexagon.GetRange(x,3))).ToArray();
+                lineHeightOrders = lineHeightOrders.Except(path.SelectMany(x=>Hexagon.GetRange(x,5))).ToList();
 
                 UpdateEdge2Height(dictEdgeHeight, path);
             }
@@ -36,7 +42,7 @@ namespace HuangD.Maps
             return rivers.SelectMany(x=>x).Distinct().ToDictionary(k => k, v=>0);
         }
 
-        private static void UpdateEdge2Height(Dictionary<(int x, int y), int> dictEdgeHeight, (int x, int y)[] path)
+        private static void UpdateEdge2Height(Dictionary<(int x, int y), int> dictEdgeHeight, IEnumerable<(int x, int y)> path)
         {
             foreach (var pos in path)
             {
@@ -60,13 +66,13 @@ namespace HuangD.Maps
                 switch (pair.Value)
                 {
                     case TerrainType.Plain:
-                        value = random.getNum(1,10);
+                        value = 1;
                         break;
                     case TerrainType.Hill:
-                        value = random.getNum(5, 15);
+                        value = 10;
                         break;
                     case TerrainType.Mount:
-                        value = random.getNum(10, 20); ;
+                        value = 50;
                         break;
                     case TerrainType.Water:
                         value = 0;

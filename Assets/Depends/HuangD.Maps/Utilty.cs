@@ -89,8 +89,17 @@ namespace HuangD.Maps
             var visitMap = costMap == null ? GenrateVisitMap(startPos, endCondition, baseMap.ToHashSet()) : GenrateVisitMapWithCost(startPos, endCondition, baseMap.ToHashSet(), costMap);
 
             var path = new List<(int x, int y)>();
-            var currPos = visitMap.Keys.First(x=>endCondition(x));
-            path.Add(currPos);
+            try
+            {
+                var pos = visitMap.Keys.First(x => endCondition(x));
+                path.Add(pos);
+            }
+            catch
+            {
+                return null;
+            }
+
+            var currPos = path.First();
 
             while (currPos != startPos)
             {
