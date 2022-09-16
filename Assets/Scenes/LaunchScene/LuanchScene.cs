@@ -31,7 +31,7 @@ public class LuanchScene: MonoBehaviour
 
             var mapSize = 80;
 
-            Facade.session = Session.Builder.Build(mapSize, "DEFAULT", Facade.mod.defs,
+            Facade.session = Session.Builder.Build(mapSize, "DEFAULT123", Facade.mod.defs,
                 (info)=> RunOnMainThread.Enqueue(() => UpdateBroad(info)));
 
             RunOnMainThread.Enqueue(() =>

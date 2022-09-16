@@ -14,43 +14,94 @@ namespace HuangD.Maps
 
             var dictEdgeHeight = GenerateEdge2Height(terrainsScales, random);
 
-            var lineHeightOrders = dictEdgeHeight.OrderBy(_=>random.getNum(0, int.MaxValue)).OrderByDescending(x => x.Value).Select(x => x.Key).ToList();
+            var lineHeightOrders = dictEdgeHeight.OrderBy(_=>random.getNum(0, int.MaxValue)).OrderByDescending(x => x.Value).Select(x => x.Key);
 
+            var majorRivers = GenerateMajorRiver(lineHeightOrders, dictEdgeHeight, terrainsScales);
+            var minorRivers = GenerateMinorRiver(lineHeightOrders, dictEdgeHeight, terrainsScales, majorRivers);
+
+            return majorRivers.Concat(minorRivers).SelectMany(x=>x).Distinct().ToDictionary(k => k, v=>0);
+        }
+
+        private static IEnumerable<IEnumerable<(int x, int y)>> GenerateMinorRiver(IEnumerable<(int x, int y)> lineHeightOrders, Dictionary<(int x, int y), int> dictEdgeHeight, Dictionary<(int x, int y), TerrainType> terrainsScales, IEnumerable<IEnumerable<(int x, int y)>> majorRivers)
+        {
             var rivers = new List<IEnumerable<(int x, int y)>>();
-            while (rivers.Count < 15)
+
+            var currLineHeightOrders = lineHeightOrders.ToList();
+            var currDictEdgeHeight = dictEdgeHeight.ToDictionary(k => k.Key, v => v.Value);
+            while (rivers.Count < 20)
             {
-                var select = lineHeightOrders.First();
+                var select = currLineHeightOrders.First();
 
                 var path = Utilty.FindPath(select,
-                        (pos) => Hexagon.GetNeighbors(pos).Any(x => terrainsScales.ContainsKey(x) && terrainsScales[x] == TerrainType.Water),
-                        dictEdgeHeight.Keys.Where(x => !rivers.Any(r => r.Contains(x))).ToArray(),
-                        dictEdgeHeight);
+                        (pos) => Hexagon.GetNeighbors(pos).Any(x => terrainsScales.ContainsKey(x) && terrainsScales[x] == TerrainType.Water)
+                               || majorRivers.Concat(rivers).SelectMany(x=>x).Contains(pos), 
+                        currDictEdgeHeight.Keys.Where(x => !rivers.Any(r => r.Contains(x))).ToArray(),
+                        currDictEdgeHeight);
                 if (path == null)
                 {
-                    lineHeightOrders.Remove(select);
+                    currLineHeightOrders.Remove(select);
+                    continue;
+                }
+
+                currLineHeightOrders = currLineHeightOrders.Except(path.SelectMany(x => Hexagon.GetRange(x, 5))).ToList();
+
+                if (path.Count() < 20)
+                {
                     continue;
                 }
 
                 rivers.Add(path);
 
-                lineHeightOrders = lineHeightOrders.Except(path.SelectMany(x=>Hexagon.GetRange(x,5))).ToList();
-
-                UpdateEdge2Height(dictEdgeHeight, path);
+                UpdateEdge2Height(currDictEdgeHeight, path, 5, 50);
             }
 
-
-            return rivers.SelectMany(x=>x).Distinct().ToDictionary(k => k, v=>0);
+            return rivers;
         }
 
-        private static void UpdateEdge2Height(Dictionary<(int x, int y), int> dictEdgeHeight, IEnumerable<(int x, int y)> path)
+        private static IEnumerable<IEnumerable<(int x, int y)>> GenerateMajorRiver(IEnumerable<(int x, int y)> lineHeightOrders, Dictionary<(int x, int y), int> dictEdgeHeight, Dictionary<(int x, int y), TerrainType> terrainsScales)
+        {
+            var mainRivers = new List<IEnumerable<(int x, int y)>>();
+
+            var currLineHeightOrders = lineHeightOrders.ToList();
+            var currDictEdgeHeight = dictEdgeHeight.ToDictionary(k => k.Key, v => v.Value);
+            while (mainRivers.Count < 3)
+            {
+                var select = currLineHeightOrders.First();
+
+                var path = Utilty.FindPath(select,
+                        (pos) => Hexagon.GetNeighbors(pos).Any(x => terrainsScales.ContainsKey(x) && terrainsScales[x] == TerrainType.Water),
+                        currDictEdgeHeight.Keys.Where(x => !mainRivers.Any(r => r.Contains(x))).ToArray(),
+                        currDictEdgeHeight);
+                if (path == null)
+                {
+                    currLineHeightOrders.Remove(select);
+                    continue;
+                }
+
+                currLineHeightOrders = currLineHeightOrders.Except(path.SelectMany(x => Hexagon.GetRange(x, 5))).ToList();
+
+                if(path.Count() < 100)
+                {
+                    continue;
+                }
+
+                mainRivers.Add(path);
+
+                UpdateEdge2Height(currDictEdgeHeight, path, 3, 10);
+            }
+
+            return mainRivers;
+        }
+
+        private static void UpdateEdge2Height(Dictionary<(int x, int y), int> dictEdgeHeight, IEnumerable<(int x, int y)> path, int range, int value)
         {
             foreach (var pos in path)
             {
-                foreach(var elem in Hexagon.GetRange(pos, 5))
+                foreach(var elem in Hexagon.GetRange(pos, range))
                 {
                     if(dictEdgeHeight.ContainsKey(elem))
                     {
-                        dictEdgeHeight[elem] = 100;
+                        dictEdgeHeight[elem] = value;
                     }
                 }
             }
