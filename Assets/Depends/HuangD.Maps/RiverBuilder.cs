@@ -87,7 +87,7 @@ namespace HuangD.Maps
 
                 mainRivers.Add(path);
 
-                UpdateEdge2Height(currDictEdgeHeight, path, 3, 10);
+                UpdateEdge2Height(currDictEdgeHeight, path, 10, 50);
             }
 
             return mainRivers;
