@@ -1,4 +1,5 @@
 ﻿using HuangD.Interfaces;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,4 +22,9 @@ public class ProvinceUIItem : MapUIItem
     }
 
     private IProvince _gmData;
+
+    internal void SetAlpha(float alpha)
+    {
+        label.GetComponent<CanvasRenderer>().SetAlpha(alpha);
+    }
 }

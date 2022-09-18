@@ -8,18 +8,20 @@ namespace HuangD.Maps
 {
     static class RiverBuilder
     {
-        internal static Dictionary<(int x, int y), int> Build(Dictionary<(int x, int y), TerrainType> terrains, GRandom random)
+        internal static Dictionary<(int x, int y), int> Build(Block[] blocks, Dictionary<(int x, int y), TerrainType> terrains, GRandom random)
         {
+            var edges = Utilty.GenerateEdges(blocks.Select(x=>x.edges));
+
             var terrainsScales = terrains.ToDictionary(x => Hexagon.ScaleOffset(x.Key, 2), y => y.Value);
 
-            var dictEdgeHeight = GenerateEdge2Height(terrainsScales, random);
+            var dictEdgeHeight = GenerateEdge2Height(terrainsScales, edges, random);
 
             var lineHeightOrders = dictEdgeHeight.OrderBy(_=>random.getNum(0, int.MaxValue)).OrderByDescending(x => x.Value).Select(x => x.Key);
 
             var majorRivers = GenerateMajorRiver(lineHeightOrders, dictEdgeHeight, terrainsScales);
             var minorRivers = GenerateMinorRiver(lineHeightOrders, dictEdgeHeight, terrainsScales, majorRivers);
 
-            return majorRivers.Concat(minorRivers).SelectMany(x=>x).Distinct().ToDictionary(k => k, v=>0);
+            return majorRivers.Concat(minorRivers).SelectMany(x=>x).Distinct().ToDictionary(k => k, v=> edges[v]);
         }
 
         private static IEnumerable<IEnumerable<(int x, int y)>> GenerateMinorRiver(IEnumerable<(int x, int y)> lineHeightOrders, Dictionary<(int x, int y), int> dictEdgeHeight, Dictionary<(int x, int y), TerrainType> terrainsScales, IEnumerable<IEnumerable<(int x, int y)>> majorRivers)
@@ -107,7 +109,7 @@ namespace HuangD.Maps
             }
         }
 
-        private static Dictionary<(int x, int y), int> GenerateEdge2Height(Dictionary<(int x, int y), TerrainType> terrainsScales, GRandom random)
+        private static Dictionary<(int x, int y), int> GenerateEdge2Height(Dictionary<(int x, int y), TerrainType> terrainsScales, Dictionary<(int x, int y), int> edges, GRandom random)
         {
             var dictEdgeHeight = new Dictionary<(int x, int y), int>();
 
@@ -134,6 +136,10 @@ namespace HuangD.Maps
 
                 foreach (var neighbor in Hexagon.GetNeighbors(pair.Key))
                 {
+                    if(!edges.ContainsKey(neighbor))
+                    {
+                        continue;
+                    }
                     if(!dictEdgeHeight.ContainsKey(neighbor))
                     {
                         dictEdgeHeight.Add(neighbor, value);

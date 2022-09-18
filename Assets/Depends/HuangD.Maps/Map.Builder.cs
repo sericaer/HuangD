@@ -27,7 +27,7 @@ namespace HuangD.Maps
                 var terrains = TerrainBuilder.Build(block2Terrain, random);
 
                 processInfo.Invoke("创建河流");
-                var rivers = RiverBuilder.Build(terrains, random);
+                var rivers = RiverBuilder.Build(blocks, terrains, random);
 
                 var map = new Map();
                 map.blocks = block2Terrain;

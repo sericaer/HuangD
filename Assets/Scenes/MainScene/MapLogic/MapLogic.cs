@@ -42,6 +42,18 @@ public class MapLogic : MonoBehaviour
     public void ScrollWheel(bool flag)
     {
         mapCamera.orthographicSize = CalcNextScale(flag);
+        var alpha = (mapCamera.orthographicSize - 6) / (20 - 6);
+        foreach (var item in mapUIContainer.allCountryItem)
+        {
+            item.SetAlpha(alpha);
+            countryMap.SetAlpha(alpha);
+        }
+
+        foreach (var item in mapUIContainer.allProvinceItem)
+        {
+            item.SetAlpha(1-alpha);
+        }
+
         mapUIContainer.UpdateItemsPosition();
     }
 
@@ -53,7 +65,7 @@ public class MapLogic : MonoBehaviour
         }
         foreach (var pos in map.rivers.Keys)
         {
-            riverMap.SetCell(new Vector3Int(pos.x, pos.y));
+            riverMap.SetCell(new Vector3Int(pos.x, pos.y), map.rivers[pos]);
         }
     }
 
@@ -166,7 +178,7 @@ public class MapLogic : MonoBehaviour
         }
 
         var newSize = mapCamera.orthographicSize + 0.5f * (flag ? 1 : -1);
-        if (newSize < 8f || newSize > 20f)
+        if (newSize < 6f || newSize > 20f)
         {
             return mapCamera.orthographicSize;
         }

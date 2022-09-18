@@ -11,6 +11,9 @@ public class MapUIContainer : MonoBehaviour
     public CountryUIItem defaultCountryItem;
     public ProvinceUIItem defaultProvinceItem;
 
+    public IEnumerable<CountryUIItem> allCountryItem => uiItems.OfType<CountryUIItem>();
+    public IEnumerable<ProvinceUIItem> allProvinceItem => uiItems.OfType<ProvinceUIItem>();
+
     private List<MapUIItem> uiItems { get; } = new List<MapUIItem>();
 
     internal void SetProvinces(IEnumerable<IProvince> provinces)

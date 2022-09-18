@@ -1,4 +1,6 @@
 ﻿using HuangD.Interfaces;
+using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class CountryUIItem : MapUIItem
@@ -22,4 +24,14 @@ public class CountryUIItem : MapUIItem
 
 
     private ICountry _gmData;
+
+    private void Start()
+    {
+
+    }
+
+    internal void SetAlpha(float alpha)
+    {
+        label.GetComponent<CanvasRenderer>().SetAlpha(alpha);
+    }
 }
