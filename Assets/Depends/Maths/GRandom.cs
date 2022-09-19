@@ -58,6 +58,14 @@ namespace Maths
             return _random.Next(min, max);
         }
 
+        public float getNum(float min, float max)
+        {
+            double range = (double)max - (double)min;
+            double sample = _random.NextDouble();
+            double scaled = (sample * range) + min;
+            return (float)scaled;
+        }
+
         public T Get<T>(IEnumerable<T> items)
         {
             var index = _random.Next(0, items.Count());

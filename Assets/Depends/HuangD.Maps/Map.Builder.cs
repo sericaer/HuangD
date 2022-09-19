@@ -17,13 +17,26 @@ namespace HuangD.Maps
 
                 var random = new GRandom(seed);
 
+                var mapPositions = Enumerable.Range(0, mapSize)
+                    .SelectMany(x => Enumerable.Range(0, mapSize).Select(y => (x, y)));
+
                 processInfo.Invoke("创建区块");
 
-                var blocksBuilder = new Block.BuilderGroup(mapSize, random);
-                var blocks = blocksBuilder.Build();
+
+                var blocks = BlockBuilder.Build(mapPositions, random)
+                    .Select(b => new Block(b.ToHashSet()))
+                    .ToArray();
+
+                var dict = blocks.SelectMany(b => b.elements).GroupBy(x => x)
+                        .Where(g => g.Count() > 1)
+                        .ToDictionary(g => g.Key, g => g.Count());
 
                 processInfo.Invoke("创建地形");
                 var block2Terrain = GroupByTerrainType(blocks, mapSize, random);
+                var dict2 = block2Terrain.SelectMany(b => b.Key.elements).GroupBy(x => x)
+                    .Where(g => g.Count() > 1)
+                    .ToDictionary(g => g.Key, g => g.Count());
+
                 var terrains = TerrainBuilder.Build(block2Terrain, random);
 
                 processInfo.Invoke("创建河流");
@@ -37,7 +50,7 @@ namespace HuangD.Maps
                 return map;
             }
 
-            internal static Dictionary<Block, TerrainType> GroupByTerrainType(IEnumerable<Block> blocks, int mapSize, GRandom random)
+            internal static Dictionary<Block, TerrainType> GroupByTerrainType(Block[] blocks, int mapSize, GRandom random)
             {
                 var waters = blocks.Where(x => x.edges.Any(r => r.y == mapSize - 1 || r.x == 0)).ToList();
 

@@ -8,7 +8,7 @@ namespace HuangD.Maps
 {
     static class RiverBuilder
     {
-        internal static Dictionary<(int x, int y), int> Build(Block[] blocks, Dictionary<(int x, int y), TerrainType> terrains, GRandom random)
+        internal static Dictionary<(int x, int y), int> Build(IEnumerable<Block> blocks, Dictionary<(int x, int y), TerrainType> terrains, GRandom random)
         {
             var edges = Utilty.GenerateEdges(blocks.Select(x=>x.edges));
 

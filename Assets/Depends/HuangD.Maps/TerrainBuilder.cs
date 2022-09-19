@@ -73,6 +73,12 @@ namespace HuangD.Maps
         private static Dictionary<(int x, int y), TerrainType> GenrateWater(IEnumerable<Block> blocks)
         {
             var rslt = new Dictionary<(int x, int y), TerrainType>();
+            var c = blocks.ToArray();
+            var a = blocks.Distinct().ToArray();
+
+            var dict = blocks.SelectMany(b => b.elements).GroupBy(x => x)
+                .Where(g => g.Count() > 1)
+                .ToDictionary(g => g.Key, g => g.Count());
 
             foreach (var elem in blocks.SelectMany(x => x.elements))
             {
