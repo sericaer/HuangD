@@ -29,9 +29,9 @@ public class LuanchScene: MonoBehaviour
         Task.Run(() =>
         {
 
-            var mapSize = 80;
-
-            Facade.session = Session.Builder.Build(mapSize, System.Guid.NewGuid().ToString(), Facade.mod.defs,
+            Facade.session = Session.Builder.Build(new HuangD.Maps.MapInit() { width = 120, high = 80},
+                System.Guid.NewGuid().ToString(),
+                Facade.mod.defs,
                 (info)=> RunOnMainThread.Enqueue(() => UpdateBroad(info)));
 
             RunOnMainThread.Enqueue(() =>

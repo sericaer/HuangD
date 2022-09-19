@@ -7,18 +7,23 @@ using System.Linq;
 
 namespace HuangD.Maps
 {
+    public class MapInit
+    {
+        public int width;
+        public int high;
+    }
 
     public partial class Map
     {
         public static class Builder
         {
-            public static IMap Build(int mapSize, string seed, System.Action<string> processInfo)
+            public static IMap Build(MapInit mapInit, string seed, System.Action<string> processInfo)
             {
 
                 var random = new GRandom(seed);
 
-                var mapPositions = Enumerable.Range(0, mapSize)
-                    .SelectMany(x => Enumerable.Range(0, mapSize).Select(y => (x, y)));
+                var mapPositions = Enumerable.Range(0, mapInit.high)
+                    .SelectMany(x => Enumerable.Range(0, mapInit.width).Select(y => (x, y)));
 
                 processInfo.Invoke("创建区块");
 
@@ -32,7 +37,7 @@ namespace HuangD.Maps
                         .ToDictionary(g => g.Key, g => g.Count());
 
                 processInfo.Invoke("创建地形");
-                var block2Terrain = GroupByTerrainType(blocks, mapSize, random);
+                var block2Terrain = GroupByTerrainType(blocks, mapInit, random);
                 var dict2 = block2Terrain.SelectMany(b => b.Key.elements).GroupBy(x => x)
                     .Where(g => g.Count() > 1)
                     .ToDictionary(g => g.Key, g => g.Count());
@@ -50,9 +55,9 @@ namespace HuangD.Maps
                 return map;
             }
 
-            internal static Dictionary<Block, TerrainType> GroupByTerrainType(Block[] blocks, int mapSize, GRandom random)
+            internal static Dictionary<Block, TerrainType> GroupByTerrainType(Block[] blocks, MapInit mapInit, GRandom random)
             {
-                var waters = blocks.Where(x => x.edges.Any(r => r.y == mapSize - 1 || r.x == 0)).ToList();
+                var waters = blocks.Where(x => x.edges.Any(r => r.y == mapInit.width - 1 || r.x == 0)).ToList();
 
                 blocks = blocks.Except(waters).ToArray();
 

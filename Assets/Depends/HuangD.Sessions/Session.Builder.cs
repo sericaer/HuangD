@@ -9,13 +9,15 @@ using System.Linq;
 
 namespace HuangD.Sessions
 {
+
+
     public partial class Session
     {
         public static class Builder
         {
-            public static ISession Build(int mapSize, string seed, IDefs defs, Action<string> processInfo)
+            public static ISession Build(MapInit mapInit, string seed, IDefs defs, Action<string> processInfo)
             {
-                var map = Map.Builder.Build(mapSize, seed, processInfo);
+                var map = Map.Builder.Build(mapInit, seed, processInfo);
 
                 var noWaterBlocks = map.blocks.Where(x => x.Value != TerrainType.Water).Select(x => x.Key);
 
