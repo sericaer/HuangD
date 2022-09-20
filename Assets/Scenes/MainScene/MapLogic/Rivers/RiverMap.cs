@@ -4,31 +4,31 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class RiverMap : MonoBehaviour
+public class RiverMap : MapBehaviour
 {
-    public Tilemap tilemap;
+    //public Tilemap tilemap;
 
-    public Sprite[] riverSprites;
+    //public Sprite[] riverSprites;
 
-    private Tile[] _riverTiles;
+    //private Tile[] _riverTiles;
 
-    private Tile GetRiverTile(int index)
-    {
-        if (_riverTiles == null)
-        {
-            _riverTiles = riverSprites.Select(x =>
-            {
-                var _tile = ScriptableObject.CreateInstance<Tile>();
-                _tile.sprite = x;
-                return _tile;
-            }).ToArray();
-        }
+    //private Tile GetRiverTile(int index)
+    //{
+    //    if (_riverTiles == null)
+    //    {
+    //        _riverTiles = riverSprites.Select(x =>
+    //        {
+    //            var _tile = ScriptableObject.CreateInstance<Tile>();
+    //            _tile.sprite = x;
+    //            return _tile;
+    //        }).ToArray();
+    //    }
 
-        return _riverTiles[index];
-    }
+    //    return _riverTiles[index];
+    //}
 
     internal void SetCell(Vector3Int position, int direct)
     {
-        tilemap.SetTile(position, GetRiverTile(direct));
+        tilemap.SetTileColor(position, tile, Color.blue);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using HuangD.Interfaces;
 using Math.TileMap;
 using Maths;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,14 +15,14 @@ namespace HuangD.Maps
 
             var terrainsScales = terrains.ToDictionary(x => Hexagon.ScaleOffset(x.Key, 2), y => y.Value);
 
-            var dictEdgeHeight = GenerateEdge2Height(terrainsScales, edges, random);
+            var dictEdgeHeight = GenerateEdge2Height(terrainsScales, random).ToDictionary(k => k.Key, v => edges.ContainsKey(v.Key) ? v.Value / 3 : v.Value);
 
             var lineHeightOrders = dictEdgeHeight.OrderBy(_=>random.getNum(0, int.MaxValue)).OrderByDescending(x => x.Value).Select(x => x.Key);
 
             var majorRivers = GenerateMajorRiver(lineHeightOrders, dictEdgeHeight, terrainsScales);
             var minorRivers = GenerateMinorRiver(lineHeightOrders, dictEdgeHeight, terrainsScales, majorRivers);
 
-            return majorRivers.Concat(minorRivers).SelectMany(x=>x).Distinct().ToDictionary(k => k, v=> edges[v]);
+            return majorRivers.Concat(minorRivers).SelectMany(x=>x).Distinct().ToDictionary(k => k, v=> 0);
         }
 
         private static IEnumerable<IEnumerable<(int x, int y)>> GenerateMinorRiver(IEnumerable<(int x, int y)> lineHeightOrders, Dictionary<(int x, int y), int> dictEdgeHeight, Dictionary<(int x, int y), TerrainType> terrainsScales, IEnumerable<IEnumerable<(int x, int y)>> majorRivers)
@@ -109,49 +110,46 @@ namespace HuangD.Maps
             }
         }
 
-        private static Dictionary<(int x, int y), int> GenerateEdge2Height(Dictionary<(int x, int y), TerrainType> terrainsScales, Dictionary<(int x, int y), int> edges, GRandom random)
+        private static Dictionary<(int x, int y), int> GenerateEdge2Height(Dictionary<(int x, int y), TerrainType> terrainsScales, GRandom random)
         {
             var dictEdgeHeight = new Dictionary<(int x, int y), int>();
 
-            foreach(var pair in terrainsScales)
+            Func<TerrainType, int> funcGetHegiht = (terrain) =>
             {
-                int value = 0;
-                switch (pair.Value)
+                switch (terrain)
                 {
                     case TerrainType.Plain:
-                        value = 1;
-                        break;
+                        return 10;
                     case TerrainType.Hill:
-                        value = 10;
-                        break;
+                        return 50;
                     case TerrainType.Mount:
-                        value = 50;
-                        break;
+                        return 100;
                     case TerrainType.Water:
-                        value = 0;
-                        break;
+                        return 0;
                     default:
                         throw new System.Exception();
                 }
+            };
 
-                foreach (var neighbor in Hexagon.GetNeighbors(pair.Key))
+            int maxX = terrainsScales.Keys.Max(k => k.x);
+            int maxY = terrainsScales.Keys.Max(k => k.y);
+            for(int x=0; x<maxX; x++)
+            {
+                for(int y=0; y<maxY; y++)
                 {
-                    if(!edges.ContainsKey(neighbor))
+                    var pos = (x, y);
+                    if(terrainsScales.ContainsKey(pos))
                     {
                         continue;
                     }
-                    if(!dictEdgeHeight.ContainsKey(neighbor))
-                    {
-                        dictEdgeHeight.Add(neighbor, value);
-                    }
-                    else
-                    {
-                        dictEdgeHeight[neighbor] = (dictEdgeHeight[neighbor] + value) / 2;
-                    }
-                    
+
+                    var average = (int)Hexagon.GetNeighbors(pos)
+                        .Where(p => terrainsScales.ContainsKey(p))
+                        .Average(p => funcGetHegiht(terrainsScales[p]));
+
+                    dictEdgeHeight.Add(pos, average);
                 }
             }
-
             return dictEdgeHeight;
         }
     }

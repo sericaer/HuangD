@@ -57,7 +57,7 @@ namespace HuangD.Maps
 
             internal static Dictionary<Block, TerrainType> GroupByTerrainType(Block[] blocks, MapInit mapInit, GRandom random)
             {
-                var waters = blocks.Where(x => x.edges.Any(r => r.y == mapInit.width - 1 || r.x == 0)).ToList();
+                var waters = blocks.Where(x => x.edges.Any(r => r.y >= mapInit.width - 2 || r.x == 0)).ToList();
 
                 blocks = blocks.Except(waters).ToArray();
 
@@ -80,7 +80,7 @@ namespace HuangD.Maps
 
                     if (waters.Any(m => block.isNeighbor(m)))
                     {
-                        percentGroup[TerrainType.Water] += 20;
+                        percentGroup[TerrainType.Water] += 50;
                         percentGroup[TerrainType.Plain] += 10;
                     }
                     if (plains.Any(m => block.isNeighbor(m)))

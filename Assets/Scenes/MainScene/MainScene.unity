@@ -170,10 +170,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilemap: {fileID: 40076043}
-  riverSprites:
-  - {fileID: 21300000, guid: 6d29b6525df3bab4785093c08ba43163, type: 3}
-  - {fileID: 21300000, guid: 493f80aa60c178143a456a0c493306ba, type: 3}
-  - {fileID: 21300000, guid: 88f5d9b00a367ab4fb6132cde681b8c5, type: 3}
+  sprite: {fileID: 2747690628134850419, guid: e1a1d858bc206c94c9b299c189330f94, type: 3}
 --- !u!483693784 &40076042
 TilemapRenderer:
   m_ObjectHideFlags: 0
