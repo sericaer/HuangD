@@ -28,9 +28,10 @@ public class LuanchScene: MonoBehaviour
     {
         Task.Run(() =>
         {
-
+            var seed = System.Guid.NewGuid().ToString();
+            Debug.Log($"Seed:{seed}");
             Facade.session = Session.Builder.Build(new HuangD.Maps.MapInit() { width = 120, high = 80},
-                System.Guid.NewGuid().ToString(),
+                "0fae5d68-9698-4b8d-91c5-2bce2ab3dc58",
                 Facade.mod.defs,
                 (info)=> RunOnMainThread.Enqueue(() => UpdateBroad(info)));
 
@@ -67,6 +68,7 @@ public class LuanchScene: MonoBehaviour
     void UpdateBroad(string info)
     {
         board.GetComponentInChildren<Text>().text = info;
+        Debug.Log(info);
     }
 
     // Start is called before the first frame update

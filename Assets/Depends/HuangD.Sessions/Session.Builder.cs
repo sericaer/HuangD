@@ -95,26 +95,51 @@ namespace HuangD.Sessions
                 country2Provinces.Add(countries.ElementAt(i), list);
             }
 
-            var originProvinces = new List<IProvince>(provinces.Except(countries.SelectMany(x=>x.provinces)));
+            var originProvinces = provinces.Except(countries.SelectMany(x => x.provinces)).ToArray();
+            var islandProvinces = originProvinces.Where(x=> !originProvinces.Any(y=>y != x && y.block.isNeighbor(x.block))).ToArray();
+            var mainladProvinces = new Queue<IProvince>(originProvinces.Except(islandProvinces));
 
-            while (originProvinces.Count() != 0)
+            while (mainladProvinces.Count != 0)
             {
-                foreach(var provinceList in country2Provinces.Values)
+                var province = mainladProvinces.Dequeue();
+
+                var country = country2Provinces.Where(pair => pair.Value.Any(x => x.block.isNeighbor(province.block)))
+                    .FirstOrDefault().Key;
+                if(country == null)
                 {
-                    var curr = originProvinces.FirstOrDefault(x =>
-                    {
-                        return provinceList.Any(added => added.block.isNeighbor(x.block));
-                    });
+                    mainladProvinces.Enqueue(province);
+                    continue;
+                }
 
-                    if (curr == null)
-                    {
-                        continue;
-                    }
-
-                    provinceList.Add(curr);
-                    originProvinces.Remove(curr);
-                }    
+                country2Provinces[country].Add(province);
             }
+
+            //foreach(var province in islandProvinces)
+            //{
+            //    var center = Utilty.GetCenterPos(province.block.elements);
+            //    country2Provinces.Keys.Min(x=>Hexta)
+            //}
+
+            //var originProvinces = new List<IProvince>(provinces.Except(countries.SelectMany(x=>x.provinces)));
+
+            //while (originProvinces.Count != 0)
+            //{
+            //    foreach (var provinceList in country2Provinces.Values)
+            //    {
+            //        var curr = originProvinces.FirstOrDefault(x =>
+            //        {
+            //            return provinceList.Any(added => added.block.isNeighbor(x.block));
+            //        });
+
+            //        if (curr == null)
+            //        {
+            //            continue;
+            //        }
+
+            //        provinceList.Add(curr);
+            //        originProvinces.Remove(curr);
+            //    }
+            //}
         }
 
         private void SetProvince2Block(GRandom random)
