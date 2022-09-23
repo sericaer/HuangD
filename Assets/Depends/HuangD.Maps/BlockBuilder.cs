@@ -3,13 +3,13 @@ using Maths;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Block = System.Collections.Generic.List<(int x, int y)>;
+using Block = System.Collections.Generic.HashSet<(int x, int y)>;
 
 namespace HuangD.Maps
 {
     static class BlockBuilder
     {
-        internal static IEnumerable<Block> Build(IEnumerable<(int x, int y)> mapPositions, GRandom random)
+        internal static HashSet<Block> Build(IEnumerable<(int x, int y)> mapPositions, GRandom random)
         {
             var whiteNoiseMap = mapPositions
                         .ToDictionary(k => k, _ => random.getNum(0f, 1.0f));
@@ -22,12 +22,11 @@ namespace HuangD.Maps
                 return 1 - max < min ? max : min;
             });
 
-            var originPositions = cellularMap.Keys.OrderBy(_ => random.getNum(0, int.MaxValue))
-                    .Take(cellularMap.Count() / 50).ToArray();
+            var usedPositions = cellularMap.Keys.OrderBy(_ => random.getNum(0, int.MaxValue))
+                    .Take(cellularMap.Count() / 50)
+                    .ToHashSet();
 
-            var usedPositions = new HashSet<(int x, int y)>(originPositions);
-
-            var block2Queue = originPositions
+            var block2Queue = usedPositions
                 .ToDictionary(k => new Block(),
                               v => new Dictionary<(int x, int y), (float curr, float need)>() { { v, (cellularMap[v], cellularMap[v]) } });
 
@@ -76,7 +75,7 @@ namespace HuangD.Maps
             var dict = blocks.SelectMany(b => b).GroupBy(x => x)
                 .Where(g => g.Count() > 1)
                 .ToDictionary(g => g.Key, g => g.Count());
-            return blocks;
+            return blocks.ToHashSet();
         }
     }
 }

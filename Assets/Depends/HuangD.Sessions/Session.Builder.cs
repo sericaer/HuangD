@@ -87,32 +87,32 @@ namespace HuangD.Sessions
                 .ToArray();
 
             country2Provinces = new Dictionary<ICountry, List<IProvince>>();
-            for (int i = 0; i < countries.Count(); i++)
-            {
-                var list = new List<IProvince>();
-                list.Add(provinces.ElementAt(originIndexs[i]));
+            //for (int i = 0; i < countries.Count(); i++)
+            //{
+            //    var list = new List<IProvince>();
+            //    list.Add(provinces.ElementAt(originIndexs[i]));
 
-                country2Provinces.Add(countries.ElementAt(i), list);
-            }
+            //    country2Provinces.Add(countries.ElementAt(i), list);
+            //}
 
-            var originProvinces = provinces.Except(countries.SelectMany(x => x.provinces)).ToArray();
-            var islandProvinces = originProvinces.Where(x=> !originProvinces.Any(y=>y != x && y.block.isNeighbor(x.block))).ToArray();
-            var mainladProvinces = new Queue<IProvince>(originProvinces.Except(islandProvinces));
+            //var originProvinces = provinces.Except(countries.SelectMany(x => x.provinces)).ToArray();
+            //var islandProvinces = originProvinces.Where(x=> !originProvinces.Any(y=>y != x && y.block.isNeighbor(x.block))).ToArray();
+            //var mainladProvinces = new Queue<IProvince>(originProvinces.Except(islandProvinces));
 
-            while (mainladProvinces.Count != 0)
-            {
-                var province = mainladProvinces.Dequeue();
+            //while (mainladProvinces.Count != 0)
+            //{
+            //    var province = mainladProvinces.Dequeue();
 
-                var country = country2Provinces.Where(pair => pair.Value.Any(x => x.block.isNeighbor(province.block)))
-                    .FirstOrDefault().Key;
-                if(country == null)
-                {
-                    mainladProvinces.Enqueue(province);
-                    continue;
-                }
+            //    var country = country2Provinces.Where(pair => pair.Value.Any(x => x.block.isNeighbor(province.block)))
+            //        .FirstOrDefault().Key;
+            //    if(country == null)
+            //    {
+            //        mainladProvinces.Enqueue(province);
+            //        continue;
+            //    }
 
-                country2Provinces[country].Add(province);
-            }
+            //    country2Provinces[country].Add(province);
+            //}
 
             //foreach(var province in islandProvinces)
             //{
