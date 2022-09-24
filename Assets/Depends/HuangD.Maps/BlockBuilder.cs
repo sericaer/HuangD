@@ -3,34 +3,29 @@ using Maths;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Block = System.Collections.Generic.HashSet<(int x, int y)>;
+using PositionGroup = System.Collections.Generic.HashSet<(int x, int y)>;
 
 namespace HuangD.Maps
 {
     static class BlockBuilder
     {
-        internal static HashSet<Block> Build(IEnumerable<(int x, int y)> mapPositions, GRandom random)
+        internal static HashSet<Block> Build(Dictionary<(int x, int y), float> noiseMap, GRandom random)
         {
-            var whiteNoiseMap = mapPositions
-                        .ToDictionary(k => k, _ => random.getNum(0f, 1.0f));
+            var groups = GroupPositions(noiseMap, random);
+            return groups.Select(b => new Block(b)).ToHashSet();
+        }
 
-            var cellularMap = whiteNoiseMap.ToDictionary(k => k.Key, v =>
-            {
-                var range = Hexagon.GetNeighbors(v.Key).Where(r => whiteNoiseMap.ContainsKey(r));
-                var max = range.Max(b => whiteNoiseMap[b]);
-                var min = range.Min(b => whiteNoiseMap[b]);
-                return 1 - max < min ? max : min;
-            });
-
-            var usedPositions = cellularMap.Keys.OrderBy(_ => random.getNum(0, int.MaxValue))
-                    .Take(cellularMap.Count() / 50)
+        private static HashSet<PositionGroup> GroupPositions(Dictionary<(int x, int y), float> noiseMap, GRandom random)
+        {
+            var usedPositions = noiseMap.Keys.OrderBy(_ => random.getNum(0, int.MaxValue))
+                    .Take(noiseMap.Count() / 50)
                     .ToHashSet();
 
             var block2Queue = usedPositions
-                .ToDictionary(k => new Block(),
-                              v => new Dictionary<(int x, int y), (float curr, float need)>() { { v, (cellularMap[v], cellularMap[v]) } });
+                .ToDictionary(k => new PositionGroup(),
+                              v => new Dictionary<(int x, int y), (float curr, float need)>() { { v, (noiseMap[v], noiseMap[v]) } });
 
-            while (block2Queue.Keys.Sum(x => x.Count) != cellularMap.Count)
+            while (block2Queue.Keys.Sum(x => x.Count) != noiseMap.Count)
             {
                 foreach (var pair in block2Queue)
                 {
@@ -57,14 +52,14 @@ namespace HuangD.Maps
                     pos2Fill.Remove(pos);
                     block.Add(pos);
 
-                    foreach (var next in Hexagon.GetNeighbors(pos).Where(n => cellularMap.ContainsKey(n)))
+                    foreach (var next in Hexagon.GetNeighbors(pos).Where(n => noiseMap.ContainsKey(n)))
                     {
                         if (usedPositions.Contains(next))
                         {
                             continue;
                         }
 
-                        pos2Fill.Add(next, (0f, cellularMap[next]));
+                        pos2Fill.Add(next, (0f, noiseMap[next]));
                         usedPositions.Add(next);
                     }
                 }

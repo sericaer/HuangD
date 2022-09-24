@@ -26,7 +26,7 @@ namespace HuangD.Maps
                 var noiseMap = NoiseMapBuilder.Build(random, mapInit.high, mapInit.width);
 
                 processInfo.Invoke("划分地块");
-                var blocks = BlockBuilder.Build(noiseMap.Keys, random).Select(b => new Block(b)).ToArray();
+                var blocks = BlockBuilder.Build(noiseMap, random).ToArray();
 
                 processInfo.Invoke("创建地形");
                 var block2Terrain = GroupByTerrainType(blocks, mapInit, random);

@@ -59,6 +59,10 @@ public class MapLogic : MonoBehaviour
 
     internal void SetMapData(IMap map)
     {
+        foreach (var pair in map.blocks)
+        {
+            blockMap.SetBlock(pair.Key);
+        }
         foreach (var pair in map.terrains)
         {
             terrainMap.SetCell(new Vector3Int(pair.Key.x, pair.Key.y), pair.Value);
@@ -80,11 +84,11 @@ public class MapLogic : MonoBehaviour
     {
         foreach (var province in provinces)
         {
-            var color = new Color(province.color.r, province.color.g, province.color.b);
-            foreach (var pos in province.block.elements)
-            {
-                blockMap.SetCell(new Vector3Int(pos.x, pos.y), color);
-            }
+            //var color = new Color(province.color.r, province.color.g, province.color.b);
+            //foreach (var pos in province.block.elements)
+            //{
+            //    blockMap.SetCell(new Vector3Int(pos.x, pos.y), color);
+            //}
         }
 
         var edges = Utilty.GenerateEdges(provinces.Select(x => x.block.edges));
