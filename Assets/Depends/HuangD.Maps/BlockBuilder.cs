@@ -9,21 +9,32 @@ namespace HuangD.Maps
 {
     static class BlockBuilder
     {
-        internal static HashSet<Block> Build(Dictionary<(int x, int y), float> noiseMap, GRandom random)
+        internal static Block[] Build(Dictionary<(int x, int y), float> noiseMap, GRandom random)
         {
-            var groups = GroupPositions(noiseMap, random);
-            return groups.Select(b => new Block(b)).ToHashSet();
+
+            Dictionary<PositionGroup, List< PositionGroup >> topoMap;
+            var groups = GroupPositions(noiseMap, random, out topoMap);
+
+            var blocks = groups.Select(b => new Block(b)).ToHashSet();
+            foreach(var block in blocks)
+            {
+                block.neighors = topoMap[block.elements].Select(x => blocks.SingleOrDefault(y => y.elements == x)).ToHashSet();
+            }
+
+            return blocks.OrderBy(_=> random.getNum(0, int.MaxValue)).ToArray();
         }
 
-        private static HashSet<PositionGroup> GroupPositions(Dictionary<(int x, int y), float> noiseMap, GRandom random)
+        private static HashSet<PositionGroup> GroupPositions(Dictionary<(int x, int y), float> noiseMap, GRandom random, out Dictionary<PositionGroup, List<PositionGroup>> topoMap)
         {
-            var usedPositions = noiseMap.Keys.OrderBy(_ => random.getNum(0, int.MaxValue))
-                    .Take(noiseMap.Count() / 50)
-                    .ToHashSet();
+            var origins = noiseMap.Keys.OrderBy(_ => random.getNum(0, int.MaxValue))
+                    .Take(noiseMap.Count() / 50).ToArray();
 
-            var block2Queue = usedPositions
-                .ToDictionary(k => new PositionGroup(),
-                              v => new Dictionary<(int x, int y), (float curr, float need)>() { { v, (noiseMap[v], noiseMap[v]) } });
+            var pos2Group = origins.ToDictionary(k => k, v => new PositionGroup());
+
+            var block2Queue = pos2Group.ToDictionary(k => k.Value,
+                  v => new Dictionary<(int x, int y), (float curr, float need)>() { { v.Key, (noiseMap[v.Key], noiseMap[v.Key]) } });
+
+            topoMap = block2Queue.ToDictionary(k => k.Key, _ => new List<PositionGroup>());
 
             while (block2Queue.Keys.Sum(x => x.Count) != noiseMap.Count)
             {
@@ -54,13 +65,14 @@ namespace HuangD.Maps
 
                     foreach (var next in Hexagon.GetNeighbors(pos).Where(n => noiseMap.ContainsKey(n)))
                     {
-                        if (usedPositions.Contains(next))
+                        if (pos2Group.ContainsKey(next))
                         {
+                            topoMap[block].Add(pos2Group[next]);
                             continue;
                         }
 
                         pos2Fill.Add(next, (0f, noiseMap[next]));
-                        usedPositions.Add(next);
+                        pos2Group.Add(next, block);
                     }
                 }
             }

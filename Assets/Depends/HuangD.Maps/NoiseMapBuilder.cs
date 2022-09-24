@@ -34,16 +34,16 @@ namespace HuangD.Maps
                 return average;
             });
 
-            Debug.Log($"0.0-0.1 {cellularMap.Count(v=>v.Value > 0 && v.Value < 0.1) * 100.0 / cellularMap.Count()}");
-            Debug.Log($"0.1-0.2 {cellularMap.Count(v => v.Value > 0.1 && v.Value < 0.2) * 100.0 / cellularMap.Count()}");
-            Debug.Log($"0.2-0.3 {cellularMap.Count(v => v.Value > 0.2 && v.Value < 0.3) * 100.0 / cellularMap.Count()}");
-            Debug.Log($"0.3-0.4 {cellularMap.Count(v => v.Value > 0.3 && v.Value < 0.4) * 100.0 / cellularMap.Count()}");
-            Debug.Log($"0.4-0.5 {cellularMap.Count(v => v.Value > 0.4 && v.Value < 0.5) * 100.0 / cellularMap.Count()}");
-            Debug.Log($"0.5-0.6 {cellularMap.Count(v => v.Value > 0.5 && v.Value < 0.6) * 100.0 / cellularMap.Count()}");
-            Debug.Log($"0.6-0.7 {cellularMap.Count(v => v.Value > 0.6 && v.Value < 0.7) * 100.0 / cellularMap.Count()}");
-            Debug.Log($"0.7-0.8 {cellularMap.Count(v => v.Value > 0.7 && v.Value < 0.8) * 100.0 / cellularMap.Count()}");
-            Debug.Log($"0.8-0.9 {cellularMap.Count(v => v.Value > 0.8 && v.Value < 0.9) * 100.0 / cellularMap.Count()}");
-            Debug.Log($"0.9-1.0 {cellularMap.Count(v => v.Value > 0.9 && v.Value < 1.0) * 100.0 / cellularMap.Count()}");
+            //Debug.Log($"0.0-0.1 {cellularMap.Count(v=>v.Value > 0 && v.Value < 0.1) * 100.0 / cellularMap.Count()}");
+            //Debug.Log($"0.1-0.2 {cellularMap.Count(v => v.Value > 0.1 && v.Value < 0.2) * 100.0 / cellularMap.Count()}");
+            //Debug.Log($"0.2-0.3 {cellularMap.Count(v => v.Value > 0.2 && v.Value < 0.3) * 100.0 / cellularMap.Count()}");
+            //Debug.Log($"0.3-0.4 {cellularMap.Count(v => v.Value > 0.3 && v.Value < 0.4) * 100.0 / cellularMap.Count()}");
+            //Debug.Log($"0.4-0.5 {cellularMap.Count(v => v.Value > 0.4 && v.Value < 0.5) * 100.0 / cellularMap.Count()}");
+            //Debug.Log($"0.5-0.6 {cellularMap.Count(v => v.Value > 0.5 && v.Value < 0.6) * 100.0 / cellularMap.Count()}");
+            //Debug.Log($"0.6-0.7 {cellularMap.Count(v => v.Value > 0.6 && v.Value < 0.7) * 100.0 / cellularMap.Count()}");
+            //Debug.Log($"0.7-0.8 {cellularMap.Count(v => v.Value > 0.7 && v.Value < 0.8) * 100.0 / cellularMap.Count()}");
+            //Debug.Log($"0.8-0.9 {cellularMap.Count(v => v.Value > 0.8 && v.Value < 0.9) * 100.0 / cellularMap.Count()}");
+            //Debug.Log($"0.9-1.0 {cellularMap.Count(v => v.Value > 0.9 && v.Value < 1.0) * 100.0 / cellularMap.Count()}");
             return cellularMap;
         }
     }

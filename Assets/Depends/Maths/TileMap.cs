@@ -174,6 +174,7 @@ namespace Math.TileMap
     {
         public HashSet<(int x, int y)> elements;
         public HashSet<(int x, int y)> edges;
+        public HashSet<Block> neighors;
 
         public Block(HashSet<(int x, int y)> elements)
         {
@@ -186,131 +187,131 @@ namespace Math.TileMap
             return this.edges.Any(e => Hexagon.GetNeighbors(e).Intersect(peer.edges).Any());
         }
 
-        public class BuilderGroup
-        {
+        //public class BuilderGroup
+        //{
 
-            const int step = 5;
+        //    const int step = 5;
 
-            private List<Builder> builders;
-            private GRandom random;
+        //    private List<Builder> builders;
+        //    private GRandom random;
 
-            public BuilderGroup(int size, GRandom random)
-            {
-                this.random = random;
+        //    public BuilderGroup(int size, GRandom random)
+        //    {
+        //        this.random = random;
 
-                Builder.isExist = (n) =>
-                {
-                    return builders.Any(x => x.centers.Contains(n) || x.edges.Contains(n));
-                };
+        //        Builder.isExist = (n) =>
+        //        {
+        //            return builders.Any(x => x.centers.Contains(n) || x.edges.Contains(n));
+        //        };
 
 
-                builders = new List<Builder>();
-                for (int i = step; i < size; i += step)
-                {
-                    var directFactors = new int[] { 1, 2, 3, 8, 9, 10 };
-                    for (int j = step; j < size; j += step)
-                    {
-                        var startPos = (i + random.getNum(step / -2, step / 2), j + random.getNum(step / -2, step / 2));
-                        builders.Add(new Builder(size, startPos, directFactors.OrderBy(x => random.getNum(0,1000)).ToArray(), random));
-                    }
-                }
-            }
+        //        builders = new List<Builder>();
+        //        for (int i = step; i < size; i += step)
+        //        {
+        //            var directFactors = new int[] { 1, 2, 3, 8, 9, 10 };
+        //            for (int j = step; j < size; j += step)
+        //            {
+        //                var startPos = (i + random.getNum(step / -2, step / 2), j + random.getNum(step / -2, step / 2));
+        //                builders.Add(new Builder(size, startPos, directFactors.OrderBy(x => random.getNum(0,1000)).ToArray(), random));
+        //            }
+        //        }
+        //    }
 
-            public StepResult[] BuildInStep()
-            {
-                return builders.Select(x => x.BuildInStep()).ToArray();
-            }
+        //    public StepResult[] BuildInStep()
+        //    {
+        //        return builders.Select(x => x.BuildInStep()).ToArray();
+        //    }
 
-            public Block[] Build()
-            {
-                do
-                {
-                    foreach (var builder in builders.Where(x => !x.isFinish))
-                    {
-                        builder.BuildInStep();
-                    }
-                } while (builders.Any(x => !x.isFinish));
+        //    public Block[] Build()
+        //    {
+        //        do
+        //        {
+        //            foreach (var builder in builders.Where(x => !x.isFinish))
+        //            {
+        //                builder.BuildInStep();
+        //            }
+        //        } while (builders.Any(x => !x.isFinish));
 
-                return builders.Select(x => new Block(x.centers)).ToArray();
-            }
-        }
+        //        return builders.Select(x => new Block(x.centers)).ToArray();
+        //    }
+        //}
 
-        public class StepResult
-        {
-            public (int x, int y)[] elements;
-        }
+        //public class StepResult
+        //{
+        //    public (int x, int y)[] elements;
+        //}
 
-        private class Builder
-        {
-            internal static System.Func<(int x, int y), bool> isExist { get; set; }
+        //private class Builder
+        //{
+        //    internal static System.Func<(int x, int y), bool> isExist { get; set; }
 
-            public bool isFinish { get; private set; } = false;
+        //    public bool isFinish { get; private set; } = false;
 
-            public HashSet<(int x, int y)> centers;
-            public HashSet<(int x, int y)> edges;
-            private int size;
-            private bool isStart = true;
+        //    public HashSet<(int x, int y)> centers;
+        //    public HashSet<(int x, int y)> edges;
+        //    private int size;
+        //    private bool isStart = true;
 
-            private (int x, int y) originPoint;
-            private int[] weightDirectValues;
+        //    private (int x, int y) originPoint;
+        //    private int[] weightDirectValues;
 
-            private GRandom random;
+        //    private GRandom random;
 
-            public Builder(int size, (int x, int y) originPoint, int[] weightDirectValues, GRandom random)
-            {
-                edges = new HashSet<(int x, int y)>();
-                this.random = random;
-                this.centers = new HashSet<(int x, int y)>();
-                this.originPoint = originPoint;
-                this.size = size;
-                this.weightDirectValues = weightDirectValues;
-            }
+        //    public Builder(int size, (int x, int y) originPoint, int[] weightDirectValues, GRandom random)
+        //    {
+        //        edges = new HashSet<(int x, int y)>();
+        //        this.random = random;
+        //        this.centers = new HashSet<(int x, int y)>();
+        //        this.originPoint = originPoint;
+        //        this.size = size;
+        //        this.weightDirectValues = weightDirectValues;
+        //    }
 
-            public StepResult BuildInStep()
-            {
-                if (isStart)
-                {
-                    isStart = false;
+        //    public StepResult BuildInStep()
+        //    {
+        //        if (isStart)
+        //        {
+        //            isStart = false;
 
-                    edges.Add(originPoint);
+        //            edges.Add(originPoint);
 
-                    return new StepResult() { elements = edges.ToArray() };
-                }
+        //            return new StepResult() { elements = edges.ToArray() };
+        //        }
 
-                var validNeighbors = edges.SelectMany(x => Hexagon.GetNeighbors(x))
-                    .Where(n => !isExist(n))
-                    .Where(n => n.x < size && n.x >= 0 && n.y < size && n.y >= 0)
-                    .ToHashSet();
+        //        var validNeighbors = edges.SelectMany(x => Hexagon.GetNeighbors(x))
+        //            .Where(n => !isExist(n))
+        //            .Where(n => n.x < size && n.x >= 0 && n.y < size && n.y >= 0)
+        //            .ToHashSet();
 
-                isFinish = validNeighbors.Count() == 0;
+        //        isFinish = validNeighbors.Count() == 0;
 
-                var newEdges = new HashSet<(int x, int y)>();
-                var revEdges = new HashSet<(int x, int y)>();
+        //        var newEdges = new HashSet<(int x, int y)>();
+        //        var revEdges = new HashSet<(int x, int y)>();
 
-                foreach (var edge in validNeighbors)
-                {
-                    var oldEdges = Hexagon.GetNeighbors(edge).Where(x => edges.Contains(x)).ToArray();
+        //        foreach (var edge in validNeighbors)
+        //        {
+        //            var oldEdges = Hexagon.GetNeighbors(edge).Where(x => edges.Contains(x)).ToArray();
 
-                    var value = oldEdges.Max(e => weightDirectValues[Hexagon.GetDirectIndex(e, edge)]);
+        //            var value = oldEdges.Max(e => weightDirectValues[Hexagon.GetDirectIndex(e, edge)]);
 
-                    var real = random.getNum(1, 10);
-                    if (real <= value)
-                    {
-                        newEdges.Add(edge);
-                    }
-                    else
-                    {
-                        revEdges.UnionWith(oldEdges);
-                    }
-                }
+        //            var real = random.getNum(1, 10);
+        //            if (real <= value)
+        //            {
+        //                newEdges.Add(edge);
+        //            }
+        //            else
+        //            {
+        //                revEdges.UnionWith(oldEdges);
+        //            }
+        //        }
 
-                newEdges.UnionWith(revEdges);
-                centers.UnionWith(newEdges);
+        //        newEdges.UnionWith(revEdges);
+        //        centers.UnionWith(newEdges);
 
-                edges = newEdges;
+        //        edges = newEdges;
 
-                return new StepResult() { elements = newEdges.ToArray() };
-            }
-        }
+        //        return new StepResult() { elements = newEdges.ToArray() };
+        //    }
+        //}
     }
 }

@@ -4,6 +4,7 @@ using Math.TileMap;
 using Maths;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace HuangD.Maps
 {
@@ -37,6 +38,7 @@ namespace HuangD.Maps
                 //var rivers = RiverBuilder.Build(blocks, terrains, random);
 
                 var map = new Map();
+                map.nosieMap = noiseMap;
                 map.blocks = block2Terrain;
                 map.terrains = terrains;
                 map.rivers = new Dictionary<(int x, int y), int>();
@@ -46,15 +48,17 @@ namespace HuangD.Maps
 
             internal static Dictionary<Block, TerrainType> GroupByTerrainType(Block[] blocks, MapInit mapInit, GRandom random)
             {
+                Debug.Log("GroupByTerrainType Start");
 
                 var dict = new Dictionary<Block, TerrainType>();
-                foreach(var block in blocks.Where(x => x.edges.Any(r => r.y >= mapInit.width * 0.7 || r.x == 0)))
+
+                foreach (var block in GenerateWaterBlock(blocks, mapInit, random))
                 {
                     dict.Add(block, TerrainType.Water);
                 }
 
                 blocks = blocks.Except(dict.Keys).ToArray();
-
+                
                 foreach (var block in blocks.Where(x => x.edges.Any(r => r.y == 0)))
                 {
                     dict.Add(block, TerrainType.Mount);
@@ -65,7 +69,7 @@ namespace HuangD.Maps
                 {
                     var block = queue.Dequeue();
 
-                    var neighors = dict.Keys.Where(b => b.isNeighbor(block)).ToArray();
+                    var neighors = dict.Keys.Where(b => b.neighors.Contains(block)).ToArray();
                     if(neighors.Length == 0)
                     {
                         queue.Enqueue(block);
@@ -76,98 +80,29 @@ namespace HuangD.Maps
                     dict.Add(block, terrainType);
                 }
 
+                Debug.Log("GroupByTerrainType End");
+
                 return dict;
+            }
 
-                //var waters = blocks.Where(x => x.edges.Any(r => r.y >= mapInit.width - 2 || r.x == 0)).ToList();
+            private static HashSet<Block> GenerateWaterBlock(Block[] blocks, MapInit mapInit, GRandom random)
+            {
+                var origins = blocks.Where(x => x.edges.Any(r => r.y == mapInit.width - 1 || r.x == 0))
+                    .OrderBy(_=> random.getNum(0, int.MaxValue));
 
-                //blocks = blocks.Except(waters).ToArray();
+                var hashSet = new HashSet<Block>(origins);
 
-                //var mounts = blocks.Where(x => x.edges.Any(r => r.y == 0)).ToList();
+                while (hashSet.Sum(x=>x.elements.Count) <= blocks.Sum(x=>x.elements.Count)*0.3)
+                {
+                    var curr = hashSet.ElementAt(random.getNum(0, hashSet.Count));
+                    var next = curr.neighors.FirstOrDefault(x => !hashSet.Contains(x));
+                    if(next != null)
+                    {
+                        hashSet.Add(next);
+                    }
+                }
 
-                //blocks = blocks.Except(mounts).ToArray();
-
-                //var hills = new List<Block>();
-                //var plains = new List<Block>();
-
-                //var queue = new Queue<Block>(blocks);
-
-                //while(queue.Count != 0)
-                //{
-
-                //}
-
-                //foreach(var block in blocks)
-                //{
-                //    var percentGroup = new Dictionary<TerrainType, int>()
-                //    {
-                //        {TerrainType.Mount, 0 },
-                //        {TerrainType.Hill, 0 },
-                //        {TerrainType.Plain, 0 },
-                //        {TerrainType.Water, 0 },
-                //    };
-
-                //    if (waters.Any(m => block.isNeighbor(m)))
-                //    {
-                //        percentGroup[TerrainType.Water] += 50;
-                //        percentGroup[TerrainType.Plain] += 10;
-                //    }
-                //    if (plains.Any(m => block.isNeighbor(m)))
-                //    {
-                //        percentGroup[TerrainType.Hill] += 10;
-                //        percentGroup[TerrainType.Plain] +=10;
-                //    }
-                //    if (hills.Any(m => block.isNeighbor(m)))
-                //    {
-                //        percentGroup[TerrainType.Hill] += 20;
-                //        percentGroup[TerrainType.Plain] += 20;
-                //        percentGroup[TerrainType.Mount] += 10;
-                //    }
-                //    if (mounts.Any(m => block.isNeighbor(m)))
-                //    {
-                //        percentGroup[TerrainType.Hill] += 10;
-                //        percentGroup[TerrainType.Mount] += 20;
-                //    }
-
-                //    var terrainType = random.RandomInGroup<TerrainType>(percentGroup.Select(x => (x.Value, x.Key)));
-                //    switch(terrainType)
-                //    {
-                //        case TerrainType.Hill:
-                //            hills.Add(block);
-                //            break;
-                //        case TerrainType.Plain:
-                //            plains.Add(block);
-                //            break;
-                //        case TerrainType.Water:
-                //            waters.Add(block);
-                //            break;
-                //        case TerrainType.Mount:
-                //            mounts.Add(block);
-                //            break;
-                //    }
-                //}
-
-                //var rslt = new Dictionary<Block, TerrainType>();
-                //foreach(var hill in hills)
-                //{
-                //    rslt.Add(hill, TerrainType.Hill);
-                //}
-
-                //foreach (var plain in plains)
-                //{
-                //    rslt.Add(plain, TerrainType.Plain);
-                //}
-
-                //foreach (var mount in mounts)
-                //{
-                //    rslt.Add(mount, TerrainType.Mount);
-                //}
-
-                //foreach (var water in waters)
-                //{
-                //    rslt.Add(water, TerrainType.Water);
-                //}
-
-                //return rslt;
+                return hashSet.ToHashSet();
             }
 
             private static TerrainType CalcTerrainType(IEnumerable<TerrainType> neighors, GRandom random)
@@ -190,16 +125,16 @@ namespace HuangD.Maps
                             break;
                         case TerrainType.Plain:
                             percentGroup[TerrainType.Hill] += 10;
-                            percentGroup[TerrainType.Plain] += 10;
+                            percentGroup[TerrainType.Plain] += 30;
                             break;
                         case TerrainType.Hill:
                             percentGroup[TerrainType.Hill] += 20;
                             percentGroup[TerrainType.Plain] += 20;
-                            percentGroup[TerrainType.Mount] += 10;
+                            percentGroup[TerrainType.Mount] += 5;
                             break;
                         case TerrainType.Mount:
                             percentGroup[TerrainType.Hill] += 10;
-                            percentGroup[TerrainType.Mount] += 20;
+                            percentGroup[TerrainType.Mount] += 30;
                             break;
                         default:
                             throw new System.Exception($"not support type:{type}");

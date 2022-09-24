@@ -31,7 +31,7 @@ public class LuanchScene: MonoBehaviour
             var seed = System.Guid.NewGuid().ToString();
             Debug.Log($"Seed:{seed}");
             Facade.session = Session.Builder.Build(new HuangD.Maps.MapInit() { width = 120, high = 80},
-                "12345",
+                seed,
                 Facade.mod.defs,
                 (info)=> RunOnMainThread.Enqueue(() => UpdateBroad(info)));
 

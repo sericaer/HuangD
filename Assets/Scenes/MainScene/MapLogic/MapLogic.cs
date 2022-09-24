@@ -16,6 +16,7 @@ public class MapLogic : MonoBehaviour
     public TerrainMap terrainMap;
     public CountryMap countryMap;
     public RiverMap riverMap;
+    public NoiseMap noiseMap;
 
     public MapUIContainer mapUIContainer;
 
@@ -59,6 +60,11 @@ public class MapLogic : MonoBehaviour
 
     internal void SetMapData(IMap map)
     {
+        foreach (var pair in map.nosieMap)
+        {
+            noiseMap.SetCell(pair.Key, pair.Value);
+        }
+
         foreach (var pair in map.blocks)
         {
             blockMap.SetBlock(pair.Key);

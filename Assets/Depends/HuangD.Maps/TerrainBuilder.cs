@@ -87,7 +87,7 @@ namespace HuangD.Maps
 
         private static Dictionary<(int x, int y), TerrainType> GenratePlain(IEnumerable<Block> blocks, Dictionary<(int x, int y), float> noiseMap)
         {
-            return blocks.SelectMany(x => x.elements).ToDictionary(x => x, _ => TerrainType.Plain);
+            //return blocks.SelectMany(x => x.elements).ToDictionary(x => x, _ => TerrainType.Plain);
 
             var rslt = new Dictionary<(int x, int y), TerrainType>();
 
@@ -113,7 +113,7 @@ namespace HuangD.Maps
 
         private static Dictionary<(int x, int y), TerrainType> GenrateHill(IEnumerable<Block> blocks, Dictionary<(int x, int y), float> noiseMap)
         {
-            return blocks.SelectMany(x => x.elements).ToDictionary(x => x, _ => TerrainType.Hill);
+            //return blocks.SelectMany(x => x.elements).ToDictionary(x => x, _ => TerrainType.Hill);
 
             var rslt = new Dictionary<(int x, int y), TerrainType>();
 
@@ -124,11 +124,11 @@ namespace HuangD.Maps
 
             for (int i = 0; i < orders.Length; i++)
             {
-                if (i < orders.Length * 0.4)
+                if (i < orders.Length * 0.1)
                 {
                     rslt.Add(orders[i], TerrainType.Plain);
                 }
-                else if (i > orders.Length * 0.95)
+                else if (i > orders.Length * 0.8)
                 {
                     rslt.Add(orders[i], TerrainType.Mount);
                 }
@@ -209,7 +209,7 @@ namespace HuangD.Maps
 
         private static Dictionary<(int x, int y), TerrainType> GenrateMount(IEnumerable<Block> blocks, Dictionary<(int x, int y), float> noiseMap)
         {
-            return blocks.SelectMany(x=>x.elements).ToDictionary(x => x, _=>TerrainType.Mount);
+            //return blocks.SelectMany(x=>x.elements).ToDictionary(x => x, _=>TerrainType.Mount);
 
             var rslt = new Dictionary<(int x, int y), TerrainType>();
 
@@ -220,11 +220,11 @@ namespace HuangD.Maps
 
             for (int i = 0; i < orders.Length; i++)
             {
-                if (i < orders.Length * 0.2)
+                if (i < orders.Length * 0.1)
                 {
                     rslt.Add(orders[i], TerrainType.Plain);
                 }
-                else if (i > orders.Length * 0.5)
+                else if (i > orders.Length * 0.4)
                 {
                     rslt.Add(orders[i], TerrainType.Mount);
                 }
