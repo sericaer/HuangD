@@ -78,7 +78,7 @@ namespace HuangD.Maps
         public float total;
         public float curr;
 
-        public WetItem(float total, TerrainType prev, TerrainType curr)
+        public WetItem(float total, TerrainType curr, TerrainType prev)
         {
             this.total = total;
             this.curr = total / 30;
@@ -87,26 +87,26 @@ namespace HuangD.Maps
             {
                 if (prev == TerrainType.Water)
                 {
-                    this.curr = this.curr * 2f;
+                    this.curr = this.curr * 3f;
                 }
                 if (prev == TerrainType.Plain)
                 {
-                    this.curr = this.curr * 2f;
+                    this.curr = this.curr * 3f;
                 }
             }
             if (curr == TerrainType.Mount)
             {
                 if (prev == TerrainType.Water)
                 {
-                    this.curr = this.curr * 4f;
+                    this.curr = this.curr * 5f;
                 }
                 if (prev == TerrainType.Plain)
                 {
-                    this.curr = this.curr * 4f;
+                    this.curr = this.curr * 5f;
                 }
                 if (prev == TerrainType.Hill)
                 {
-                    this.curr = this.curr * 1.5f;
+                    this.curr = this.curr * 2f;
                 }
             }
         }
