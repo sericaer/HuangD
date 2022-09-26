@@ -6,7 +6,7 @@ namespace HuangD.Interfaces
     public interface IMap
     {
         public Dictionary<(int x, int y), float> nosieMap { get; set; }
-
+        public Dictionary<(int x, int y), float> heightMap { get; set; }
         public Dictionary<(int x, int y), float> rainMap { get; set; }
 
         public Dictionary<(int x, int y), float> wetnessMap { get; set; }

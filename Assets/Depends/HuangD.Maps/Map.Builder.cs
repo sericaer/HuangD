@@ -29,9 +29,12 @@ namespace HuangD.Maps
                 processInfo.Invoke("创建地块图");
                 var blocks = BlockBuilder.Build(noiseMap, random).ToArray();
 
-                processInfo.Invoke("创建地形图");
+                processInfo.Invoke("创建高程图");
                 var block2Terrain = GroupByTerrainType(blocks, mapInit, random);
-                var terrains = TerrainBuilder.Build(block2Terrain, noiseMap, random);
+                var heightMap = HeightMapBuilder.Build(block2Terrain, noiseMap, random);
+
+                processInfo.Invoke("创建地形图");
+                var terrains = TerrainMapBuilder.Build(heightMap);
 
                 processInfo.Invoke("创建降水图");
                 var rainMap = RainMapBuilder.Build(terrains, block2Terrain, random);
@@ -42,6 +45,8 @@ namespace HuangD.Maps
 
                 var map = new Map();
                 map.nosieMap = noiseMap;
+                map.heightMap = heightMap;
+
                 map.blocks = block2Terrain;
                 map.terrains = terrains;
                 map.rainMap = rainMap;
