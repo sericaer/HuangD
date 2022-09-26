@@ -26,13 +26,16 @@ namespace HuangD.Maps
                 processInfo.Invoke("创建噪音图");
                 var noiseMap = NoiseMapBuilder.Build(random, mapInit.high, mapInit.width);
 
-                processInfo.Invoke("划分地块");
+                processInfo.Invoke("创建地块图");
                 var blocks = BlockBuilder.Build(noiseMap, random).ToArray();
 
-                processInfo.Invoke("创建地形");
+                processInfo.Invoke("创建地形图");
                 var block2Terrain = GroupByTerrainType(blocks, mapInit, random);
-
                 var terrains = TerrainBuilder.Build(block2Terrain, noiseMap, random);
+
+                processInfo.Invoke("创建降水图");
+                var rainMap = RainMapBuilder.Build(terrains, block2Terrain, random);
+
 
                 //processInfo.Invoke("创建河流");
                 //var rivers = RiverBuilder.Build(blocks, terrains, random);
@@ -41,6 +44,8 @@ namespace HuangD.Maps
                 map.nosieMap = noiseMap;
                 map.blocks = block2Terrain;
                 map.terrains = terrains;
+                map.rainMap = rainMap;
+
                 map.rivers = new Dictionary<(int x, int y), int>();
 
                 return map;

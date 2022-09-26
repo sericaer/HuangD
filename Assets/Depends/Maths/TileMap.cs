@@ -36,6 +36,11 @@ namespace Math.TileMap
             return Array.IndexOf(directs, direct);
         }
 
+        internal static bool isNeighbor((int x, int y) p1, (int x, int y) p2)
+        {
+            return Hexagon.GetNeighbors(p1).Contains(p2);
+        }
+
         internal static (int x, int y) ScaleOffset((int x, int y) offset, int v)
         {
             var axial = ToAxial(offset);

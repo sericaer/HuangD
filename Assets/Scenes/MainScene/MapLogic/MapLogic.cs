@@ -17,6 +17,7 @@ public class MapLogic : MonoBehaviour
     public CountryMap countryMap;
     public RiverMap riverMap;
     public NoiseMap noiseMap;
+    public RainMap rainMap;
 
     public MapUIContainer mapUIContainer;
 
@@ -76,6 +77,10 @@ public class MapLogic : MonoBehaviour
         foreach (var pos in map.rivers.Keys)
         {
             riverMap.SetCell(new Vector3Int(pos.x, pos.y), map.rivers[pos]);
+        }
+        foreach(var pos in map.rainMap.Keys)
+        {
+            rainMap.SetCell(new Vector3Int(pos.x, pos.y), map.rainMap[pos]);
         }
     }
 
