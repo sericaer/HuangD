@@ -14,16 +14,19 @@ namespace HuangD.Maps
     {
         private static GRandom random;
 
-        internal static Dictionary<(int x, int y), float> Build(Dictionary<(int x, int y), TerrainType> terrains, Dictionary<Block, TerrainType> block2Terrain, GRandom random)
+        internal static Dictionary<(int x, int y), float> Build(Dictionary<(int x, int y), TerrainType> terrains, GRandom random)
         {
             RainMapBuilder.random = random;
 
-            var totalPos = block2Terrain.Where(p => p.Value != TerrainType.Water)
-                .SelectMany(x => x.Key.elements)
+            var waterPositions = terrains.Where(p => p.Value == TerrainType.Water)
+                .Select(x => x.Key)
                 .ToHashSet();
 
-            var origins = FindCoastlinePositions(block2Terrain);
+            var landPostions = terrains.Keys.Except(waterPositions)
+                .ToHashSet();
 
+            var origins = landPostions.Where(x => Hexagon.GetNeighbors(x).Any(n => waterPositions.Contains(n)))
+                .ToHashSet();
 
             var wetnessMap = origins.ToDictionary(k => k, v => new WetItem(30, TerrainType.Water, terrains[v]));
             var queue = new UniqueQueue<(int x, int y)>(origins);
@@ -32,7 +35,7 @@ namespace HuangD.Maps
                 var currPos = queue.Dequeue();
                 var currValue = wetnessMap[currPos];
 
-                foreach (var next in Hexagon.GetNeighbors(currPos).Where(n => totalPos.Contains(n)))
+                foreach (var next in Hexagon.GetNeighbors(currPos).Where(n => landPostions.Contains(n)))
                 {
                     var nextTotal = currValue.nextTotal;
                     if (!wetnessMap.ContainsKey(next) || nextTotal > wetnessMap[currPos].total)

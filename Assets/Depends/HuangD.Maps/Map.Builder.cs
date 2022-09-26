@@ -37,7 +37,7 @@ namespace HuangD.Maps
                 var terrains = TerrainMapBuilder.Build(heightMap);
 
                 processInfo.Invoke("创建降水图");
-                var rainMap = RainMapBuilder.Build(terrains, block2Terrain, random);
+                var rainMap = RainMapBuilder.Build(terrains, random);
 
 
                 //processInfo.Invoke("创建河流");
