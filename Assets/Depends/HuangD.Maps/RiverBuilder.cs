@@ -61,6 +61,31 @@ namespace HuangD.Maps
             return rivers;
         }
 
+        internal static Dictionary<(int x, int y), int> Build(Dictionary<(int x, int y), float> heightMap, GRandom random)
+        {
+            var OrderArray = heightMap.OrderByDescending(x => x.Value).ToArray();
+
+            var origin = OrderArray.First().Key;
+
+            var list = new List<(int x, int y)>() { origin };
+
+            while(list.Count < 30)
+            {
+                var curr = list.Last();
+
+                var neighors = Hexagon.GetNeighbors(curr).Where(n=> heightMap.ContainsKey(n) && !Hexagon.GetRange(n, 1).Where(r=>r!=curr).Intersect(list).Any());
+                if(!neighors.Any())
+                {
+                    break;
+                }
+
+                var index = neighors.Min(n=> Array.FindIndex(OrderArray, (x)=>x.Key == n));
+                list.Add(OrderArray[index].Key);
+            }
+
+            return list.ToDictionary(k => Hexagon.ScaleOffset(k, 2), v => 0);
+        }
+
         private static IEnumerable<IEnumerable<(int x, int y)>> GenerateMajorRiver(IEnumerable<(int x, int y)> lineHeightOrders, Dictionary<(int x, int y), int> dictEdgeHeight, Dictionary<(int x, int y), TerrainType> terrainsScales)
         {
             var mainRivers = new List<IEnumerable<(int x, int y)>>();
