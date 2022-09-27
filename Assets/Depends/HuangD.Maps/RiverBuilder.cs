@@ -9,6 +9,11 @@ namespace HuangD.Maps
 {
     static class RiverBuilder
     {
+        private static Dictionary<(int x, int y), float> heightMap;
+        private static Dictionary<(int x, int y), TerrainType> terrains;
+        private static Dictionary<(int x, int y), float> rainMap;
+        private static GRandom random;
+
         internal static Dictionary<(int x, int y), int> Build(IEnumerable<Block> blocks, Dictionary<(int x, int y), TerrainType> terrains, GRandom random)
         {
             var edges = Utilty.GenerateEdges(blocks.Select(x=>x.edges));
@@ -61,29 +66,55 @@ namespace HuangD.Maps
             return rivers;
         }
 
-        internal static Dictionary<(int x, int y), int> Build(Dictionary<(int x, int y), float> heightMap, GRandom random)
+        internal static Dictionary<(int x, int y), int> Build(Dictionary<(int x, int y), float> heightMap, 
+                                                              Dictionary<(int x, int y), TerrainType> terrains, 
+                                                              Dictionary<(int x, int y), float> rainMap, 
+                                                              GRandom random)
         {
-            var OrderArray = heightMap.OrderByDescending(x => x.Value).ToArray();
+            RiverBuilder.heightMap = heightMap;
+            RiverBuilder.terrains = terrains;
+            RiverBuilder.rainMap = rainMap;
+            RiverBuilder.random = random;
 
-            var origin = OrderArray.First().Key;
+            var origins = terrains.Where(x => x.Value == TerrainType.Mount)
+                .Select(x => x.Key)
+                //.Where(x => rainMap[x] > 0.4f)
+                .OrderBy(x => 
+                {
+                    switch(terrains[x])
+                    {
+                        case TerrainType.Hill:
+                            return 1;
+                        case TerrainType.Plain:
+                            return 0;
+                        case TerrainType.Mount:
+                            return 100;
+                        default:
+                            throw new Exception();
+                    }
+                }).ToArray();
 
-            var list = new List<(int x, int y)>() { origin };
-
-            while(list.Count < 30)
+            List<(int x, int y)> river = null;
+            for (int i=0; i< origins.Length; i++)
             {
-                var curr = list.Last();
-
-                var neighors = Hexagon.GetNeighbors(curr).Where(n=> heightMap.ContainsKey(n) && !Hexagon.GetRange(n, 1).Where(r=>r!=curr).Intersect(list).Any());
-                if(!neighors.Any())
+                river = GenerateMajorRiver(origins[0]);
+                if(river.Count > 50)
                 {
                     break;
                 }
-
-                var index = neighors.Min(n=> Array.FindIndex(OrderArray, (x)=>x.Key == n));
-                list.Add(OrderArray[index].Key);
             }
 
-            return list.ToDictionary(k => Hexagon.ScaleOffset(k, 2), v => 0);
+            return river.ToDictionary(k => Hexagon.ScaleOffset(k, 2), v => 0);
+        }
+
+        private static List<(int x, int y)> GenerateMajorRiver((int x, int y) origin)
+        {
+            var path = Utilty.FindPath(origin,
+                       (pos) => Hexagon.GetNeighbors(pos).Any(x=> terrains.ContainsKey(x) && terrains[x] == TerrainType.Water),
+                       terrains.Keys,
+                       heightMap.ToDictionary(k=>k.Key, v=>(int)(v.Value * 10000)));
+
+            return path.ToList();
         }
 
         private static IEnumerable<IEnumerable<(int x, int y)>> GenerateMajorRiver(IEnumerable<(int x, int y)> lineHeightOrders, Dictionary<(int x, int y), int> dictEdgeHeight, Dictionary<(int x, int y), TerrainType> terrainsScales)

@@ -40,7 +40,7 @@ namespace HuangD.Maps
                 var rainMap = RainMapBuilder.Build(terrains, random);
 
                 processInfo.Invoke("创建河流图");
-                var rivers = RiverBuilder.Build(heightMap, random);
+                var rivers = RiverBuilder.Build(heightMap, terrains, rainMap, random);
 
                 var map = new Map();
                 map.nosieMap = noiseMap;
