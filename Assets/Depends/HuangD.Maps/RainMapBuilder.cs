@@ -13,10 +13,15 @@ namespace HuangD.Maps
     public class RainMapBuilder
     {
         private static GRandom random;
+        private static Dictionary<(int x, int y), TerrainType> terrains;
+
+        private static float totalRain = 30f;
+        private static float maxRain = 1f;
 
         internal static Dictionary<(int x, int y), float> Build(Dictionary<(int x, int y), TerrainType> terrains, GRandom random)
         {
             RainMapBuilder.random = random;
+            RainMapBuilder.terrains = terrains;
 
             var waterPositions = terrains.Where(p => p.Value == TerrainType.Water)
                 .Select(x => x.Key)
@@ -25,99 +30,158 @@ namespace HuangD.Maps
             var landPostions = terrains.Keys.Except(waterPositions)
                 .ToHashSet();
 
-            var origins = landPostions.Where(x => Hexagon.GetNeighbors(x).Any(n => waterPositions.Contains(n)))
+            var origins = waterPositions.Where(x => Hexagon.GetNeighbors(x).Any(n => landPostions.Contains(n)))
                 .ToHashSet();
 
-            var wetnessMap = origins.ToDictionary(k => k, v => new WetItem(30, TerrainType.Water, terrains[v]));
+            var rainMap = waterPositions.ToDictionary(k => k, v => new RainItem(totalRain, v, v));
+
             var queue = new UniqueQueue<(int x, int y)>(origins);
             while (queue.Count != 0)
             {
                 var currPos = queue.Dequeue();
-                var currValue = wetnessMap[currPos];
+                var currValue = rainMap[currPos];
 
                 foreach (var next in Hexagon.GetNeighbors(currPos).Where(n => landPostions.Contains(n)))
                 {
                     var nextTotal = currValue.nextTotal;
-                    if (!wetnessMap.ContainsKey(next) || nextTotal > wetnessMap[currPos].total)
+                    if (!rainMap.ContainsKey(next) || nextTotal > rainMap[currPos].total)
                     {
-                        wetnessMap[next] = new WetItem(nextTotal, terrains[next], terrains[currPos]);
+                        rainMap[next] = new RainItem(nextTotal, next, currPos);
                         queue.Enqueue(next);
                     }
                 }
             }
 
-            Debug.Log($"min wet {wetnessMap.Min(x => x.Value.curr)}");
+            var overloads = rainMap.Where(x => x.Value.curr > maxRain).Select(x=>x.Value).ToArray();
+            foreach(var overload in overloads)
+            {
+                var overloadValue = overload.curr - maxRain;
+                overload.curr = maxRain;
 
-            return wetnessMap.ToDictionary(k => k.Key, v => v.Value.curr);
+                var preItem = rainMap[overload.prePos];
+                preItem.curr += overloadValue;
+
+                if(preItem.curr > maxRain)
+                {
+                    OverloadSpread(preItem.currPos, rainMap);
+                }
+            }
+
+            var rslt = rainMap.ToDictionary(k => k.Key, v => v.Value.curr);
+
+            Debug.Log($"min rain {rslt.Min(x => x.Value)}, max rain {rslt.Max(x => x.Value)}");
+
+            return rslt;
         }
 
-        private static HashSet<(int x, int y)> FindCoastlinePositions(Dictionary<Block, TerrainType> block2Terrain)
+        private static void OverloadSpread((int x, int y) overloadPos, Dictionary<(int x, int y), RainItem> rainMap)
         {
-            var waterBlocks = block2Terrain.Keys.Where(k => block2Terrain[k] == TerrainType.Water);
 
-            var origins = new HashSet<(int x, int y)>();
-            foreach (var block in waterBlocks)
+            var overloadValue = rainMap[overloadPos].curr - maxRain;
+            rainMap[overloadPos].curr = maxRain;
+
+            var queue = new UniqueQueue<(int x, int y)>();
+            queue.Enqueue(overloadPos);
+
+            while (queue.Count != 0 && overloadValue > 0)
             {
-                foreach (var neighbor in block.neighors.Where(b => block2Terrain[b] != TerrainType.Water))
+                var currPos = queue.Dequeue();
+
+                var neighors = Hexagon.GetNeighbors(currPos).Where(n=>terrains.ContainsKey(n));
+                foreach(var next in neighors)
                 {
-                    foreach (var edge in neighbor.edges.Where(x => block.edges.Any(y => Hexagon.isNeighbor(x, y))))
+                    var currTerrainType = terrains[currPos];
+                    var nextTerrainType = terrains[next];
+
+                    if (nextTerrainType - currTerrainType > 0 )
                     {
-                        origins.Add(edge);
+                        continue;
+                    }
+                    if(rainMap[next].curr >= maxRain)
+                    {
+                        continue;
+                    }
+
+                    var nextValue = rainMap[next].curr + overloadValue;
+                    if(nextValue > 1)
+                    {
+                        overloadValue = nextValue - maxRain;
+                        rainMap[next].curr = maxRain;
+                    }
+                    else
+                    {
+                        rainMap[next].curr = nextValue;
+                        overloadValue = -0;
+                        break;
+                    }
+
+                    queue.Enqueue(next);
+                }
+            }
+
+        }
+
+        class RainItem
+        {
+            public float total;
+            public float curr;
+            public readonly (int x, int y) currPos;
+            public readonly (int x, int y) prePos;
+
+            public RainItem(float total, (int x, int y) curr, (int x, int y) prev)
+            {
+                this.total = total;
+                this.curr = total / totalRain / 10 * 9;
+
+                this.currPos = curr;
+                this.prePos = prev;
+
+                var currTerrain = terrains[curr];
+                var prevTerrain = terrains[prev];
+
+                if (currTerrain == TerrainType.Hill)
+                {
+                    if (prevTerrain == TerrainType.Water)
+                    {
+                        this.curr = this.curr * 3f;
+                    }
+                    if (prevTerrain == TerrainType.Plain)
+                    {
+                        this.curr = this.curr * 3f;
+                    }
+                }
+                if (currTerrain == TerrainType.Mount)
+                {
+                    if (prevTerrain == TerrainType.Water)
+                    {
+                        this.curr = this.curr * 5f;
+                    }
+                    if (prevTerrain == TerrainType.Plain)
+                    {
+                        this.curr = this.curr * 5f;
+                    }
+                    if (prevTerrain == TerrainType.Hill)
+                    {
+                        this.curr = this.curr * 2f;
                     }
                 }
             }
 
-            return origins;
+            public float nextTotal => total - curr;
         }
-
-
     }
 
-    class WetItem
-    {
-        public float total;
-        public float curr;
 
-        public WetItem(float total, TerrainType curr, TerrainType prev)
-        {
-            this.total = total;
-            this.curr = total / 30;
-
-            if (curr == TerrainType.Hill)
-            {
-                if (prev == TerrainType.Water)
-                {
-                    this.curr = this.curr * 3f;
-                }
-                if (prev == TerrainType.Plain)
-                {
-                    this.curr = this.curr * 3f;
-                }
-            }
-            if (curr == TerrainType.Mount)
-            {
-                if (prev == TerrainType.Water)
-                {
-                    this.curr = this.curr * 5f;
-                }
-                if (prev == TerrainType.Plain)
-                {
-                    this.curr = this.curr * 5f;
-                }
-                if (prev == TerrainType.Hill)
-                {
-                    this.curr = this.curr * 2f;
-                }
-            }
-        }
-
-        public float nextTotal => total - curr;
-    }
 
     class UniqueQueue<T>
     {
         private readonly Queue<T> queue = new Queue<T>();
         private HashSet<T> hashSet = new HashSet<T>();
+
+        public UniqueQueue()
+        {
+
+        }
 
         public UniqueQueue(HashSet<T> hasSet)
         {

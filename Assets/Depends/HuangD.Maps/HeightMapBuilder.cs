@@ -59,6 +59,22 @@ namespace HuangD.Maps
                 }
             }
 
+            var waterBlocks = block2Terrain.Keys.Where(k => block2Terrain[k] == TerrainType.Water);
+            var nearByLandBlocks = waterBlocks.SelectMany(x => x.neighors).Where(n => block2Terrain[n] != TerrainType.Water);
+
+            var coastLine = nearByLandBlocks.SelectMany(x => x.edges).Where(e => waterBlocks.Any(w => w.edges.Intersect(Hexagon.GetNeighbors(e)).Any()));
+            foreach (var element in coastLine)
+            {
+                if(rslt[element] > 0.6)
+                {
+                    rslt[element] = 0.599f;
+                }
+                else if(rslt[element] > 0.3)
+                {
+                    rslt[element] = 0.299f;
+                }
+            }
+
             return rslt;
         }
 

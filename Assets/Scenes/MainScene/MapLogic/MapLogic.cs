@@ -22,6 +22,8 @@ public class MapLogic : MonoBehaviour
 
     public MapUIContainer mapUIContainer;
 
+    private IMap mapData;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,7 +33,13 @@ public class MapLogic : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetMouseButton(0))
+        {
+            var worldPoint = mapCamera.ScreenToWorldPoint(Input.mousePosition);
+            var cellIndex = mapGrid.WorldToCell(worldPoint);
+            var pos = (cellIndex.x, cellIndex.y);
+            Debug.Log($"POS:{pos}, Height:{mapData.heightMap[pos]}, terrain:{mapData.terrains[pos]}, rain:{mapData.rainMap[pos]}");
+        }
     }
 
     public void OnMove(Vector3 pos)
@@ -62,6 +70,8 @@ public class MapLogic : MonoBehaviour
 
     internal void SetMapData(IMap map)
     {
+        mapData = map;
+
         foreach (var pair in map.nosieMap)
         {
             noiseMap.SetCell(pair.Key, pair.Value);

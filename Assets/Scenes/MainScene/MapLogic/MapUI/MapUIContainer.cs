@@ -3,8 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class MapUIContainer : MonoBehaviour
+public class MapUIContainer : MonoBehaviour, IPointerDownHandler
 {
     public Grid mapGrid;
 
@@ -58,5 +59,10 @@ public class MapUIContainer : MonoBehaviour
         defaultProvinceItem.gameObject.SetActive(false);
 
         UpdateItemsPosition();
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        Debug.Log(this.gameObject.name + " Was Clicked.");
     }
 }
