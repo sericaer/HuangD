@@ -15,7 +15,7 @@ namespace HuangD.Maps
         private static GRandom random;
         private static Dictionary<(int x, int y), TerrainType> terrains;
 
-        private static float totalRain = 30f;
+        private static float totalRain = 20f;
         private static float maxRain = 1f;
 
         internal static Dictionary<(int x, int y), float> Build(Dictionary<(int x, int y), TerrainType> terrains, GRandom random)
@@ -143,26 +143,26 @@ namespace HuangD.Maps
                 {
                     if (prevTerrain == TerrainType.Water)
                     {
-                        this.curr = this.curr * 3f;
+                        this.curr = this.curr * 1.5f;
                     }
                     if (prevTerrain == TerrainType.Plain)
                     {
-                        this.curr = this.curr * 3f;
+                        this.curr = this.curr * 1.5f;
                     }
                 }
                 if (currTerrain == TerrainType.Mount)
                 {
                     if (prevTerrain == TerrainType.Water)
                     {
-                        this.curr = this.curr * 5f;
+                        this.curr = this.curr * 2f;
                     }
                     if (prevTerrain == TerrainType.Plain)
                     {
-                        this.curr = this.curr * 5f;
+                        this.curr = this.curr * 2f;
                     }
                     if (prevTerrain == TerrainType.Hill)
                     {
-                        this.curr = this.curr * 2f;
+                        this.curr = this.curr * 1.5f;
                     }
                 }
             }

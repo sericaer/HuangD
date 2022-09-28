@@ -19,6 +19,7 @@ public class MapLogic : MonoBehaviour
     public NoiseMap noiseMap;
     public RainMap rainMap;
     public HeightMap heightMap;
+    public RainCarveMap rainCarveMap;
 
     public MapUIContainer mapUIContainer;
 
@@ -97,6 +98,12 @@ public class MapLogic : MonoBehaviour
         foreach(var pos in map.rainMap.Keys)
         {
             rainMap.SetCell(new Vector3Int(pos.x, pos.y), map.rainMap[pos]);
+        }
+
+        var cavreConvert = map.rainCarveMap.ToDictionary(x => x.Key, y => y.Value / map.rainCarveMap.Values.Max());
+        foreach (var pos in cavreConvert.Keys)
+        {
+            rainCarveMap.SetCell(new Vector3Int(pos.x, pos.y), cavreConvert[pos]);
         }
     }
 

@@ -30,6 +30,19 @@ namespace HuangD.Maps
             return majorRivers.Concat(minorRivers).SelectMany(x=>x).Distinct().ToDictionary(k => k, v=> 0);
         }
 
+        internal static Dictionary<(int x, int y), int> Build(RainCarve rainCarveMap)
+        {
+            var selectRiverPoint = rainCarveMap.waterRushMap.OrderByDescending(x => x.Value)
+                .Take(rainCarveMap.waterRushMap.Count() * 30 / 100)
+                .Select(k => k.Key);
+
+            return rainCarveMap.trips.OrderByDescending(x => selectRiverPoint.Intersect(x).Count())
+                .Take(3)
+                .SelectMany(x => x)
+                .Distinct()
+                .ToDictionary(k => k, _ => 0);
+        }
+
         private static IEnumerable<IEnumerable<(int x, int y)>> GenerateMinorRiver(IEnumerable<(int x, int y)> lineHeightOrders, Dictionary<(int x, int y), int> dictEdgeHeight, Dictionary<(int x, int y), TerrainType> terrainsScales, IEnumerable<IEnumerable<(int x, int y)>> majorRivers)
         {
             var rivers = new List<IEnumerable<(int x, int y)>>();
