@@ -10,6 +10,8 @@ namespace HuangD.Interfaces
         public Dictionary<(int x, int y), float> rainMap { get; set; }
 
         public Dictionary<(int x, int y), float> rainCarveMap { get; set; }
+
+        public IEnumerable<IEnumerable<(int x, int y)>> valleyMap { get; set; }
         public Dictionary<(int x, int y), float> wetnessMap { get; set; }
 
         public Dictionary<(int x, int y), TerrainType> terrains { get; set; }

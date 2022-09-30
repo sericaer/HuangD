@@ -20,6 +20,7 @@ public class MapLogic : MonoBehaviour
     public RainMap rainMap;
     public HeightMap heightMap;
     public RainCarveMap rainCarveMap;
+    public ValleyMap valleyMap;
 
     public MapUIContainer mapUIContainer;
 
@@ -104,6 +105,11 @@ public class MapLogic : MonoBehaviour
         foreach (var pos in cavreConvert.Keys)
         {
             rainCarveMap.SetCell(new Vector3Int(pos.x, pos.y), cavreConvert[pos]);
+        }
+
+        foreach (var valley in map.valleyMap)
+        {
+            valleyMap.SetValley(valley);
         }
     }
 
