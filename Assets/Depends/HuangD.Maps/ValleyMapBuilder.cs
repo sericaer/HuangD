@@ -84,7 +84,7 @@ namespace HuangD.Maps
                 
             }
 
-            return valleys.Where(x=>x.Count > 1);
+            return valleys;
         }
     }
 }

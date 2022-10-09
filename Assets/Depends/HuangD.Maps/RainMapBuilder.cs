@@ -143,26 +143,26 @@ namespace HuangD.Maps
                 {
                     if (prevTerrain == TerrainType.Water)
                     {
-                        this.curr = this.curr * 1.5f;
+                        this.curr = this.curr * 1.2f;
                     }
                     if (prevTerrain == TerrainType.Plain)
                     {
-                        this.curr = this.curr * 1.5f;
+                        this.curr = this.curr * 1.2f;
                     }
                 }
                 if (currTerrain == TerrainType.Mount)
                 {
                     if (prevTerrain == TerrainType.Water)
                     {
-                        this.curr = this.curr * 2f;
+                        this.curr = this.curr * 3f;
                     }
                     if (prevTerrain == TerrainType.Plain)
                     {
-                        this.curr = this.curr * 2f;
+                        this.curr = this.curr * 3f;
                     }
                     if (prevTerrain == TerrainType.Hill)
                     {
-                        this.curr = this.curr * 1.5f;
+                        this.curr = this.curr * 2f;
                     }
                 }
             }

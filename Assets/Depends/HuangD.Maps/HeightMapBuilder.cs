@@ -31,15 +31,15 @@ namespace HuangD.Maps
                         break;
                     case TerrainType.Plain:
                         {
-                            var maxPlainIndex = orderPairs.Length / 10 * 8;
+                            var maxPlainIndex = orderPairs.Length * 90 / 100;
                             GerneratePlainHeightDict(orderPairs.Take(maxPlainIndex), ref rslt);
                             GernerateHillHeightDict(orderPairs.Skip(maxPlainIndex), ref rslt);
                         }
                         break;
                     case TerrainType.Hill:
                         {
-                            var maxPlainIndex = orderPairs.Length / 10;
-                            var maxHillIndex = orderPairs.Length / 10 * 8;
+                            var maxPlainIndex = orderPairs.Length * 30 / 100;
+                            var maxHillIndex = orderPairs.Length  * 90 / 100;
 
                             GerneratePlainHeightDict(orderPairs.Take(maxPlainIndex), ref rslt);
                             GernerateHillHeightDict(orderPairs.Skip(maxPlainIndex).Take(maxHillIndex - maxPlainIndex), ref rslt);
@@ -48,8 +48,8 @@ namespace HuangD.Maps
                         break;
                     case TerrainType.Mount:
                         {
-                            var maxPlainIndex = orderPairs.Length / 10;
-                            var maxHillIndex = orderPairs.Length / 10 * 4;
+                            var maxPlainIndex = orderPairs.Length  * 10 / 100;
+                            var maxHillIndex = orderPairs.Length   * 60 / 100;
 
                             GerneratePlainHeightDict(orderPairs.Take(maxPlainIndex), ref rslt);
                             GernerateHillHeightDict(orderPairs.Skip(maxPlainIndex).Take(maxHillIndex - maxPlainIndex), ref rslt);

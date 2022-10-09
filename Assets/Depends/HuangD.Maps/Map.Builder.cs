@@ -39,14 +39,8 @@ namespace HuangD.Maps
                 processInfo.Invoke("创建降水图");
                 var rainMap = RainMapBuilder.Build(terrains, random);
 
-                var rainCarveMap = RainCarveMapBuilder.Build(rainMap, heightMap, terrains);
-
-                processInfo.Invoke("创建河谷图");
-                var valleyMap = ValleyMapBuilder.Build(heightMap);
-
-                //processInfo.Invoke("创建河流图");
-                //var rivers = RiverBuilder.Build(rainCarveMap);
-
+                processInfo.Invoke("创建河流图");
+                var rivers = RiverBuilder.Build(heightMap, terrains, rainMap);
 
                 var map = new Map();
                 map.nosieMap = noiseMap;
@@ -55,9 +49,8 @@ namespace HuangD.Maps
                 map.blocks = block2Terrain;
                 map.terrains = terrains;
                 map.rainMap = rainMap;
-                map.rainCarveMap = rainCarveMap.waterRushMap;
-                map.rivers = new Dictionary<(int x, int y), int>();
-                map.valleyMap = valleyMap;
+                map.rainCarveMap = new Dictionary<(int x, int y), float>();
+                map.rivers = rivers;
 
                 return map;
             }
