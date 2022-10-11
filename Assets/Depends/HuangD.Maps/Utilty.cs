@@ -84,7 +84,7 @@ namespace HuangD.Maps
             return elements.ElementAt(index);
         }
 
-        public static IEnumerable<(int x, int y)> FindPath((int x, int y) startPos, System.Func<(int x, int y), bool> endCondition, IEnumerable<(int x, int y)> baseMap, Dictionary<(int x, int y), int> costMap = null)
+        public static IEnumerable<(int x, int y)> FindPath((int x, int y) startPos, System.Func<(int x, int y), bool> endCondition, IEnumerable<(int x, int y)> baseMap, Dictionary<(int x, int y), float> costMap = null)
         {
             var visitMap = costMap == null ? GenrateVisitMap(startPos, endCondition, baseMap.ToHashSet()) : GenrateVisitMapWithCost(startPos, endCondition, baseMap.ToHashSet(), costMap);
 
@@ -113,12 +113,12 @@ namespace HuangD.Maps
             return path;
         }
 
-        private static Dictionary<(int x, int y), (int x, int y)> GenrateVisitMapWithCost((int x, int y) startPos, System.Func<(int x, int y), bool> endCondition, HashSet<(int x, int y)> baseMap, Dictionary<(int x, int y), int> costMap)
+        private static Dictionary<(int x, int y), (int x, int y)> GenrateVisitMapWithCost((int x, int y) startPos, System.Func<(int x, int y), bool> endCondition, HashSet<(int x, int y)> baseMap, Dictionary<(int x, int y), float> costMap)
         {
             var queue = new PriorityQueue<(int x, int y)>();
             queue.Enqueue(startPos, 0);
 
-            var costRecord = new Dictionary<(int x, int y), int>();
+            var costRecord = new Dictionary<(int x, int y), float>();
             costRecord[startPos] = 0;
 
             var dict = new Dictionary<(int x, int y), (int x, int y)>();
@@ -145,7 +145,15 @@ namespace HuangD.Maps
                     costRecord[neighor] = newCost;
                     queue.Enqueue(neighor, newCost);
 
-                    dict.Add(neighor, currPos);
+                    if(!dict.ContainsKey(neighor))
+                    {
+                        dict.Add(neighor, currPos);
+                    }
+                    else
+                    {
+                        dict[neighor] = currPos;
+                    }
+                    
                 }
             }
 

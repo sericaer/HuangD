@@ -7,9 +7,9 @@ namespace Math.TileMap
         struct Item
         {
             public T data;
-            public int pri;
+            public float pri;
 
-            public Item(T data, int pri)
+            public Item(T data, float pri)
             {
                 this.data = data;
                 this.pri = pri;
@@ -28,7 +28,7 @@ namespace Math.TileMap
 
         Comparer comparer = new Comparer();
 
-        public void Enqueue(T data, int pri)
+        public void Enqueue(T data, float pri)
         {
             list.Add(new Item(data, pri));
 

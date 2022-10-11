@@ -100,17 +100,6 @@ public class MapLogic : MonoBehaviour
         {
             rainMap.SetCell(new Vector3Int(pos.x, pos.y), map.rainMap[pos]);
         }
-
-        var cavreConvert = map.rainCarveMap.ToDictionary(x => x.Key, y => y.Value / map.rainCarveMap.Values.Max());
-        foreach (var pos in cavreConvert.Keys)
-        {
-            rainCarveMap.SetCell(new Vector3Int(pos.x, pos.y), cavreConvert[pos]);
-        }
-
-        foreach (var valley in map.valleyMap)
-        {
-            valleyMap.SetValley(valley);
-        }
     }
 
     private void MoveCameraToMapCenter()

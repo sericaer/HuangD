@@ -41,11 +41,11 @@ namespace Math.TileMap
             return Hexagon.GetNeighbors(p1).Contains(p2);
         }
 
-        internal static (int x, int y) ScaleOffset((int x, int y) offset, int v)
+        internal static (int x, int y) ScaleOffset((int x, int y) offset, float v)
         {
             var axial = ToAxial(offset);
 
-            return ToOffset((axial.q * v, axial.r * v));
+            return ToOffset(((int)(axial.q * v), (int)(axial.r * v)));
         }
 
         internal static (int x, int y) ToOffset((int q, int r) axial)

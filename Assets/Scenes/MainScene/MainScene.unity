@@ -141,7 +141,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &40076040
 Transform:
   m_ObjectHideFlags: 0
@@ -2593,7 +2593,7 @@ MonoBehaviour:
   edgeMap: {fileID: 2138730972}
   terrainMap: {fileID: 769803829}
   countryMap: {fileID: 801524479}
-  riverMap: {fileID: 1665183909}
+  riverMap: {fileID: 40076041}
   noiseMap: {fileID: 1031795688}
   rainMap: {fileID: 946912884}
   heightMap: {fileID: 1858942723}
@@ -2999,7 +2999,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1665183908
 Transform:
   m_ObjectHideFlags: 0
