@@ -1951,8 +1951,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tilemap: {fileID: 946912883}
   sprite: {fileID: 2747690628134850419, guid: 53f75fe786bff7e438fedfc10c3fdae5, type: 3}
-  WetMax: {r: 0, g: 0.509434, b: 0, a: 1}
-  WetMin: {r: 0.9056604, g: 0.87116325, b: 0, a: 1}
+  rainMax: {r: 0, g: 1, b: 0, a: 1}
+  rainMin: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &1031795684
 GameObject:
   m_ObjectHideFlags: 0
@@ -2418,7 +2418,7 @@ GameObject:
   - component: {fileID: 1353954889}
   - component: {fileID: 1353954891}
   m_Layer: 0
-  m_Name: RainCarveMap
+  m_Name: WetnessMap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2535,11 +2535,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1353954887}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9829baf8af5f9244db0a2fe60a8debb0, type: 3}
+  m_Script: {fileID: 11500000, guid: d1f9af08eac14824bbf1f44f395cb6fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   tilemap: {fileID: 1353954890}
   sprite: {fileID: 2747690628134850419, guid: 53f75fe786bff7e438fedfc10c3fdae5, type: 3}
+  WetMax: {r: 0, g: 1, b: 0, a: 1}
+  WetMin: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &1394827135
 GameObject:
   m_ObjectHideFlags: 0
@@ -2597,8 +2599,7 @@ MonoBehaviour:
   noiseMap: {fileID: 1031795688}
   rainMap: {fileID: 946912884}
   heightMap: {fileID: 1858942723}
-  rainCarveMap: {fileID: 1353954891}
-  valleyMap: {fileID: 1557426130}
+  wetnessMap: {fileID: 1353954891}
   mapUIContainer: {fileID: 1618154120}
 --- !u!1 &1532163039
 GameObject:

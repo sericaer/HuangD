@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class RainMap : MapBehaviour
 {
-    public  Color WetMax = Color.green;
-    public  Color WetMin = Color.yellow;
+    public  Color rainMax = Color.green;
+    public  Color rainMin = Color.yellow;
 
     internal void SetCell(Vector3Int vector3Int, float value)
     {
@@ -16,6 +16,6 @@ public class RainMap : MapBehaviour
 
     private Color CalcColor(float value)
     {
-        return WetMin + (WetMax - WetMin) * value;
+        return rainMin + (rainMax - rainMin) * value;
     }
 }

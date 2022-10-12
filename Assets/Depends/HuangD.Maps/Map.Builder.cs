@@ -41,18 +41,51 @@ namespace HuangD.Maps
 
                 processInfo.Invoke("创建河流图");
                 var rivers = RiverBuilder.Build(heightMap, terrains, rainMap);
+                var riverBanks = GenerateRiverBanks(rivers, terrains);
+
+                processInfo.Invoke("创建湿度图");
+                var wetnessMap = WetnessMapBuilder.Build(riverBanks, rainMap, terrains);
 
                 var map = new Map();
+
                 map.nosieMap = noiseMap;
                 map.heightMap = heightMap;
-
                 map.blocks = block2Terrain;
                 map.terrains = terrains;
                 map.rainMap = rainMap;
-
                 map.rivers = rivers;
+                //map.riverBanks = riverBanks;
+                map.wetnessMap = wetnessMap;
 
                 return map;
+            }
+
+            private static Dictionary<(int x, int y), HashSet<(int x, int y)>> GenerateRiverBanks(Dictionary<(int x, int y), int> rivers, Dictionary<(int x, int y), TerrainType> terrains)
+            {
+                var rslt = new Dictionary<(int x, int y), HashSet<(int x, int y)>>();
+
+                foreach (var index in rivers.Keys)
+                {
+                    var neighbors = Hexagon.GetNeighbors(index)
+                        .Where(n => !rivers.ContainsKey(n))
+                        .Select(n => Hexagon.ScaleOffset(n, 0.5f))
+                        .Where(n => terrains.ContainsKey(n));
+
+                    foreach(var neighor in neighbors)
+                    {
+                        if(!rslt.ContainsKey(neighor))
+                        {
+                            rslt.Add(neighor, new HashSet<(int x, int y)>());
+                        }
+
+                        foreach(var peer in neighbors.Where(n => n != neighor))
+                        {
+                            rslt[neighor].Add(peer);
+                        }
+                    }
+                }
+
+                return rslt;
             }
 
             internal static Dictionary<Block, TerrainType> GroupByTerrainType(Block[] blocks, MapInit mapInit, GRandom random)

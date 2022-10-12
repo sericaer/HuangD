@@ -19,6 +19,7 @@ public class MapLogic : MonoBehaviour
     public NoiseMap noiseMap;
     public RainMap rainMap;
     public HeightMap heightMap;
+    public WetnessMap wetnessMap;
 
     public MapUIContainer mapUIContainer;
 
@@ -95,6 +96,10 @@ public class MapLogic : MonoBehaviour
         foreach(var pos in map.rainMap.Keys)
         {
             rainMap.SetCell(new Vector3Int(pos.x, pos.y), map.rainMap[pos]);
+        }
+        foreach (var pos in map.wetnessMap.Keys)
+        {
+            wetnessMap.SetCell(new Vector3Int(pos.x, pos.y), map.wetnessMap[pos]);
         }
     }
 
