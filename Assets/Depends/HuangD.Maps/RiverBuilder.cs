@@ -14,17 +14,56 @@ namespace HuangD.Maps
                                                       Dictionary<(int x, int y), TerrainType> terrains,
                                                       Dictionary<(int x, int y), float> rainMap)
         {
-
             var toWaterDistanceMap = GenerateToWaterDistanceMap(terrains);
 
+            List<HashSet<(int x, int y)>> allRivers = GenerateRivers(heightMap, toWaterDistanceMap, rainMap);
+
+            var rslt = new Dictionary<(int x, int y), int>();
+
+            var startIndexs = allRivers.Select(x => x.First())
+                .Select(x => Hexagon.ScaleOffset(x, 2))
+                .Select(x => Hexagon.GetNeighbors(x).First());
+
+            var baseMap = allRivers.SelectMany(x=>x)
+                .Select(x => Hexagon.ScaleOffset(x, 2))
+                .SelectMany(x => Hexagon.GetNeighbors(x))
+                .Distinct();
+
+            var waterEdges = toWaterDistanceMap.Where(p => p.Value == 0)
+                .Select(p => Hexagon.ScaleOffset(p.Key,2))
+                .SelectMany(x => Hexagon.GetNeighbors(x))
+                .Distinct()
+                .ToHashSet();
+
+            Func<(int x, int y), bool> checkIsEnd = (p) =>
+            {
+                return rslt.ContainsKey(p) || waterEdges.Contains(p);
+            };
+
+            foreach (var start in startIndexs)
+            {
+                var path = Utilty.FindPath(start, checkIsEnd, baseMap);
+
+                foreach (var index in path)
+                {
+                    rslt.TryAdd(index, 0);
+                }
+            }
+
+            return rslt;
+        }
+
+        private static List<HashSet<(int x, int y)>> GenerateRivers(Dictionary<(int x, int y), float> heightMap, Dictionary<(int x, int y), int> toWaterDistanceMap, Dictionary<(int x, int y), float> rainMap)
+        {
+
             var startIndexs = toWaterDistanceMap
-                .OrderByDescending(x => System.Math.Pow(x.Value,3) * System.Math.Pow(rainMap[x.Key],4))
-                .Select(x=>x.Key)
+                .OrderByDescending(x => System.Math.Pow(x.Value, 3) * System.Math.Pow(rainMap[x.Key], 4))
+                .Select(x => x.Key)
                 .ToList();
 
             var allRivers = new List<HashSet<(int x, int y)>>();
 
-            while(allRivers.Sum(x=>x.Count()) < terrains.Count()/10)
+            while (allRivers.Sum(x => x.Count()) < heightMap.Count() / 10)
             {
                 var start = startIndexs.First();
                 startIndexs.Remove(start);
@@ -75,37 +114,7 @@ namespace HuangD.Maps
                 }
             }
 
-            var rslt = new Dictionary<(int x, int y), int>();
-            foreach(var river in allRivers)
-            {
-                var baseMap = river.Select(x => Hexagon.ScaleOffset(x, 2))
-                    .SelectMany(x => Hexagon.GetNeighbors(x))
-                    .Distinct();
-
-                var costMap = baseMap.ToDictionary(k => k, v =>
-                  {
-                      var average = Hexagon.GetNeighbors(v)
-                      .Where(n => !baseMap.Contains(n))
-                      .Select(n => Hexagon.ScaleOffset(n, 0.5f))
-                      .Where(n=> heightMap.ContainsKey(n))
-                      .Average(n => heightMap[n]);
-
-                      return System.Math.Max(average, 0);
-                  });
-
-                var path = Utilty.FindPath(baseMap.First(), (p) => p == baseMap.Last(), baseMap, costMap);
-
-                foreach (var index in path)
-                {
-                    rslt.TryAdd(index, 0);
-                }
-
-                rslt.TryAdd(baseMap.First(), 0);
-                rslt.TryAdd(baseMap.Last(), 0);
-
-            }
-
-            return rslt;
+            return allRivers;
         }
 
         private static Dictionary<(int x, int y), int> GenerateToWaterDistanceMap(Dictionary<(int x, int y), TerrainType> terrains)

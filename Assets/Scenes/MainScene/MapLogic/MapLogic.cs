@@ -19,8 +19,6 @@ public class MapLogic : MonoBehaviour
     public NoiseMap noiseMap;
     public RainMap rainMap;
     public HeightMap heightMap;
-    public RainCarveMap rainCarveMap;
-    public ValleyMap valleyMap;
 
     public MapUIContainer mapUIContainer;
 
@@ -78,12 +76,10 @@ public class MapLogic : MonoBehaviour
         {
             noiseMap.SetCell(pair.Key, pair.Value);
         }
-
         foreach (var pair in map.heightMap)
         {
             heightMap.SetCell(pair.Key, pair.Value);
         }
-
         foreach (var pair in map.blocks)
         {
             blockMap.SetBlock(pair.Key);

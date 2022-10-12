@@ -49,7 +49,7 @@ namespace HuangD.Maps
                 map.blocks = block2Terrain;
                 map.terrains = terrains;
                 map.rainMap = rainMap;
-                map.rainCarveMap = new Dictionary<(int x, int y), float>();
+
                 map.rivers = rivers;
 
                 return map;
