@@ -46,6 +46,9 @@ namespace HuangD.Maps
                 processInfo.Invoke("创建湿度图");
                 var wetnessMap = WetnessMapBuilder.Build(riverBanks, rainMap, terrains);
 
+                processInfo.Invoke("创建植被图");
+                var biomesMap = BiomesMapBuilder.Build(wetnessMap, terrains, heightMap, random);
+
                 var map = new Map();
 
                 map.nosieMap = noiseMap;
@@ -56,6 +59,7 @@ namespace HuangD.Maps
                 map.rivers = rivers;
                 //map.riverBanks = riverBanks;
                 map.wetnessMap = wetnessMap;
+                map.biomesMap = biomesMap;
 
                 return map;
             }

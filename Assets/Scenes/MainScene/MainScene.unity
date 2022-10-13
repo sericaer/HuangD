@@ -2600,6 +2600,7 @@ MonoBehaviour:
   rainMap: {fileID: 946912884}
   heightMap: {fileID: 1858942723}
   wetnessMap: {fileID: 1353954891}
+  biomesMap: {fileID: 1665183912}
   mapUIContainer: {fileID: 1618154120}
 --- !u!1 &1532163039
 GameObject:
@@ -2993,9 +2994,9 @@ GameObject:
   - component: {fileID: 1665183908}
   - component: {fileID: 1665183911}
   - component: {fileID: 1665183910}
-  - component: {fileID: 1665183909}
+  - component: {fileID: 1665183912}
   m_Layer: 0
-  m_Name: TempRiverMap
+  m_Name: BiomesMap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3016,20 +3017,6 @@ Transform:
   m_Father: {fileID: 623091933}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1665183909
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1665183907}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c8f06068be8b9e46a233a082ece4879, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tilemap: {fileID: 1665183911}
-  sprite: {fileID: 2747690628134850419, guid: e1a1d858bc206c94c9b299c189330f94, type: 3}
 --- !u!483693784 &1665183910
 TilemapRenderer:
   m_ObjectHideFlags: 0
@@ -3117,6 +3104,46 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!114 &1665183912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1665183907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51ba69b393d79eb478aae072b9f96ffb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tilemap: {fileID: 1665183911}
+  biomeType2Sprites:
+  - biomeType: 0
+    sprite: {fileID: 0}
+  - biomeType: 1
+    sprite: {fileID: 0}
+  - biomeType: 2
+    sprite: {fileID: 0}
+  - biomeType: 3
+    sprite: {fileID: 0}
+  - biomeType: 4
+    sprite: {fileID: 0}
+  - biomeType: 5
+    sprite: {fileID: 0}
+  - biomeType: 6
+    sprite: {fileID: 0}
+  - biomeType: 7
+    sprite: {fileID: 0}
+  - biomeType: 8
+    sprite: {fileID: 0}
+  - biomeType: 9
+    sprite: {fileID: 0}
+  - biomeType: 10
+    sprite: {fileID: 0}
+  - biomeType: 11
+    sprite: {fileID: 0}
+  - biomeType: 12
+    sprite: {fileID: 0}
 --- !u!1 &1725884095
 GameObject:
   m_ObjectHideFlags: 0

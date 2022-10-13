@@ -20,6 +20,7 @@ public class MapLogic : MonoBehaviour
     public RainMap rainMap;
     public HeightMap heightMap;
     public WetnessMap wetnessMap;
+    public BiomesMap biomesMap;
 
     public MapUIContainer mapUIContainer;
 
@@ -100,6 +101,10 @@ public class MapLogic : MonoBehaviour
         foreach (var pos in map.wetnessMap.Keys)
         {
             wetnessMap.SetCell(new Vector3Int(pos.x, pos.y), map.wetnessMap[pos]);
+        }
+        foreach (var pos in map.biomesMap.Keys)
+        {
+            biomesMap.SetCell(new Vector3Int(pos.x, pos.y), map.biomesMap[pos]);
         }
     }
 
