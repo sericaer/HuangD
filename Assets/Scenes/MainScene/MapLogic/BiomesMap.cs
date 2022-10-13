@@ -19,6 +19,6 @@ public class BiomesMap : MonoBehaviour
 
     public void SetCell(Vector3Int vector3Int, BiomeType biomeType)
     {
-        throw new System.NotImplementedException();
+        //throw new System.NotImplementedException();
     }
 }

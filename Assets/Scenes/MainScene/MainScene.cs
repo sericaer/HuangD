@@ -30,8 +30,8 @@ public class MainScene : MonoBehaviour
         //countryPanel.SetCountry(session.playerCountry);
 
         mapLogic.SetMapData(Facade.session.map);
-        mapLogic.SetProvinces(Facade.session.provinces);
-        mapLogic.SetCountries(Facade.session.countries);
+        //mapLogic.SetProvinces(Facade.session.provinces);
+        //mapLogic.SetCountries(Facade.session.countries);
 
 
     }

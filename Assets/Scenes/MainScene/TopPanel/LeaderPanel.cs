@@ -15,7 +15,7 @@ public class LeaderPanel : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        label.text = Facade.session.playerCountry.officeGroup.leaderOffice.person.fullName;
-        officeName.text = Facade.session.playerCountry.officeGroup.leaderOffice.name;
+        //label.text = Facade.session.playerCountry.officeGroup.leaderOffice.person.fullName;
+        //officeName.text = Facade.session.playerCountry.officeGroup.leaderOffice.name;
     }
 }
