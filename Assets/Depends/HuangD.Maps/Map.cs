@@ -19,5 +19,7 @@ namespace HuangD.Maps
         public Dictionary<(int x, int y), int> rivers { get; set; }
 
         public Dictionary<(int x, int y), BiomeType> biomesMap { get; set; }
+
+        public Dictionary<(int x, int y), int> populationMap { get; set; }
     }
 }

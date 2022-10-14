@@ -13,6 +13,8 @@ namespace HuangD.Interfaces
         public Dictionary<(int x, int y), int> rivers { get; set; }
         public Dictionary<Block, TerrainType> blocks { get; set; }
         public Dictionary<(int x, int y), BiomeType> biomesMap { get; set; }
+
+        public Dictionary<(int x, int y), int> populationMap { get; set; }
     }
 
     public enum BiomeType

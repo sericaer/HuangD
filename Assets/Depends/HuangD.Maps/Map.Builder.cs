@@ -18,6 +18,7 @@ namespace HuangD.Maps
     {
         public static class Builder
         {
+
             public static IMap Build(MapInit mapInit, string seed, System.Action<string> processInfo)
             {
 
@@ -49,6 +50,9 @@ namespace HuangD.Maps
                 processInfo.Invoke("创建植被图");
                 var biomesMap = BiomesMapBuilder.Build(wetnessMap, terrains, heightMap, random);
 
+                processInfo.Invoke("创建人口图");
+                var populationMap = PopulationMapBuilder.Build(biomesMap, random);
+
                 var map = new Map();
 
                 map.nosieMap = noiseMap;
@@ -60,6 +64,7 @@ namespace HuangD.Maps
                 //map.riverBanks = riverBanks;
                 map.wetnessMap = wetnessMap;
                 map.biomesMap = biomesMap;
+                map.populationMap = populationMap;
 
                 return map;
             }

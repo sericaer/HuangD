@@ -2069,8 +2069,8 @@ Transform:
   - {fileID: 1858942720}
   - {fileID: 1353954888}
   - {fileID: 1665183908}
-  - {fileID: 1557426126}
   - {fileID: 2049138313}
+  - {fileID: 1557426126}
   m_Father: {fileID: 1394827136}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4523,6 +4523,7 @@ MonoBehaviour:
   heightMap: {fileID: 1858942723}
   wetnessMap: {fileID: 1353954891}
   biomesMap: {fileID: 1665183912}
+  populationMap: {fileID: 1557426130}
   mapUIContainer: {fileID: 1618154120}
 --- !u!1 &1463416753
 GameObject:
@@ -4747,7 +4748,7 @@ GameObject:
   - component: {fileID: 1557426128}
   - component: {fileID: 1557426130}
   m_Layer: 0
-  m_Name: ValleyMap
+  m_Name: PopluationMap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4864,11 +4865,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1557426125}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2489f7b40ab321e499f56fae22a7975b, type: 3}
+  m_Script: {fileID: 11500000, guid: 9782ee2f8e135484c930f00c9b599072, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   tilemap: {fileID: 1557426129}
   sprite: {fileID: 2747690628134850419, guid: 53f75fe786bff7e438fedfc10c3fdae5, type: 3}
+  rainMax: {r: 1, g: 0, b: 0, a: 1}
+  rainMin: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1613769032
 GameObject:
   m_ObjectHideFlags: 0
