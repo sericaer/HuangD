@@ -41,7 +41,7 @@ public class MapLogic : MonoBehaviour
             var worldPoint = mapCamera.ScreenToWorldPoint(Input.mousePosition);
             var cellIndex = mapGrid.WorldToCell(worldPoint);
             var pos = (cellIndex.x, cellIndex.y);
-            Debug.Log($"POS:{pos}, Height:{mapData.heightMap[pos]}, terrain:{mapData.terrains[pos]}, rain:{mapData.rainMap[pos]}");
+            Debug.Log($"POS:{pos}, Height:{mapData.heightMap[pos]}, terrain:{mapData.terrains[pos]}, rain:{mapData.rainMap[pos]}, wetness:{mapData.wetnessMap[pos]}, biomes:{mapData.biomesMap[pos]}£¬ population{mapData.populationMap[pos]}");
         }
     }
 

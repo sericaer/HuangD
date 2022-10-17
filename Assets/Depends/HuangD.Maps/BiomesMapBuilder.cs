@@ -13,11 +13,11 @@ namespace HuangD.Maps
         {
             [Range(80, 100)]
             LEVEL1,
-            [Range(60, 80)]
+            [Range(30, 80)]
             LEVEL2,
-            [Range(20, 60)]
+            [Range(10, 30)]
             LEVEL3,
-            [Range(0, 20)]
+            [Range(0, 10)]
             LEVEL4
         }
 
@@ -68,28 +68,32 @@ namespace HuangD.Maps
 
             var rslt = new Dictionary<(int x, int y), BiomeType>();
 
-            var level4Positions = position2WetLevel.Where(x => x.Value == WetLevel.LEVEL4)
-                .Select(x => x.Key)
-                .OrderBy(x => heightMap[x])
-                .ToArray();
+            BuildJuggleAndMarsh(terrains, heightMap, position2WetLevel, ref rslt);
 
-            foreach (var position in level4Positions.Take(level4Positions.Count() / 10))
-            {
-                if (terrains[position] == TerrainType.Plain)
-                {
-                    rslt.Add(position, BiomeType.Marsh_Plain);
-                }
-            }
+            BuildForest(terrains, position2WetLevel, ref rslt);
 
-            foreach (var position in level4Positions.Except(rslt.Keys))
+            BuildGrass(terrains, position2WetLevel, ref rslt);
+
+            BuildDesert(terrains, position2WetLevel, ref rslt);
+
+            BuildFarmPlain(ref rslt, random);
+            BuildFarmHill(ref rslt, random);
+
+            return rslt;
+        }
+
+        private static void BuildGrass(Dictionary<(int x, int y), TerrainType> terrains, Dictionary<(int x, int y), WetLevel> position2WetLevel, ref Dictionary<(int x, int y), BiomeType> rslt)
+        {
+            var level3Positions = position2WetLevel.Where(x => x.Value == WetLevel.LEVEL3).Select(x => x.Key).ToArray();
+            foreach (var position in level3Positions)
             {
-                if (terrains[position] == TerrainType.Plain)
+                if (terrains[position] == TerrainType.Hill)
                 {
-                    rslt.Add(position, BiomeType.Juggle_Plain);
+                    rslt.Add(position, BiomeType.Grass_Hill);
                 }
-                else if (terrains[position] == TerrainType.Hill)
+                else if (terrains[position] == TerrainType.Plain)
                 {
-                    rslt.Add(position, BiomeType.Juggle_Hill);
+                    rslt.Add(position, BiomeType.Grass_Plain);
                 }
                 else if (terrains[position] == TerrainType.Mount)
                 {
@@ -100,8 +104,13 @@ namespace HuangD.Maps
                     throw new Exception();
                 }
             }
+        }
 
-            foreach (var position in position2WetLevel.Where(x => x.Value == WetLevel.LEVEL3).Select(x => x.Key))
+        private static void BuildForest(Dictionary<(int x, int y), TerrainType> terrains, Dictionary<(int x, int y), WetLevel> position2WetLevel, ref Dictionary<(int x, int y), BiomeType> rslt)
+        {
+            var level2Positions = position2WetLevel.Where(x => x.Value == WetLevel.LEVEL2).Select(x => x.Key).ToArray();
+
+            foreach (var position in level2Positions)
             {
                 if (terrains[position] == TerrainType.Hill)
                 {
@@ -122,15 +131,48 @@ namespace HuangD.Maps
                 }
             }
 
-            foreach (var position in position2WetLevel.Where(x => x.Value == WetLevel.LEVEL2).Select(x => x.Key))
+            var orderPositions = rslt.Where(x=>x.Value == BiomeType.Juggle_Hill || x.Value == BiomeType.Juggle_Plain)
+                .Select(p => p.Key)
+                .OrderByDescending(key => key.x)
+                .ToArray();
+
+            foreach (var position in orderPositions.Take(orderPositions.Count() / 5 ))
             {
-                if (terrains[position] == TerrainType.Hill)
+                if (rslt[position] == BiomeType.Juggle_Hill)
                 {
-                    rslt.Add(position, BiomeType.Grass_Hill);
+                    rslt[position] = BiomeType.Forest_Hill;
                 }
-                else if (terrains[position] == TerrainType.Plain)
+                else if (rslt[position] == BiomeType.Juggle_Plain)
                 {
-                    rslt.Add(position, BiomeType.Grass_Plain);
+                    rslt[position] = BiomeType.Forest_Plain;
+                }
+            }
+        }
+
+        private static void BuildJuggleAndMarsh(Dictionary<(int x, int y), TerrainType> terrains, Dictionary<(int x, int y), float> heightMap, Dictionary<(int x, int y), WetLevel> position2WetLevel, ref Dictionary<(int x, int y), BiomeType> rslt)
+        {
+            var level1Positions = position2WetLevel.Where(x => x.Value == WetLevel.LEVEL1)
+                .Select(x => x.Key)
+                .OrderBy(x => heightMap[x])
+                .ToArray();
+
+            foreach (var position in level1Positions.Take(level1Positions.Count() / 10))
+            {
+                if (terrains[position] == TerrainType.Plain)
+                {
+                    rslt.Add(position, BiomeType.Marsh_Plain);
+                }
+            }
+
+            foreach (var position in level1Positions.Except(rslt.Keys))
+            {
+                if (terrains[position] == TerrainType.Plain)
+                {
+                    rslt.Add(position, BiomeType.Juggle_Plain);
+                }
+                else if (terrains[position] == TerrainType.Hill)
+                {
+                    rslt.Add(position, BiomeType.Juggle_Hill);
                 }
                 else if (terrains[position] == TerrainType.Mount)
                 {
@@ -141,8 +183,13 @@ namespace HuangD.Maps
                     throw new Exception();
                 }
             }
+        }
 
-            foreach (var position in position2WetLevel.Where(x => x.Value == WetLevel.LEVEL1).Select(x => x.Key))
+        private static void BuildDesert(Dictionary<(int x, int y), TerrainType> terrains, Dictionary<(int x, int y), WetLevel> position2WetLevel, ref Dictionary<(int x, int y), BiomeType> rslt)
+        {
+            var level4Positions = position2WetLevel.Where(x => x.Value == WetLevel.LEVEL4).Select(x => x.Key).ToArray();
+
+            foreach (var position in level4Positions)
             {
                 if (terrains[position] == TerrainType.Hill)
                 {
@@ -161,18 +208,14 @@ namespace HuangD.Maps
                     throw new Exception();
                 }
             }
-
-            BuildFarmPlain(ref rslt, random);
-            BuildFarmHill(ref rslt, random);
-
-            return rslt;
         }
 
         private static void BuildFarmHill(ref Dictionary<(int x, int y), BiomeType> rslt, GRandom random)
         {
+
             var forestPositions = rslt.Where(x => x.Value == BiomeType.Forest_Hill)
                             .OrderBy(_ => random.getNum(0, int.MaxValue))
-                            .Select(x => x.Key)
+                            .Select(p => p.Key)
                             .ToList();
 
             var rawforestPlainCount = forestPositions.Count();
@@ -185,7 +228,7 @@ namespace HuangD.Maps
 
             forestPositions.Remove(start);
 
-            while (forestPositions.Count > rawforestPlainCount * 0.9)
+            while (forestPositions.Count > rawforestPlainCount * 0.6)
             {
                 var curr = queue.Dequeue();
 
@@ -216,9 +259,11 @@ namespace HuangD.Maps
 
         private static void BuildFarmPlain(ref Dictionary<(int x, int y), BiomeType> rslt, GRandom random)
         {
+            var maxX = rslt.Max(p => p.Key.x);
             var forestPositions = rslt.Where(x => x.Value == BiomeType.Forest_Plain)
-                .OrderBy(_ => random.getNum(0, int.MaxValue))
                 .Select(x => x.Key)
+                .Where(k => k.x < maxX * 0.9)
+                .OrderBy(_ => random.getNum(0, int.MaxValue))
                 .ToList();
 
             var rawforestPlainCount = forestPositions.Count();
@@ -231,7 +276,7 @@ namespace HuangD.Maps
 
             forestPositions.Remove(start);
 
-            while (forestPositions.Count > rawforestPlainCount * 0.7)
+            while (forestPositions.Count > rawforestPlainCount * 0.9)
             {
                 var curr = queue.Dequeue();
 
@@ -247,7 +292,7 @@ namespace HuangD.Maps
                     queue.Enqueue(neighbor);
                 }
 
-                var newStarts = forestPositions.Take(3);
+                var newStarts = forestPositions.Take(1);
                 foreach (var newStart in newStarts)
                 {
                     rslt[newStart] = BiomeType.Farm_Plain;
