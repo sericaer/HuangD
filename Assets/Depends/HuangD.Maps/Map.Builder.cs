@@ -138,7 +138,7 @@ namespace HuangD.Maps
 
             private static HashSet<Block> GenerateWaterBlock(Block[] blocks, MapInit mapInit, GRandom random)
             {
-                var origins = blocks.Where(x => x.edges.Any(r => r.y == mapInit.width - 1 || r.x == 0))
+                var origins = blocks.Where(x => x.edges.Any(r => r.y > mapInit.width - 6 || r.x < 5))
                     .OrderBy(_=> random.getNum(0, int.MaxValue));
 
                 var hashSet = new HashSet<Block>(origins);
