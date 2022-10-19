@@ -17,35 +17,35 @@ namespace HuangD.Maps
                     case BiomeType.Desert_Plain:
                     case BiomeType.Desert_Hill:
                     case BiomeType.Desert_Mount:
-                        return 100;
-
-                    case BiomeType.Grass_Plain:
-                        return 1000;
-
-                    case BiomeType.Grass_Hill:
-                        return 500;
+                        return random.getNum(0,100);
 
                     case BiomeType.Grass_Mount:
-                        return 200;
+                        return random.getNum(100, 200);
 
-                    case BiomeType.Farm_Plain:
-                        return 10000;
+                    case BiomeType.Grass_Hill:
+                        return random.getNum(200, 500);
+
+                    case BiomeType.Grass_Plain:
+                        return random.getNum(500, 1000);
 
                     case BiomeType.Farm_Hill:
-                        return 3000;
+                        return random.getNum(3000, 5000);
+
+                    case BiomeType.Farm_Plain:
+                        return random.getNum(6000, 10000);
 
                     case BiomeType.Forest_Plain:
-                        return 800;
+                        return random.getNum(500, 1000);
 
                     case BiomeType.Forest_Hill:
-                        return 300;
+                        return random.getNum(300, 500);
 
                     case BiomeType.Juggle_Plain:
                     case BiomeType.Juggle_Hill:
-                        return 150;
+                        return random.getNum(100, 200);
 
                     case BiomeType.Marsh_Plain:
-                        return 100;
+                        return random.getNum(0, 100);
 
                     default:
                         throw new Exception();

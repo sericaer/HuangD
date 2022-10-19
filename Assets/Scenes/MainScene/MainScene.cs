@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class MainScene : MonoBehaviour
 {
-    public MapLogic mapLogic;
+    public MapCanvas mapCanvas;
     public CountryPanel countryPanel;
 
     // Start is called before the first frame update
@@ -29,7 +29,7 @@ public class MainScene : MonoBehaviour
         //emperorPanel.SetEmperor(session.playerCountry.leader);
         //countryPanel.SetCountry(session.playerCountry);
 
-        mapLogic.SetMapData(Facade.session.map);
+        mapCanvas.SetMapData(Facade.session.map);
         //mapLogic.SetProvinces(Facade.session.provinces);
         //mapLogic.SetCountries(Facade.session.countries);
 
@@ -39,14 +39,14 @@ public class MainScene : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetAxis("Mouse ScrollWheel") > 0)
-        {
-            mapLogic.ScrollWheel(true);
-        }
-        if (Input.GetAxis("Mouse ScrollWheel") < 0)
-        {
-            mapLogic.ScrollWheel(false);
-        }
+        //if (Input.GetAxis("Mouse ScrollWheel") > 0)
+        //{
+        //    mapLogic.ScrollWheel(true);
+        //}
+        //if (Input.GetAxis("Mouse ScrollWheel") < 0)
+        //{
+        //    mapLogic.ScrollWheel(false);
+        //}
     }
 }
 

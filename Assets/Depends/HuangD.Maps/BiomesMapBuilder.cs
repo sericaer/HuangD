@@ -11,13 +11,13 @@ namespace HuangD.Maps
     {
         enum WetLevel
         {
-            [Range(80, 100)]
+            [Range(70, 100)]
             LEVEL1,
-            [Range(30, 80)]
+            [Range(40, 70)]
             LEVEL2,
-            [Range(10, 30)]
+            [Range(20, 40)]
             LEVEL3,
-            [Range(0, 10)]
+            [Range(0, 20)]
             LEVEL4
         }
 
@@ -228,7 +228,7 @@ namespace HuangD.Maps
 
             forestPositions.Remove(start);
 
-            while (forestPositions.Count > rawforestPlainCount * 0.6)
+            while (forestPositions.Count > rawforestPlainCount * 0.9)
             {
                 var curr = queue.Dequeue();
 
@@ -260,7 +260,7 @@ namespace HuangD.Maps
         private static void BuildFarmPlain(ref Dictionary<(int x, int y), BiomeType> rslt, GRandom random)
         {
             var maxX = rslt.Max(p => p.Key.x);
-            var forestPositions = rslt.Where(x => x.Value == BiomeType.Forest_Plain)
+            var forestPositions = rslt.Where(x => x.Value == BiomeType.Forest_Plain || x.Value == BiomeType.Juggle_Plain)
                 .Select(x => x.Key)
                 .Where(k => k.x < maxX * 0.9)
                 .OrderBy(_ => random.getNum(0, int.MaxValue))
@@ -276,7 +276,7 @@ namespace HuangD.Maps
 
             forestPositions.Remove(start);
 
-            while (forestPositions.Count > rawforestPlainCount * 0.9)
+            while (forestPositions.Count > rawforestPlainCount * 0.8)
             {
                 var curr = queue.Dequeue();
 
@@ -286,6 +286,14 @@ namespace HuangD.Maps
 
                 foreach (var neighbor in neighbors)
                 {
+                    if(rslt[neighbor] == BiomeType.Juggle_Plain)
+                    {
+                        if(random.isTrue(70))
+                        {
+                            continue;
+                        }
+                    }
+
                     rslt[neighbor] = BiomeType.Farm_Plain;
 
                     forestPositions.Remove(neighbor);
@@ -293,8 +301,17 @@ namespace HuangD.Maps
                 }
 
                 var newStarts = forestPositions.Take(1);
+
                 foreach (var newStart in newStarts)
                 {
+                    if (rslt[newStart] == BiomeType.Juggle_Plain)
+                    {
+                        if (random.isTrue(90))
+                        {
+                            continue;
+                        }
+                    }
+
                     rslt[newStart] = BiomeType.Farm_Plain;
                     forestPositions.Remove(newStart);
                     queue.Enqueue(newStart);
