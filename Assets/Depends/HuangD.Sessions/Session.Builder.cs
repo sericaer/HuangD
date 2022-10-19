@@ -19,28 +19,28 @@ namespace HuangD.Sessions
             {
                 var map = Map.Builder.Build(mapInit, seed, processInfo);
 
-                var noWaterBlocks = map.blocks.Where(x => x.Value != TerrainType.Water).Select(x => x.Key);
+                //var noWaterBlocks = map.blocks.Where(x => x.Value != TerrainType.Water).Select(x => x.Key);
 
-                processInfo.Invoke("创建省份");
-                var provinces = Province.Builder.Build(noWaterBlocks.Count(), seed, defs.provinceNameDef);
+                //processInfo.Invoke("创建省份");
+                //var provinces = Province.Builder.Build(noWaterBlocks.Count(), seed, defs.provinceNameDef);
 
-                processInfo.Invoke("创建国家");
-                var countries = Country.Builder.Build(provinces.Count() / 3, seed, defs.countryNameDef);
+                //processInfo.Invoke("创建国家");
+                //var countries = Country.Builder.Build(provinces.Count() / 3, seed, defs.countryNameDef);
 
-                processInfo.Invoke("创建人物");
-                var persons = Person.Builder.Build(countries.SelectMany(x=>x.officeGroup.offices).Count(), seed, defs.personNameDef);
+                //processInfo.Invoke("创建人物");
+                //var persons = Person.Builder.Build(countries.SelectMany(x=>x.officeGroup.offices).Count(), seed, defs.personNameDef);
 
                 var session = new Session();
                 session.seed = seed;
                 session.map = map;
-                session.provinces = provinces;
-                session.countries = countries;
-                session.persons = persons;
+                //session.provinces = provinces;
+                //session.countries = countries;
+                //session.persons = persons;
 
-                session.playerCountry = countries.First();
+                //session.playerCountry = countries.First();
 
-                processInfo.Invoke("关联数据");
-                session.AssocateData(seed);
+                //processInfo.Invoke("关联数据");
+                //session.AssocateData(seed);
 
                 return session;
             }

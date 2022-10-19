@@ -18,4 +18,9 @@ public class TerrainMap : MapBehaviour
     {
         tilemap.SetTileColor(position, tile, colors[value]);
     }
+
+    internal void SetCell((int x, int y) position, TerrainType value)
+    {
+        tilemap.SetTileColor(new Vector3Int(position.x, position.y), tile, colors[value]);
+    }
 }

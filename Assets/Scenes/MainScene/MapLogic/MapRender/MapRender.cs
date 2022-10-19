@@ -75,41 +75,62 @@ public class MapRender : MonoBehaviour
     {
         //mapData = map;
 
-        foreach (var pair in map.nosieMap)
+        //foreach (var pair in map.nosieMap)
+        //{
+        //    noiseMap.SetCell(pair.Key, pair.Value);
+        //}
+        //foreach (var pair in map.heightMap)
+        //{
+        //    heightMap.SetCell(pair.Key, pair.Value);
+        //}
+        //foreach (var pair in map.blocks)
+        //{
+        //    blockMap.SetBlock(pair.Key);
+        //}
+        //foreach (var pair in map.terrains)
+        //{
+        //    terrainMap.SetCell(new Vector3Int(pair.Key.x, pair.Key.y), pair.Value);
+        //}
+        //foreach (var pos in map.rivers.Keys)
+        //{
+        //    riverMap.SetCell(new Vector3Int(pos.x, pos.y), map.rivers[pos]);
+        //}
+        //foreach(var pos in map.rainMap.Keys)
+        //{
+        //    rainMap.SetCell(new Vector3Int(pos.x, pos.y), map.rainMap[pos]);
+        //}
+        //foreach (var pos in map.wetnessMap.Keys)
+        //{
+        //    wetnessMap.SetCell(new Vector3Int(pos.x, pos.y), map.wetnessMap[pos]);
+        //}
+        //foreach (var pos in map.biomesMap.Keys)
+        //{
+        //    biomesMap.SetCell(new Vector3Int(pos.x, pos.y), map.biomesMap[pos]);
+        //}
+        //foreach (var pos in map.populationMap.Keys)
+        //{
+        //    populationMap.SetCell(new Vector3Int(pos.x, pos.y), map.populationMap[pos]);
+        //}
+
+        foreach(var cell in map.blockMap)
         {
-            noiseMap.SetCell(pair.Key, pair.Value);
+            noiseMap.SetCell(cell.position, cell.noise);
+            blockMap.SetCell(cell.position, cell.block);
+            heightMap.SetCell(cell.position, cell.height);
+            terrainMap.SetCell(cell.position, cell.terrain);
+            rainMap.SetCell(cell.position, cell.rain);
+            wetnessMap.SetCell(cell.position, cell.wetness);
+
+            if(cell.landInfo != null)
+            {
+                biomesMap.SetCell(cell.position, cell.landInfo.biome);
+                populationMap.SetCell(cell.position, cell.landInfo.population);
+            }
         }
-        foreach (var pair in map.heightMap)
+
+        foreach(var riverItem in map.riverMap)
         {
-            heightMap.SetCell(pair.Key, pair.Value);
-        }
-        foreach (var pair in map.blocks)
-        {
-            blockMap.SetBlock(pair.Key);
-        }
-        foreach (var pair in map.terrains)
-        {
-            terrainMap.SetCell(new Vector3Int(pair.Key.x, pair.Key.y), pair.Value);
-        }
-        foreach (var pos in map.rivers.Keys)
-        {
-            riverMap.SetCell(new Vector3Int(pos.x, pos.y), map.rivers[pos]);
-        }
-        foreach(var pos in map.rainMap.Keys)
-        {
-            rainMap.SetCell(new Vector3Int(pos.x, pos.y), map.rainMap[pos]);
-        }
-        foreach (var pos in map.wetnessMap.Keys)
-        {
-            wetnessMap.SetCell(new Vector3Int(pos.x, pos.y), map.wetnessMap[pos]);
-        }
-        foreach (var pos in map.biomesMap.Keys)
-        {
-            biomesMap.SetCell(new Vector3Int(pos.x, pos.y), map.biomesMap[pos]);
-        }
-        foreach (var pos in map.populationMap.Keys)
-        {
-            populationMap.SetCell(new Vector3Int(pos.x, pos.y), map.populationMap[pos]);
+            riverMap.SetCell(riverItem.position, riverItem.index);
         }
     }
 

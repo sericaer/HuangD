@@ -92,7 +92,7 @@ public class MapCanvas : MonoBehaviour, IPointerDownHandler
 
     private void MoveCameraToMapCenter()
     {
-        var positions = mapData.nosieMap.Select(x => x.Key);
+        var positions = mapData.blockMap.Select(x => x.position);
 
         var maxX = positions.Max(p => p.x);
         var maxY = positions.Max(p => p.y);

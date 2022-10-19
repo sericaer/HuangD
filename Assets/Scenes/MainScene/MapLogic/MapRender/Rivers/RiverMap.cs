@@ -31,4 +31,9 @@ public class RiverMap : MapBehaviour
     {
         tilemap.SetTileColor(position, tile, Color.blue);
     }
+
+    internal void SetCell((int x, int y) position, int direct)
+    {
+        tilemap.SetTileColor(new Vector3Int(position.x, position.y), tile, Color.blue);
+    }
 }

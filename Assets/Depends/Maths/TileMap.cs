@@ -187,10 +187,10 @@ namespace Math.TileMap
             this.edges = elements.Where(x => Hexagon.GetNeighbors(x).Any(n => !elements.Contains(n))).ToHashSet();
         }
 
-        public bool isNeighbor(Block peer)
-        {
-            return this.edges.Any(e => Hexagon.GetNeighbors(e).Intersect(peer.edges).Any());
-        }
+        //public bool isNeighbor(Block peer)
+        //{
+        //    return this.edges.Any(e => Hexagon.GetNeighbors(e).Intersect(peer.edges).Any());
+        //}
 
         //public class BuilderGroup
         //{

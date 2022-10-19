@@ -1,36 +1,52 @@
 ﻿using Math.TileMap;
 using System.Collections.Generic;
+using System.Linq;
+
 using UnityEngine;
 
 public class BlockMap : MapBehaviour
 {
-    private HashSet<Color> colors;
+    //private HashSet<Color> colors;
 
-    internal void SetBlock(Block block)
+    private Dictionary<int, Color> dictColor;
+
+    //internal void SetBlock(Block block)
+    //{
+    //    var color = RandomColor();
+
+    //    foreach (var elem in block.elements)
+    //    {
+    //        tilemap.SetTileColor(new Vector3Int(elem.x, elem.y), tile, color);
+    //    }
+    //}
+
+    private Color GetColor(int key)
     {
-        var color = RandomColor();
-
-        foreach (var elem in block.elements)
+        if (dictColor == null)
         {
-            tilemap.SetTileColor(new Vector3Int(elem.x, elem.y), tile, color);
+            dictColor = new Dictionary<int, Color>();
         }
-    }
 
-    private Color RandomColor()
-    {
-        if (colors == null)
+        if(dictColor.ContainsKey(key))
         {
-            colors = new HashSet<Color>();
+            return dictColor[key];
         }
 
         while (true)
         {
             var color = Random.ColorHSV();
-            if (!colors.Contains(color))
+            if (!dictColor.ContainsValue(color))
             {
-                colors.Add(color);
+                dictColor.Add(key, color);
                 return color;
             }
         }
+    }
+
+    internal void SetCell((int x, int y) position, int block)
+    {
+        var color = GetColor(block);
+
+        tilemap.SetTileColor(new Vector3Int(position.x, position.y), tile, color);
     }
 }

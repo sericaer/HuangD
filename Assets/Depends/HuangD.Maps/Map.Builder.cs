@@ -23,16 +23,21 @@ namespace HuangD.Maps
             {
 
                 var random = new GRandom(seed);
+                
+                var positions = Enumerable.Range(0, mapInit.high)
+                                         .SelectMany(x => Enumerable.Range(0, mapInit.width).Select(y => (x, y)));
 
                 processInfo.Invoke("创建噪音图");
-                var noiseMap = NoiseMapBuilder.Build(random, mapInit.high, mapInit.width);
+                var noiseMap = NoiseMapBuilder.Build(positions, random);
 
                 processInfo.Invoke("创建地块图");
                 var blocks = BlockBuilder.Build(noiseMap, random).ToArray();
+                var blockMap = BlockBuilder.Build2(noiseMap, random);
 
                 processInfo.Invoke("创建高程图");
                 var block2Terrain = GroupByTerrainType(blocks, mapInit, random);
                 var heightMap = HeightMapBuilder.Build(block2Terrain, noiseMap, random);
+                //var heightMap = HeightMapBuilder.Build(block2Terrain, noiseMap, random);
 
                 processInfo.Invoke("创建地形图");
                 var terrains = TerrainMapBuilder.Build(heightMap);
@@ -53,18 +58,51 @@ namespace HuangD.Maps
                 processInfo.Invoke("创建人口图");
                 var populationMap = PopulationMapBuilder.Build(biomesMap, random);
 
+                var cells = positions.Select(x =>
+                {
+                    var cell = new Cell();
+                    cell.position = x;
+                    cell.block = blockMap[x];
+                    cell.height = heightMap[x];
+                    cell.noise = noiseMap[x];
+                    cell.rain = rainMap[x];
+                    cell.terrain = terrains[x];
+                    cell.wetness = wetnessMap[x];
+
+                    if(cell.terrain != TerrainType.Water)
+                    {
+                        cell.landInfo = new LandInfo();
+
+                        cell.landInfo.biome = biomesMap[x];
+                        cell.landInfo.population = populationMap[x];
+                    }
+                    return cell;
+                }).ToArray();
+
+                var riverItems = rivers.Keys.Select(x =>
+                {
+                    var item = new RiverMap.Item();
+                    item.position = x;
+                    item.index = rivers[x];
+
+                    return item;
+                }).ToArray();
+
                 var map = new Map();
 
-                map.nosieMap = noiseMap;
-                map.heightMap = heightMap;
-                map.blocks = block2Terrain;
-                map.terrains = terrains;
-                map.rainMap = rainMap;
-                map.rivers = rivers;
-                //map.riverBanks = riverBanks;
-                map.wetnessMap = wetnessMap;
-                map.biomesMap = biomesMap;
-                map.populationMap = populationMap;
+                map.blockMap = new BlockMap(cells);
+                map.riverMap = new RiverMap(riverItems);
+
+                //map.nosieMap = noiseMap;
+                //map.heightMap = heightMap;
+                //map.blocks = block2Terrain;
+                //map.terrains = terrains;
+                //map.rainMap = rainMap;
+                //map.rivers = rivers;
+                ////map.riverBanks = riverBanks;
+                //map.wetnessMap = wetnessMap;
+                //map.biomesMap = biomesMap;
+                //map.populationMap = populationMap;
 
                 return map;
             }
