@@ -115,7 +115,7 @@ public class MapRender : MonoBehaviour
         foreach(var cell in map.blockMap)
         {
             noiseMap.SetCell(cell.position, cell.noise);
-            blockMap.SetCell(cell.position, cell.block);
+            blockMap.SetCell(cell.position, cell.block, cell.isBlockEdge);
             heightMap.SetCell(cell.position, cell.height);
             terrainMap.SetCell(cell.position, cell.terrain);
             rainMap.SetCell(cell.position, cell.rain);

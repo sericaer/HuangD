@@ -14,7 +14,7 @@ namespace HuangD.Maps
         {
             return heightMap.ToDictionary(k => k.Key, v =>
               {
-                  if (v.Value < 0)
+                  if (v.Value < 0.0000001)
                   {
                       return TerrainType.Water;
                   }

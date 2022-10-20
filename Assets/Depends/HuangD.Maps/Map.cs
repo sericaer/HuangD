@@ -34,6 +34,7 @@ namespace HuangD.Maps
         public (int x, int y) position { get; set; }
         public float noise { get; set; }
         public int block { get; set; }
+        public bool isBlockEdge { get; set; }
         public float height { get; set; }
         public TerrainType terrain { get; set; }
         public float rain { get; set; }

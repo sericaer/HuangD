@@ -85,7 +85,7 @@ namespace HuangD.Maps
             return blocks.ToHashSet();
         }
 
-        internal static Dictionary<(int x, int y), int> Build2(Dictionary<(int x, int y), float> noiseMap, GRandom random)
+        internal static Dictionary<(int x, int y), (int blockId, bool isEdge)> Build2(Dictionary<(int x, int y), float> noiseMap, GRandom random)
         {
             var origins = noiseMap.Keys.OrderBy(_ => random.getNum(0, int.MaxValue))
                     .Take(noiseMap.Count() / 50)
@@ -96,7 +96,7 @@ namespace HuangD.Maps
             var vaildDict = noiseMap.Keys.Except(origins)
                 .ToDictionary(k => k, v => noiseMap[v]);
 
-            while (vaildDict.Count != 0)
+            while (blockGroups.Sum(x=>x.dictElement2Edge.Count) != noiseMap.Count)
             {
                 foreach(var group in blockGroups)
                 {
@@ -104,12 +104,12 @@ namespace HuangD.Maps
                 }
             }
 
-            var rslt = new Dictionary<(int x, int y), int>();
+            var rslt = new Dictionary<(int x, int y), (int blockId, bool isEdge)>();
             for(int i=0; i<blockGroups.Count; i++)
             {
-                foreach(var pos in blockGroups[i].all)
+                foreach(var pair in blockGroups[i].dictElement2Edge)
                 {
-                    rslt.Add(pos, i);
+                    rslt.Add(pair.Key, (i, pair.Value));
                 }
             }
 
@@ -118,38 +118,44 @@ namespace HuangD.Maps
 
         class BlockGroup
         {
-            public IEnumerable<(int x, int y)> all => _elements.Concat(edgeDict.Keys);
+            public Dictionary<(int x, int y), bool> dictElement2Edge = new Dictionary<(int x, int y), bool>();
 
-            public Dictionary<(int x, int y), ItemValue> edgeDict = new Dictionary<(int x, int y), ItemValue>();
+            public Dictionary<(int x, int y), ItemValue> needFillDict = new Dictionary<(int x, int y), ItemValue>();
 
-            private List<(int x, int y)> _elements = new List<(int x, int y)>();
+            //private List<(int x, int y)> _elements = new List<(int x, int y)>();
 
             public BlockGroup((int x, int y) star)
             {
-                edgeDict.Add(star, new ItemValue(0.0f, 0.0f));
+                needFillDict.Add(star, new ItemValue(0.0f, 0.0f));
             }
 
             public void IncElement(Dictionary<(int x, int y), float> vaildDict)
             {
-                foreach (var key in edgeDict.Keys.ToArray())
+                foreach (var key in needFillDict.Keys.ToArray())
                 {
-                    edgeDict[key].curr += 0.1f;
-                    if (!edgeDict[key].isFull)
+                    needFillDict[key].curr += 0.1f;
+                    if (!needFillDict[key].isFull)
                     {
                         continue;
                     }
 
-                    edgeDict.Remove(key);
-                    _elements.Add(key);
+                    needFillDict.Remove(key);
+                    dictElement2Edge.Add(key, false);
 
-                    foreach (var next in Hexagon.GetNeighbors(key).Where(n => vaildDict.ContainsKey(n)).ToArray())
+                    foreach (var next in Hexagon.GetNeighbors(key).ToArray())
                     {
-                        if(_elements.Contains(next) || edgeDict.ContainsKey(next))
+                        if(dictElement2Edge.ContainsKey(next) || needFillDict.ContainsKey(next))
                         {
                             continue;
                         }
 
-                        edgeDict.Add(next, new ItemValue(0.0f, vaildDict[next]));
+                        if(!vaildDict.ContainsKey(next))
+                        {
+                            dictElement2Edge[key] = true;
+                            continue;
+                        }
+
+                        needFillDict.Add(next, new ItemValue(0.0f, vaildDict[next]));
                         vaildDict.Remove(next);
                     }
                 }

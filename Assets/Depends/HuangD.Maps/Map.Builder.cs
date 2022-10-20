@@ -31,13 +31,13 @@ namespace HuangD.Maps
                 var noiseMap = NoiseMapBuilder.Build(positions, random);
 
                 processInfo.Invoke("创建地块图");
-                var blocks = BlockBuilder.Build(noiseMap, random).ToArray();
+                //var blocks = BlockBuilder.Build(noiseMap, random).ToArray();
                 var blockMap = BlockBuilder.Build2(noiseMap, random);
 
                 processInfo.Invoke("创建高程图");
-                var block2Terrain = GroupByTerrainType(blocks, mapInit, random);
-                var heightMap = HeightMapBuilder.Build(block2Terrain, noiseMap, random);
+                //var block2Terrain = GroupByTerrainType(blocks, mapInit, random);
                 //var heightMap = HeightMapBuilder.Build(block2Terrain, noiseMap, random);
+                var heightMap = HeightMapBuilder.Build2(blockMap, noiseMap, random);
 
                 processInfo.Invoke("创建地形图");
                 var terrains = TerrainMapBuilder.Build(heightMap);
@@ -62,7 +62,9 @@ namespace HuangD.Maps
                 {
                     var cell = new Cell();
                     cell.position = x;
-                    cell.block = blockMap[x];
+                    cell.block = blockMap[x].blockId;
+                    cell.isBlockEdge = blockMap[x].isEdge;
+
                     cell.height = heightMap[x];
                     cell.noise = noiseMap[x];
                     cell.rain = rainMap[x];
@@ -76,6 +78,7 @@ namespace HuangD.Maps
                         cell.landInfo.biome = biomesMap[x];
                         cell.landInfo.population = populationMap[x];
                     }
+
                     return cell;
                 }).ToArray();
 

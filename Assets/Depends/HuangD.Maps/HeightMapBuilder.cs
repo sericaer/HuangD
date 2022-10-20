@@ -79,6 +79,99 @@ namespace HuangD.Maps
             return rslt;
         }
 
+        class BlockInfo
+        {
+            public int id;
+            public (int x, int y)[] elements;
+            public (int x, int y)[] edges;
+
+            public int[] neighors;
+        }
+
+        internal static Dictionary<(int x, int y), float> Build2(Dictionary<(int x, int y), (int blockId, bool isEdge)> blockMap, Dictionary<(int x, int y), float> noiseMap, GRandom random)
+        {
+            Debug.Log("Build 0");
+
+            var blocks = blockMap.GroupBy(x => x.Value.blockId)
+                    .Select(x => new BlockInfo()
+                    {
+                        id = x.Key,
+                        elements = x.Select(y => y.Key).ToArray(),
+                        edges = x.Where(y=>y.Value.isEdge).Select(y => y.Key).ToArray()
+                    }).ToArray();
+
+            Debug.Log("Build 1");
+
+            foreach (var block in blocks)
+            {
+                block.neighors = blocks.Where(x =>
+                {
+                    if(x != block)
+                    {
+                        foreach (var edge in x.edges)
+                        {
+                            foreach (var neighbor in Hexagon.GetNeighbors(edge))
+                            {
+                                if (block.edges.Contains(neighbor))
+                                {
+                                    return true;
+                                }
+                            }
+                        }
+                    }    
+
+                    return false;
+                }).Select(x => x.id).ToArray();
+            }
+
+            Debug.Log("Build 2");
+
+            Dictionary<int, int> dictSouthOrder = GenerateEdgeOrder(blocks, blocks.Where(x => x.edges.Any(e => e.x == 0)).ToArray());
+            Dictionary<int, int> dictEastOrder = GenerateEdgeOrder(blocks, blocks.Where(x => x.edges.Any(e => e.y == noiseMap.Keys.Max(k => k.y))).ToArray());
+
+            Dictionary<int, int> dictFactor = blocks.Select(x => x.id).ToDictionary(k => k, k => System.Math.Min(dictSouthOrder[k], dictEastOrder[k]));
+
+            var rslt = new Dictionary<(int x, int y), float>();
+            foreach(var block in blocks)
+            {
+                foreach(var pos in block.elements)
+                {
+                    rslt.Add(pos, dictFactor[block.id] * noiseMap[pos]);
+                }
+            }
+
+            Debug.Log("Build 3");
+
+            return rslt.ToDictionary(p => p.Key, p => p.Value / rslt.Values.Max());
+        }
+
+        private static Dictionary<int, int> GenerateEdgeOrder(IEnumerable<BlockInfo> blocks, BlockInfo[] originBlocks)
+        {
+            var allBlocks = blocks.ToDictionary(v => v.id, v => v);
+
+            var queue = new Queue<BlockInfo>(originBlocks);
+
+            var rslt = originBlocks.Select(x => x.id).ToDictionary(k => k, _ => 0);
+
+            while (queue.Count != 0)
+            {
+                var curr = queue.Dequeue();
+
+                foreach (var nextId in curr.neighors)
+                {
+                    if(!rslt.ContainsKey(nextId) ||  rslt[curr.id] + 1 < rslt[nextId])
+                    {
+                        rslt[nextId] = rslt[curr.id] + 1;
+                        queue.Enqueue(allBlocks[nextId]);
+                    }
+                }
+            }
+
+            return rslt;
+        }
+
+
+
         //internal static Dictionary<(int x, int y), float> Build(Dictionary<(int x, int y), int> blockMap, Dictionary<(int x, int y), float> noiseMap, GRandom random)
         //{
 

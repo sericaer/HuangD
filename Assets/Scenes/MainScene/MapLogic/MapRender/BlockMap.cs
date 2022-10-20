@@ -43,9 +43,14 @@ public class BlockMap : MapBehaviour
         }
     }
 
-    internal void SetCell((int x, int y) position, int block)
+    internal void SetCell((int x, int y) position, int block, bool isBlockEdge)
     {
         var color = GetColor(block);
+
+        if(isBlockEdge)
+        {
+            color.a = 0.3f;
+        }
 
         tilemap.SetTileColor(new Vector3Int(position.x, position.y), tile, color);
     }
