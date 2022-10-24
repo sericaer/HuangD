@@ -7,6 +7,14 @@ using PositionGroup = System.Collections.Generic.HashSet<(int x, int y)>;
 
 namespace HuangD.Maps
 {
+    class BlockInfo
+    {
+        public int blockId;
+        public bool isEdge = true;
+
+        public HashSet<int> neighborBlockIds = new HashSet<int>();
+    }
+
     static class BlockBuilder
     {
         internal static Block[] Build(Dictionary<(int x, int y), float> noiseMap, GRandom random)
@@ -85,35 +93,77 @@ namespace HuangD.Maps
             return blocks.ToHashSet();
         }
 
-        internal static Dictionary<(int x, int y), (int blockId, bool isEdge)> Build2(Dictionary<(int x, int y), float> noiseMap, GRandom random)
+        internal static Dictionary<(int x, int y), BlockInfo> Build2(Dictionary<(int x, int y), float> noiseMap, GRandom random)
         {
             var origins = noiseMap.Keys.OrderBy(_ => random.getNum(0, int.MaxValue))
                     .Take(noiseMap.Count() / 50)
                     .ToArray();
 
-            var blockGroups = new List<BlockGroup>(origins.Select(x=>new BlockGroup(x)));
+            var needFillDict = origins.ToDictionary(k => k, k=> new ItemValue(Array.IndexOf(origins, k), noiseMap[k], noiseMap[k]));
+            var pos2BlockInfo = new Dictionary<(int x, int y), BlockInfo>();
 
-            var vaildDict = noiseMap.Keys.Except(origins)
-                .ToDictionary(k => k, v => noiseMap[v]);
-
-            while (blockGroups.Sum(x=>x.dictElement2Edge.Count) != noiseMap.Count)
+            while (pos2BlockInfo.Count != noiseMap.Count)
             {
-                foreach(var group in blockGroups)
+                foreach (var key in needFillDict.Keys.ToArray())
                 {
-                    group.IncElement(vaildDict);
+                    needFillDict[key].curr += 0.1f;
+                    if (!needFillDict[key].isFull)
+                    {
+                        continue;
+                    }
+
+                    pos2BlockInfo.Add(key, new BlockInfo() { blockId = needFillDict[key].blockId });
+                    needFillDict.Remove(key);
+
+                    foreach (var next in Hexagon.GetNeighbors(key).ToArray())
+                    {
+                        if (!noiseMap.ContainsKey(next))
+                        {
+                            continue;
+                        }
+
+                        if (needFillDict.ContainsKey(next))
+                        {
+                            continue;
+                        }
+
+                        if (pos2BlockInfo.ContainsKey(next))
+                        {
+                            if(pos2BlockInfo[next].blockId != pos2BlockInfo[key].blockId)
+                            {
+                                pos2BlockInfo[key].neighborBlockIds.Add(pos2BlockInfo[next].blockId);
+                                pos2BlockInfo[next].neighborBlockIds.Add(pos2BlockInfo[key].blockId);
+
+                                pos2BlockInfo[key].isEdge = true;
+                                pos2BlockInfo[next].isEdge = true;
+                            }
+
+                            continue;
+                        }
+
+                        needFillDict.Add(next, new ItemValue(pos2BlockInfo[key].blockId, 0.0f, noiseMap[next]));
+                    }
                 }
             }
 
-            var rslt = new Dictionary<(int x, int y), (int blockId, bool isEdge)>();
-            for(int i=0; i<blockGroups.Count; i++)
+            return pos2BlockInfo;
+        }
+
+        public class ItemValue
+        {
+            public int blockId;
+
+            public float curr;
+            public float need;
+
+            public ItemValue(int blockId, float curr, float need)
             {
-                foreach(var pair in blockGroups[i].dictElement2Edge)
-                {
-                    rslt.Add(pair.Key, (i, pair.Value));
-                }
+                this.blockId = blockId;
+                this.curr = curr;
+                this.need = need;
             }
 
-            return rslt;
+            public bool isFull => curr >= need;
         }
 
         class BlockGroup

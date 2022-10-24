@@ -31,16 +31,18 @@ namespace HuangD.Maps
                 var noiseMap = NoiseMapBuilder.Build(positions, random);
 
                 processInfo.Invoke("创建地块图");
-                //var blocks = BlockBuilder.Build(noiseMap, random).ToArray();
                 var blockMap = BlockBuilder.Build2(noiseMap, random);
 
                 processInfo.Invoke("创建高程图");
-                //var block2Terrain = GroupByTerrainType(blocks, mapInit, random);
-                //var heightMap = HeightMapBuilder.Build(block2Terrain, noiseMap, random);
-                var heightMap = HeightMapBuilder.Build2(blockMap, noiseMap, random);
+                var heightMap = HeightMapBuilder.Build(blockMap, noiseMap, random);
 
                 processInfo.Invoke("创建地形图");
-                var terrains = TerrainMapBuilder.Build(heightMap);
+                var terrains = TerrainMapBuilder.Build(heightMap, new Dictionary<TerrainType, int>()
+                {
+                    {TerrainType.Plain, 55 },
+                    {TerrainType.Hill, 25 },
+                    {TerrainType.Mount, 10}
+                });
 
                 processInfo.Invoke("创建降水图");
                 var rainMap = RainMapBuilder.Build(terrains, random);
@@ -71,7 +73,7 @@ namespace HuangD.Maps
                     cell.terrain = terrains[x];
                     cell.wetness = wetnessMap[x];
 
-                    if(cell.terrain != TerrainType.Water)
+                    if (cell.terrain != TerrainType.Water)
                     {
                         cell.landInfo = new LandInfo();
 
@@ -95,17 +97,6 @@ namespace HuangD.Maps
 
                 map.blockMap = new BlockMap(cells);
                 map.riverMap = new RiverMap(riverItems);
-
-                //map.nosieMap = noiseMap;
-                //map.heightMap = heightMap;
-                //map.blocks = block2Terrain;
-                //map.terrains = terrains;
-                //map.rainMap = rainMap;
-                //map.rivers = rivers;
-                ////map.riverBanks = riverBanks;
-                //map.wetnessMap = wetnessMap;
-                //map.biomesMap = biomesMap;
-                //map.populationMap = populationMap;
 
                 return map;
             }
@@ -136,104 +127,6 @@ namespace HuangD.Maps
                 }
 
                 return rslt;
-            }
-
-            internal static Dictionary<Block, TerrainType> GroupByTerrainType(Block[] blocks, MapInit mapInit, GRandom random)
-            {
-                Debug.Log("GroupByTerrainType Start");
-
-                var dict = new Dictionary<Block, TerrainType>();
-
-                foreach (var block in GenerateWaterBlock(blocks, mapInit, random))
-                {
-                    dict.Add(block, TerrainType.Water);
-                }
-
-                blocks = blocks.Except(dict.Keys).ToArray();
-                
-                foreach (var block in blocks.Where(x => x.edges.Any(r => r.y == 0)))
-                {
-                    dict.Add(block, TerrainType.Mount);
-                }
-
-                var queue = new Queue<Block>(blocks.Except(dict.Keys));
-                while(queue.Count != 0)
-                {
-                    var block = queue.Dequeue();
-
-                    var neighors = dict.Keys.Where(b => b.neighors.Contains(block)).ToArray();
-                    if(neighors.Length == 0)
-                    {
-                        queue.Enqueue(block);
-                        continue;
-                    }
-
-                    var terrainType = CalcTerrainType(neighors.Select(n=> dict[n]), random);
-                    dict.Add(block, terrainType);
-                }
-
-                Debug.Log("GroupByTerrainType End");
-
-                return dict;
-            }
-
-            private static HashSet<Block> GenerateWaterBlock(Block[] blocks, MapInit mapInit, GRandom random)
-            {
-                var origins = blocks.Where(x => x.edges.Any(r => r.y > mapInit.width - 6 || r.x < 5))
-                    .OrderBy(_=> random.getNum(0, int.MaxValue));
-
-                var hashSet = new HashSet<Block>(origins);
-
-                while (hashSet.Sum(x=>x.elements.Count) <= blocks.Sum(x=>x.elements.Count)*0.3)
-                {
-                    var curr = hashSet.ElementAt(random.getNum(0, hashSet.Count));
-                    var next = curr.neighors.FirstOrDefault(x => !hashSet.Contains(x));
-                    if(next != null)
-                    {
-                        hashSet.Add(next);
-                    }
-                }
-
-                return hashSet.ToHashSet();
-            }
-
-            private static TerrainType CalcTerrainType(IEnumerable<TerrainType> neighors, GRandom random)
-            {
-                var percentGroup = new Dictionary<TerrainType, int>()
-                    {
-                        {TerrainType.Mount, 0 },
-                        {TerrainType.Hill, 0 },
-                        {TerrainType.Plain, 0 },
-                        {TerrainType.Water, 0 },
-                    };
-
-                foreach (var type in neighors.OrderBy(_=>random.getNum(0, int.MaxValue)))
-                {
-
-                    switch(type)
-                    {
-                        case TerrainType.Water:
-                            percentGroup[TerrainType.Plain] += 10;
-                            break;
-                        case TerrainType.Plain:
-                            percentGroup[TerrainType.Hill] += 10;
-                            percentGroup[TerrainType.Plain] += 30;
-                            break;
-                        case TerrainType.Hill:
-                            percentGroup[TerrainType.Hill] += 20;
-                            percentGroup[TerrainType.Plain] += 20;
-                            percentGroup[TerrainType.Mount] += 5;
-                            break;
-                        case TerrainType.Mount:
-                            percentGroup[TerrainType.Hill] += 10;
-                            percentGroup[TerrainType.Mount] += 30;
-                            break;
-                        default:
-                            throw new System.Exception($"not support type:{type}");
-                    }
-                }
-
-                return random.RandomInGroup<TerrainType>(percentGroup.Select(x => (x.Value, x.Key)));
             }
         }
     }

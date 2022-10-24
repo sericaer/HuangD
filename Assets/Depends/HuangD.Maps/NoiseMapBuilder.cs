@@ -23,7 +23,15 @@ namespace HuangD.Maps
                 return average;
             });
 
-            return cellularMap.ToDictionary(k=>k.Key, v=> v.Value / cellularMap.Values.Max());
+            var rslt = new Dictionary<(int x, int y), float>();
+
+            var array = cellularMap.OrderBy(x => x.Value).ToArray();
+            for(int i=0; i<array.Length; i++)
+            {
+                rslt.Add(array[i].Key, (i+1) * 1f / array.Length);
+            }
+
+            return rslt;
         }
     }
 }

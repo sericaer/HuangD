@@ -46,14 +46,14 @@ namespace HuangD.Sessions
             }
         }
 
-        private void AssocateData(string seed)
-        {
-            var random = new GRandom(seed);
+        //private void AssocateData(string seed)
+        //{
+        //    var random = new GRandom(seed);
 
-            SetProvince2Block(random);
-            SetCountry2Provinces(random);
-            SetPerson2Office(random);
-        }
+        //    SetProvince2Block(random);
+        //    SetCountry2Provinces(random);
+        //    SetPerson2Office(random);
+        //}
 
         private void SetPerson2Office(GRandom random)
         {
@@ -142,14 +142,14 @@ namespace HuangD.Sessions
             //}
         }
 
-        private void SetProvince2Block(GRandom random)
-        {
-            var vaildProvinceTerrains = new TerrainType[] { TerrainType.Hill, TerrainType.Mount, TerrainType.Plain };
+        //private void SetProvince2Block(GRandom random)
+        //{
+        //    var vaildProvinceTerrains = new TerrainType[] { TerrainType.Hill, TerrainType.Mount, TerrainType.Plain };
 
-            var vaildProvinceBlocks = map.blocks.Where(x => vaildProvinceTerrains.Contains(x.Value)).Select(x => x.Key);
+        //    var vaildProvinceBlocks = map.blocks.Where(x => vaildProvinceTerrains.Contains(x.Value)).Select(x => x.Key);
 
-            province2Block = Enumerable.Range(0, provinces.Count())
-                .ToDictionary(i => provinces.ElementAt(i), j => vaildProvinceBlocks.ElementAt(j));
-        }
+        //    province2Block = Enumerable.Range(0, provinces.Count())
+        //        .ToDictionary(i => provinces.ElementAt(i), j => vaildProvinceBlocks.ElementAt(j));
+        //}
     }
 }

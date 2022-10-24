@@ -87,7 +87,9 @@ public class MapCanvas : MonoBehaviour, IPointerDownHandler
         var cellIndex = mapGrid.WorldToCell(eventData.pointerCurrentRaycast.worldPosition);
         var pos = (cellIndex.x, cellIndex.y);
 
-        Debug.Log($"POS:{pos}, Height:{mapData.heightMap[pos]}, terrain:{mapData.terrains[pos]}, rain:{mapData.rainMap[pos]}, wetness:{mapData.wetnessMap[pos]}, biomes:{mapData.biomesMap[pos]}， population{mapData.populationMap[pos]}");
+        var block = mapData.blockMap[pos];
+
+        Debug.Log($"POS:{pos}, Height:{block.height}, terrain:{block.terrain}, rain:{block.rain}, wetness:{block.wetness}, biomes:{block.landInfo?.biome}， population{block.landInfo?.population}");
     }
 
     private void MoveCameraToMapCenter()
