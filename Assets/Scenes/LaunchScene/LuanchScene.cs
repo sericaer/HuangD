@@ -5,6 +5,7 @@ using HuangD.Mods;
 using HuangD.Sessions;
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -30,7 +31,15 @@ public class LuanchScene: MonoBehaviour
         {
             var seed = System.Guid.NewGuid().ToString();
             Debug.Log($"Seed:{seed}");
-            Facade.session = Session.Builder.Build(new HuangD.Maps.MapInit() { width = 120, high = 80},
+            Facade.session = Session.Builder.Build(new HuangD.Maps.MapInit() { 
+                width = 120, 
+                high = 80, 
+                terrainPercents = new Dictionary<TerrainType, int>()
+                {
+                    {TerrainType.Plain, 55 },
+                    {TerrainType.Hill, 25 },
+                    {TerrainType.Mount, 10}
+                }},
                 seed,
                 Facade.mod.defs,
                 (info)=> RunOnMainThread.Enqueue(() => UpdateBroad(info)));

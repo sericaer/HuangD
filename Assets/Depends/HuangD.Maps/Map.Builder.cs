@@ -12,6 +12,8 @@ namespace HuangD.Maps
     {
         public int width;
         public int high;
+
+        public Dictionary<TerrainType, int> terrainPercents;
     }
 
     public partial class Map
@@ -37,12 +39,7 @@ namespace HuangD.Maps
                 var heightMap = HeightMapBuilder.Build(blockMap, noiseMap, random);
 
                 processInfo.Invoke("创建地形图");
-                var terrains = TerrainMapBuilder.Build(heightMap, new Dictionary<TerrainType, int>()
-                {
-                    {TerrainType.Plain, 55 },
-                    {TerrainType.Hill, 25 },
-                    {TerrainType.Mount, 10}
-                });
+                var terrains = TerrainMapBuilder.Build(heightMap, mapInit.terrainPercents);
 
                 processInfo.Invoke("创建降水图");
                 var rainMap = RainMapBuilder.Build(terrains, random);
@@ -69,8 +66,8 @@ namespace HuangD.Maps
 
                     cell.height = heightMap[x];
                     cell.noise = noiseMap[x];
-                    cell.rain = rainMap[x];
                     cell.terrain = terrains[x];
+                    cell.rain = rainMap[x];
                     cell.wetness = wetnessMap[x];
 
                     if (cell.terrain != TerrainType.Water)

@@ -45,43 +45,25 @@ namespace HuangD.Maps
 
             foreach(var block in blocks)
             {
-                var randomFactor = random.isTrue(50) ? 1f : -1f;
+                //var randomFactor = random.isTrue(50) ? 1f : -1f;
 
                 var orderFactor = dictOrderFactor[block.id];
                 if(orderFactor <= 1)
                 {
                     orderFactor = 0;
                 }
+                else
+                {
+                    orderFactor = orderFactor + (random.isTrue(50) ? 1 : 0);
+                }
 
                 foreach (var pos in block.elements)
                 {
-                    if(orderFactor == 0)
-                    {
-                        hegihtFactors.Add(pos, orderFactor);
-                    }
-                    else
-                    {
-                        hegihtFactors.Add(pos, orderFactor + noiseMap[pos] * randomFactor);
-                    }
-
+                    hegihtFactors.Add(pos, Lerp(orderFactor*0.3f, orderFactor, noiseMap[pos]));
                 }
             }
 
-            var rslt = new Dictionary<(int x, int y), float>();
-
-            var hegihtOrderFactors = hegihtFactors.OrderBy(x => x.Value).ToArray();
-
-            for(int i=0; i< hegihtOrderFactors.Length; i++)
-            {
-                var key = hegihtOrderFactors[i].Key;
-                var height = i * 1f / hegihtOrderFactors.Length;
-
-                rslt.Add(key, hegihtFactors[key] < 0.00000000001f ? 0 : height);
-            }
-
-            Debug.Log("Build 2");
-
-            return rslt;
+            return hegihtFactors.ToDictionary(p => p.Key, p => p.Value / hegihtFactors.Values.Max());
         }
 
         private static Dictionary<int, int> GenerateEdgeOrder(IEnumerable<Block> blocks, Block[] originBlocks)
@@ -107,6 +89,11 @@ namespace HuangD.Maps
             }
 
             return rslt;
+        }
+
+        private static float Lerp(float firstFloat, float secondFloat, float by)
+        {
+            return firstFloat * (1 - by) + secondFloat * by;
         }
     }
 }

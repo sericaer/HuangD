@@ -14,23 +14,34 @@ namespace HuangD.Maps
         {
             var terrainPercent = terrainFactors.ToDictionary(p => p.Key, p => p.Value * 1f / terrainFactors.Values.Sum());
 
-            return heightMap.ToDictionary(k => k.Key, v =>
-              {
-                  if (v.Value < 0.0000001f)
-                  {
-                      return TerrainType.Water;
-                  }
-                  else if (v.Value < terrainPercent[TerrainType.Plain] )
-                  {
-                      return TerrainType.Plain;
-                  }
-                  else if (v.Value < terrainPercent[TerrainType.Plain] + terrainPercent[TerrainType.Hill])
-                  {
-                      return TerrainType.Hill;
-                  }
+            var rslt = new Dictionary<(int x, int y), TerrainType>();
 
-                  return TerrainType.Mount;
-              });
+            foreach(var pair in heightMap.Where(x=>x.Value < 0.00000001f))
+            {
+                rslt.Add(pair.Key, TerrainType.Water);
+            }
+
+            var landPositions = heightMap.Keys.Except(rslt.Keys).OrderBy(k => heightMap[k]).ToArray();
+            for(int i=0; i< landPositions.Length; i++)
+            {
+                var pos = landPositions[i];
+                var percent = i * 1.0f / landPositions.Length;
+
+                if (percent < terrainPercent[TerrainType.Plain])
+                {
+                    rslt.Add(pos, TerrainType.Plain);
+                }
+                else if (percent < terrainPercent[TerrainType.Plain] + terrainPercent[TerrainType.Hill])
+                {
+                    rslt.Add(pos, TerrainType.Hill);
+                }
+                else
+                {
+                    rslt.Add(pos, TerrainType.Mount);
+                }
+            }
+
+            return rslt;
         }
     }
 }
