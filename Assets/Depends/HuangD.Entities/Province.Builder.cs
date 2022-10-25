@@ -30,18 +30,25 @@ namespace HuangD.Entities
                 var list = new List<IProvince>();
                 for (int i = 0; i < groups.Count; i++)
                 {
-                    list.Add(new Province(randomNames[i], groups[i]));
+                    list.Add(new Province(randomNames[i], groups[i].cells));
                 }
 
                 return list;
             }
 
-            private static List<List<ICell>> GenerateProvinceBlocks(IMap map)
+            public class CellGroup
+            {
+                public List<ICell> cells = new List<ICell>();
+                public HashSet<CellGroup> neighbors = new HashSet<CellGroup>();
+            }
+
+            private static List<CellGroup> GenerateProvinceBlocks(IMap map)
             {
                 var orderCells = map.blockMap.Where(x => x.landInfo != null).OrderBy(x => x.landInfo.population).ToList();
                 var vaildCells = orderCells.ToDictionary(x => x.position, x => x);
 
-                var rslt = new List<List<ICell>>();
+                var pos2Group = new Dictionary<(int x, int y), CellGroup>();
+                var rslt = new List<CellGroup>();
 
                 while(orderCells.Any())
                 {
@@ -50,37 +57,55 @@ NewStart:
                     orderCells.Remove(start);
                     vaildCells.Remove(start.position);
 
-                    var blocks = new List<ICell>() { start };
-                    rslt.Add(blocks);
+                    var group = new CellGroup();
+                    group.cells.Add(start);
+
+                    rslt.Add(group);
+                    pos2Group.Add(start.position, group);
 
                     var edges = new List<ICell>();
                     edges.Add(start);
 
                     while (edges.Count != 0)
                     {
-                        var curr = edges.ElementAt(random.getNum(0, edges.Count));
+                        var curr = edges.OrderByDescending(cell=> map.blockMap[cell.position].landInfo.population).ElementAt(0);
                         edges.Remove(curr);
 
-                        foreach (var nextPosition in Hexagon.GetNeighbors(curr.position))
-                        {
-                            if (!vaildCells.ContainsKey(nextPosition))
-                            {
-                                continue;
-                            }
+                        var neighors = Hexagon.GetNeighbors(curr.position)
+                            .Where(p=> map.blockMap[p] != null && map.blockMap[p].landInfo != null);
 
+                        foreach(var other in neighors.Where(p => !vaildCells.ContainsKey(p)))
+                        {
+                            group.neighbors.Add(pos2Group[other]);
+                            pos2Group[other].neighbors.Add(group);
+                        }
+
+                        foreach (var nextPosition in neighors.Where(p=>vaildCells.ContainsKey(p))
+                            .OrderByDescending(p=> vaildCells[p].landInfo.population))
+                        {
                             var next = vaildCells[nextPosition];
                             orderCells.Remove(next);
                             vaildCells.Remove(nextPosition);
 
-                            blocks.Add(next);
+                            group.cells.Add(next);
                             edges.Add(next);
+                            pos2Group.Add(next.position, group);
 
-                            if(blocks.Count > 60 || blocks.Sum(x=>x.landInfo.population) > 10*10000)
+                            if (group.cells.Count > 90 || (group.cells.Count > 20 &&group.cells.Sum(x=>x.landInfo.population) > 10*10000))
                             {
                                 goto NewStart;
                             }
                         }
                     }
+                }
+
+                var smallGroups = rslt.Where(x => x.cells.Count <= 20).ToArray();
+                rslt.RemoveAll(x => smallGroups.Contains(x));
+
+                foreach(var group in smallGroups)
+                {
+                    var mergeTo = group.neighbors.OrderBy(x => x.cells.Count).First();
+                    mergeTo.cells.AddRange(group.cells);
                 }
 
                 return rslt;

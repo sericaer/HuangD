@@ -32,8 +32,21 @@ namespace HuangD.Maps
 
     class BlockMap : IBlockMap
     {
-        public ICell this[(int x, int y) key] => dict[key];
-
+        public ICell this[(int x, int y) key]
+        {
+            get
+            {
+                ICell cell;
+                if(dict.TryGetValue(key, out cell))
+                {
+                    return cell;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
         public BlockMap(IEnumerable<ICell> cells)
         {
             dict = cells.ToDictionary(k=>k.position, v=>v);
