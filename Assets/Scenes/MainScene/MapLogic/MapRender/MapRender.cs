@@ -1,6 +1,7 @@
 using HuangD.Interfaces;
 using HuangD.Maps;
 using Math.TileMap;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +9,6 @@ using UnityEngine;
 
 public class MapRender : MonoBehaviour
 {
-    //public Camera mapCamera;
-    //public Grid mapGrid;
-
     public BlockMap blockMap;
     public EdgeMap edgeMap;
     public TerrainMap terrainMap;
@@ -22,96 +20,10 @@ public class MapRender : MonoBehaviour
     public WetnessMap wetnessMap;
     public BiomesMap biomesMap;
     public PopulationMap populationMap;
-
-    //public MapCanvas mapUIContainer;
-
-    //private IMap mapData;
-
-    // Start is called before the first frame update
-    //void Start()
-    //{
-    //    MoveCameraToMapCenter();
-    //}
-
-    // Update is called once per frame
-    //void Update()
-    //{
-    //    if (Input.GetMouseButton(0))
-    //    {
-    //        var worldPoint = mapCamera.ScreenToWorldPoint(Input.mousePosition);
-    //        var cellIndex = mapGrid.WorldToCell(worldPoint);
-    //        var pos = (cellIndex.x, cellIndex.y);
-    //        Debug.Log($"POS:{pos}, Height:{mapData.heightMap[pos]}, terrain:{mapData.terrains[pos]}, rain:{mapData.rainMap[pos]}, wetness:{mapData.wetnessMap[pos]}, biomes:{mapData.biomesMap[pos]}£¬ population{mapData.populationMap[pos]}");
-    //    }
-    //}
-
-    //public void OnMove(Vector3 pos)
-    //{
-    //    Vector3 move = CaclMoveOffset(pos);
-
-    //    mapCamera.transform.position = mapCamera.transform.position + move;
-    //    //mapUIContainer.UpdateItemsPosition();
-    //}
-
-    //public void ScrollWheel(bool flag)
-    //{
-    //    mapCamera.orthographicSize = CalcNextScale(flag);
-    //    //var alpha = (mapCamera.orthographicSize - 6) / (20 - 6);
-    //    //foreach (var item in mapUIContainer.allCountryItem)
-    //    //{
-    //    //    item.SetAlpha(alpha);
-    //    //    countryMap.SetAlpha(alpha);
-    //    //}
-
-    //    //foreach (var item in mapUIContainer.allProvinceItem)
-    //    //{
-    //    //    item.SetAlpha(1-alpha);
-    //    //}
-
-    //    //mapUIContainer.UpdateItemsPosition();
-    //}
+    public ProvinceMap provinceMap;
 
     internal void SetData(IMap map)
     {
-        //mapData = map;
-
-        //foreach (var pair in map.nosieMap)
-        //{
-        //    noiseMap.SetCell(pair.Key, pair.Value);
-        //}
-        //foreach (var pair in map.heightMap)
-        //{
-        //    heightMap.SetCell(pair.Key, pair.Value);
-        //}
-        //foreach (var pair in map.blocks)
-        //{
-        //    blockMap.SetBlock(pair.Key);
-        //}
-        //foreach (var pair in map.terrains)
-        //{
-        //    terrainMap.SetCell(new Vector3Int(pair.Key.x, pair.Key.y), pair.Value);
-        //}
-        //foreach (var pos in map.rivers.Keys)
-        //{
-        //    riverMap.SetCell(new Vector3Int(pos.x, pos.y), map.rivers[pos]);
-        //}
-        //foreach(var pos in map.rainMap.Keys)
-        //{
-        //    rainMap.SetCell(new Vector3Int(pos.x, pos.y), map.rainMap[pos]);
-        //}
-        //foreach (var pos in map.wetnessMap.Keys)
-        //{
-        //    wetnessMap.SetCell(new Vector3Int(pos.x, pos.y), map.wetnessMap[pos]);
-        //}
-        //foreach (var pos in map.biomesMap.Keys)
-        //{
-        //    biomesMap.SetCell(new Vector3Int(pos.x, pos.y), map.biomesMap[pos]);
-        //}
-        //foreach (var pos in map.populationMap.Keys)
-        //{
-        //    populationMap.SetCell(new Vector3Int(pos.x, pos.y), map.populationMap[pos]);
-        //}
-
         foreach(var cell in map.blockMap)
         {
             noiseMap.SetCell(cell.position, cell.noise);
@@ -131,6 +43,14 @@ public class MapRender : MonoBehaviour
         foreach(var riverItem in map.riverMap)
         {
             riverMap.SetCell(riverItem.position, riverItem.index);
+        }
+    }
+
+    internal void SetPliticalMap(IEnumerable<IProvince> provinces)
+    {
+        foreach (var province in provinces)
+        {
+            provinceMap.SetProvince(province);
         }
     }
 

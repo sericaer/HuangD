@@ -57,6 +57,9 @@ namespace HuangD.Maps
                 processInfo.Invoke("创建人口图");
                 var populationMap = PopulationMapBuilder.Build(biomesMap, random);
 
+                //processInfo.Invoke("创建省份图");
+                //var provinceMap = ProvinceMapBuilder.Build(populationMap, random);
+
                 var cells = positions.Select(x =>
                 {
                     var cell = new Cell();
@@ -69,6 +72,11 @@ namespace HuangD.Maps
                     cell.terrain = terrains[x];
                     cell.rain = rainMap[x];
                     cell.wetness = wetnessMap[x];
+
+                    //if(provinceMap.ContainsKey(x))
+                    //{
+                    //    cell.provinceId = provinceMap[x];
+                    //}
 
                     if (cell.terrain != TerrainType.Water)
                     {
@@ -127,4 +135,12 @@ namespace HuangD.Maps
             }
         }
     }
+
+    //internal class ProvinceMapBuilder
+    //{
+    //    internal static Dictionary<(int x, int y), int> Build(Dictionary<(int x, int y), int> populationMap, GRandom random)
+    //    {
+    //        throw new System.NotImplementedException();
+    //    }
+    //}
 }

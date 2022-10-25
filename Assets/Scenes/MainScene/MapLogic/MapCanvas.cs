@@ -24,11 +24,12 @@ public class MapCanvas : MonoBehaviour, IPointerDownHandler
 
     private IMap mapData;
 
-    public void SetMapData(IMap map)
+    public void SetMapData(ISession session)
     {
-        mapData = map;
+        mapData = session.map;
 
-        mapRender.SetData(map);
+        mapRender.SetData(session.map);
+        mapRender.SetPliticalMap(session.provinces);
 
         MoveCameraToMapCenter();
 

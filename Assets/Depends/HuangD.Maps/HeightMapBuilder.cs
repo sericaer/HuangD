@@ -37,16 +37,24 @@ namespace HuangD.Maps
 
 
             Dictionary<int, int> dictSouthOrder = GenerateEdgeOrder(blocks, blocks.Where(x => x.edges.Any(e => e.x == 0)).ToArray());
-            Dictionary<int, int> dictEastOrder = GenerateEdgeOrder(blocks, blocks.Where(x => x.edges.Any(e => e.y == noiseMap.Keys.Max(k => k.y))).ToArray());
+
+            Debug.Log("Build 2");
+
+            var maxY = noiseMap.Keys.Max(k => k.y);
+            Dictionary<int, int> dictEastOrder = GenerateEdgeOrder(blocks, blocks.Where(x => x.edges.Any(e => e.y == maxY)).ToArray());
+
+
+            Debug.Log("Build 3");
 
             Dictionary<int, int> dictOrderFactor = blocks.Select(x => x.id).ToDictionary(k => k, k => System.Math.Min(dictSouthOrder[k], dictEastOrder[k]));
+
+
+            Debug.Log("Build 4");
 
             var hegihtFactors = new Dictionary<(int x, int y), float>();
 
             foreach(var block in blocks)
             {
-                //var randomFactor = random.isTrue(50) ? 1f : -1f;
-
                 var orderFactor = dictOrderFactor[block.id];
                 if(orderFactor <= 1)
                 {
@@ -63,7 +71,11 @@ namespace HuangD.Maps
                 }
             }
 
-            return hegihtFactors.ToDictionary(p => p.Key, p => p.Value / hegihtFactors.Values.Max());
+
+            Debug.Log("Build 5");
+
+            var maxValue = hegihtFactors.Values.Max();
+            return hegihtFactors.ToDictionary(p => p.Key, p => p.Value / maxValue);
         }
 
         private static Dictionary<int, int> GenerateEdgeOrder(IEnumerable<Block> blocks, Block[] originBlocks)

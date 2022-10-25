@@ -11,6 +11,7 @@ namespace HuangD.Maps
         public IBlockMap blockMap { get; set; }
 
         public IRiverMap riverMap { get; set; }
+
     }
 
     class Cell : ICell
@@ -24,6 +25,9 @@ namespace HuangD.Maps
         public float rain { get; set; }
         public float wetness { get; set; }
         public ILandInfo landInfo { get; set; }
+
+        public int? provinceId { get; set; }
+
     }
 
     class BlockMap : IBlockMap

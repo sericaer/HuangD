@@ -129,7 +129,7 @@ namespace HuangD.Maps
 
                         if (pos2BlockInfo.ContainsKey(next))
                         {
-                            if(pos2BlockInfo[next].blockId != pos2BlockInfo[key].blockId)
+                            if (pos2BlockInfo[next].blockId != pos2BlockInfo[key].blockId)
                             {
                                 pos2BlockInfo[key].neighborBlockIds.Add(pos2BlockInfo[next].blockId);
                                 pos2BlockInfo[next].neighborBlockIds.Add(pos2BlockInfo[key].blockId);
@@ -144,6 +144,47 @@ namespace HuangD.Maps
                         needFillDict.Add(next, new ItemValue(pos2BlockInfo[key].blockId, 0.0f, noiseMap[next]));
                     }
                 }
+
+                //foreach (var key in needFillDict.Keys.ToArray())
+                //{
+                //    needFillDict[key].curr += 0.1f;
+                //    if (!needFillDict[key].isFull)
+                //    {
+                //        continue;
+                //    }
+
+                //    pos2BlockInfo.Add(key, new BlockInfo() { blockId = needFillDict[key].blockId });
+                //    needFillDict.Remove(key);
+
+                //    foreach (var next in Hexagon.GetNeighbors(key).ToArray())
+                //    {
+                //        if (!noiseMap.ContainsKey(next))
+                //        {
+                //            continue;
+                //        }
+
+                //        if (needFillDict.ContainsKey(next))
+                //        {
+                //            continue;
+                //        }
+
+                //        if (pos2BlockInfo.ContainsKey(next))
+                //        {
+                //            if(pos2BlockInfo[next].blockId != pos2BlockInfo[key].blockId)
+                //            {
+                //                pos2BlockInfo[key].neighborBlockIds.Add(pos2BlockInfo[next].blockId);
+                //                pos2BlockInfo[next].neighborBlockIds.Add(pos2BlockInfo[key].blockId);
+
+                //                pos2BlockInfo[key].isEdge = true;
+                //                pos2BlockInfo[next].isEdge = true;
+                //            }
+
+                //            continue;
+                //        }
+
+                //        needFillDict.Add(next, new ItemValue(pos2BlockInfo[key].blockId, 0.0f, noiseMap[next]));
+                //    }
+                //}
             }
 
             return pos2BlockInfo;

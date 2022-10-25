@@ -2,6 +2,7 @@ using HuangD.Interfaces;
 using Math.TileMap;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace HuangD.Entities
 {
@@ -10,15 +11,16 @@ namespace HuangD.Entities
         public static Func<IProvince, Block> funcGetBlock { get; internal set; }
 
         public string name { get; set; }
+        public ICell[] cells { get; }
 
-        public (float r, float g, float b) color { get; set; }
+        //public (float r, float g, float b) color { get; set; }
 
-        public Block block => funcGetBlock(this);
+        //public Block block => funcGetBlock(this);
 
-        public Province(string name, (float, float, float) color)
+        public Province(string name, IEnumerable<ICell> cells)
         {
             this.name = name;
-            this.color = color;
+            this.cells = cells.ToArray();
         }
     }
 }

@@ -29,7 +29,7 @@ public class MainScene : MonoBehaviour
         //emperorPanel.SetEmperor(session.playerCountry.leader);
         //countryPanel.SetCountry(session.playerCountry);
 
-        mapCanvas.SetMapData(Facade.session.map);
+        mapCanvas.SetMapData(Facade.session);
         //mapLogic.SetProvinces(Facade.session.provinces);
         //mapLogic.SetCountries(Facade.session.countries);
 

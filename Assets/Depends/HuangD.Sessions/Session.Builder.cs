@@ -19,10 +19,12 @@ namespace HuangD.Sessions
             {
                 var map = Map.Builder.Build(mapInit, seed, processInfo);
 
+
+                var provinceId2CellIndexs = map.blockMap.Where(x => x.provinceId != null).GroupBy(x => x.provinceId.Value).ToArray();
                 //var noWaterBlocks = map.blocks.Where(x => x.Value != TerrainType.Water).Select(x => x.Key);
 
-                //processInfo.Invoke("创建省份");
-                //var provinces = Province.Builder.Build(noWaterBlocks.Count(), seed, defs.provinceNameDef);
+                processInfo.Invoke("创建省份");
+                var provinces = Province.Builder.Build(map, seed, defs.provinceNameDef);
 
                 //processInfo.Invoke("创建国家");
                 //var countries = Country.Builder.Build(provinces.Count() / 3, seed, defs.countryNameDef);
@@ -33,7 +35,8 @@ namespace HuangD.Sessions
                 var session = new Session();
                 session.seed = seed;
                 session.map = map;
-                //session.provinces = provinces;
+                session.provinces = provinces;
+
                 //session.countries = countries;
                 //session.persons = persons;
 

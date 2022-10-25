@@ -6,19 +6,8 @@ using UnityEngine;
 
 public class BlockMap : MapBehaviour
 {
-    //private HashSet<Color> colors;
 
     private Dictionary<int, Color> dictColor;
-
-    //internal void SetBlock(Block block)
-    //{
-    //    var color = RandomColor();
-
-    //    foreach (var elem in block.elements)
-    //    {
-    //        tilemap.SetTileColor(new Vector3Int(elem.x, elem.y), tile, color);
-    //    }
-    //}
 
     private Color GetColor(int key)
     {
