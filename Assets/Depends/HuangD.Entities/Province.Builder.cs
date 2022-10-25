@@ -38,15 +38,17 @@ namespace HuangD.Entities
 
             private static List<List<ICell>> GenerateProvinceBlocks(IMap map)
             {
-                var landCells = map.blockMap.Where(x => x.landInfo != null).OrderBy(x => x.landInfo.population).ToList();
+                var orderCells = map.blockMap.Where(x => x.landInfo != null).OrderBy(x => x.landInfo.population).ToList();
+                var vaildCells = orderCells.ToDictionary(x => x.position, x => x);
 
                 var rslt = new List<List<ICell>>();
 
-                while(landCells.Any())
+                while(orderCells.Any())
                 {
 NewStart:
-                    var start = landCells.First();
-                    landCells.Remove(start);
+                    var start = orderCells.First();
+                    orderCells.Remove(start);
+                    vaildCells.Remove(start.position);
 
                     var blocks = new List<ICell>() { start };
                     rslt.Add(blocks);
@@ -61,13 +63,15 @@ NewStart:
 
                         foreach (var nextPosition in Hexagon.GetNeighbors(curr.position))
                         {
-                            var next = landCells.FirstOrDefault(x => x.position == nextPosition);
-                            if (next == null)
+                            if (!vaildCells.ContainsKey(nextPosition))
                             {
                                 continue;
                             }
 
-                            landCells.Remove(next);
+                            var next = vaildCells[nextPosition];
+                            orderCells.Remove(next);
+                            vaildCells.Remove(nextPosition);
+
                             blocks.Add(next);
                             edges.Add(next);
 
