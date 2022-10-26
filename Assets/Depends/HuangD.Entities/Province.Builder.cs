@@ -104,7 +104,9 @@ NewStart:
 
                 foreach(var group in smallGroups)
                 {
-                    var mergeTo = group.neighbors.OrderBy(x => x.cells.Count).First();
+                    var mergeTo = group.neighbors.Where(x=> !smallGroups.Contains(x))
+                        .OrderBy(x => x.cells.Count)
+                        .First();
                     mergeTo.cells.AddRange(group.cells);
                 }
 
