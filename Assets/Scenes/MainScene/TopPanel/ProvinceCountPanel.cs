@@ -16,6 +16,6 @@ public class ProvinceCountPanel : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        //label.text = Facade.session.playerCountry.provinces.Count().ToString();
+        label.text = Facade.session.playerCountry.provinces.Count().ToString();
     }
 }

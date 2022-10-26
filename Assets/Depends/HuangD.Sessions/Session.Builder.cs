@@ -19,43 +19,37 @@ namespace HuangD.Sessions
             {
                 var map = Map.Builder.Build(mapInit, seed, processInfo);
 
-
-                var provinceId2CellIndexs = map.blockMap.Where(x => x.provinceId != null).GroupBy(x => x.provinceId.Value).ToArray();
-                //var noWaterBlocks = map.blocks.Where(x => x.Value != TerrainType.Water).Select(x => x.Key);
-
                 processInfo.Invoke("创建省份");
                 var provinces = Province.Builder.Build(map, seed, defs.provinceNameDef);
 
                 processInfo.Invoke("创建国家");
                 var countries = Country.Builder.Build(provinces, seed, defs.countryNameDef);
 
-                //processInfo.Invoke("创建人物");
-                //var persons = Person.Builder.Build(countries.SelectMany(x=>x.officeGroup.offices).Count(), seed, defs.personNameDef);
+                processInfo.Invoke("创建人物");
+                var persons = Person.Builder.Build(countries.SelectMany(x => x.officeGroup.offices).Count(), seed, defs.personNameDef);
 
                 var session = new Session();
                 session.seed = seed;
                 session.map = map;
                 session.provinces = provinces;
                 session.countries = countries;
-                //session.persons = persons;
+                session.persons = persons;
 
-                //session.playerCountry = countries.First();
+                session.playerCountry = countries.First();
 
-                //processInfo.Invoke("关联数据");
-                //session.AssocateData(seed);
+                processInfo.Invoke("关联数据");
+                session.AssocateData(seed);
 
                 return session;
             }
         }
 
-        //private void AssocateData(string seed)
-        //{
-        //    var random = new GRandom(seed);
+        private void AssocateData(string seed)
+        {
+            var random = new GRandom(seed);
 
-        //    SetProvince2Block(random);
-        //    SetCountry2Provinces(random);
-        //    SetPerson2Office(random);
-        //}
+            SetPerson2Office(random);
+        }
 
         private void SetPerson2Office(GRandom random)
         {
@@ -80,78 +74,5 @@ namespace HuangD.Sessions
                 person = persons.FirstOrDefault(x => x.office == null);
             }
         }
-
-        private void SetCountry2Provinces(GRandom random)
-        {
-            var originIndexs = Enumerable.Range(0, provinces.Count())
-                .OrderBy(_ => random.getNum(0, int.MaxValue))
-                .Take(countries.Count())
-                .ToArray();
-
-            country2Provinces = new Dictionary<ICountry, List<IProvince>>();
-            //for (int i = 0; i < countries.Count(); i++)
-            //{
-            //    var list = new List<IProvince>();
-            //    list.Add(provinces.ElementAt(originIndexs[i]));
-
-            //    country2Provinces.Add(countries.ElementAt(i), list);
-            //}
-
-            //var originProvinces = provinces.Except(countries.SelectMany(x => x.provinces)).ToArray();
-            //var islandProvinces = originProvinces.Where(x=> !originProvinces.Any(y=>y != x && y.block.isNeighbor(x.block))).ToArray();
-            //var mainladProvinces = new Queue<IProvince>(originProvinces.Except(islandProvinces));
-
-            //while (mainladProvinces.Count != 0)
-            //{
-            //    var province = mainladProvinces.Dequeue();
-
-            //    var country = country2Provinces.Where(pair => pair.Value.Any(x => x.block.isNeighbor(province.block)))
-            //        .FirstOrDefault().Key;
-            //    if(country == null)
-            //    {
-            //        mainladProvinces.Enqueue(province);
-            //        continue;
-            //    }
-
-            //    country2Provinces[country].Add(province);
-            //}
-
-            //foreach(var province in islandProvinces)
-            //{
-            //    var center = Utilty.GetCenterPos(province.block.elements);
-            //    country2Provinces.Keys.Min(x=>Hexta)
-            //}
-
-            //var originProvinces = new List<IProvince>(provinces.Except(countries.SelectMany(x=>x.provinces)));
-
-            //while (originProvinces.Count != 0)
-            //{
-            //    foreach (var provinceList in country2Provinces.Values)
-            //    {
-            //        var curr = originProvinces.FirstOrDefault(x =>
-            //        {
-            //            return provinceList.Any(added => added.block.isNeighbor(x.block));
-            //        });
-
-            //        if (curr == null)
-            //        {
-            //            continue;
-            //        }
-
-            //        provinceList.Add(curr);
-            //        originProvinces.Remove(curr);
-            //    }
-            //}
-        }
-
-        //private void SetProvince2Block(GRandom random)
-        //{
-        //    var vaildProvinceTerrains = new TerrainType[] { TerrainType.Hill, TerrainType.Mount, TerrainType.Plain };
-
-        //    var vaildProvinceBlocks = map.blocks.Where(x => vaildProvinceTerrains.Contains(x.Value)).Select(x => x.Key);
-
-        //    province2Block = Enumerable.Range(0, provinces.Count())
-        //        .ToDictionary(i => provinces.ElementAt(i), j => vaildProvinceBlocks.ElementAt(j));
-        //}
     }
 }

@@ -19,6 +19,6 @@ public class CountryPanel : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        //label.text = Facade.session.playerCountry.name;
+        label.text = Facade.session.playerCountry.name;
     }
 }

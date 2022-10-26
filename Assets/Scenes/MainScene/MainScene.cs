@@ -22,10 +22,6 @@ public class MainScene : MonoBehaviour
             Terminal.Shell.AddCommand(command);
         }
 
-        //var mapSize = 80;
-
-        //Facade.session = Session.Builder.Build(mapSize, "DEFAULT", Facade.mod.defs);
-
         //emperorPanel.SetEmperor(session.playerCountry.leader);
         //countryPanel.SetCountry(session.playerCountry);
 
