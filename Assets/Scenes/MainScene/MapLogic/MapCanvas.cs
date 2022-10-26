@@ -9,18 +9,11 @@ public class MapCanvas : MonoBehaviour, IPointerDownHandler
 {
     //public Grid mapGrid;
 
-    //public CountryUIItem defaultCountryItem;
-    //public ProvinceUIItem defaultProvinceItem;
-
-    //public IEnumerable<CountryUIItem> allCountryItem => uiItems.OfType<CountryUIItem>();
-    //public IEnumerable<ProvinceUIItem> allProvinceItem => uiItems.OfType<ProvinceUIItem>();
-
-    //private List<MapUIItem> uiItems { get; } = new List<MapUIItem>();
-
     public Grid mapGrid;
 
     public MapRender mapRender;
     public MapCamera mapCamera;
+    public MapUIContainer mapUIContainer;
 
     private IMap mapData;
 
@@ -31,9 +24,26 @@ public class MapCanvas : MonoBehaviour, IPointerDownHandler
         mapRender.SetData(session.map);
         mapRender.SetPliticalMap(session.provinces, session.countries);
 
-        MoveCameraToMapCenter();
+        mapUIContainer.SetProvinces(session.provinces);
 
-        //throw new NotImplementedException();
+        var center = GetMapCenterPosition();
+        mapCamera.MoveTo(new Vector3(center.x, center.y, mapCamera.transform.position.z));
+    }
+
+    public void OnCameraMoved()
+    {
+        foreach (var item in mapUIContainer)
+        {
+            item.transform.position = mapGrid.CellToWorld(new Vector3Int(item.cellPos.x, item.cellPos.y));
+        }
+    }
+
+    void Start()
+    {
+        foreach (var item in mapUIContainer)
+        {
+            item.transform.position = mapGrid.CellToWorld(new Vector3Int(item.cellPos.x, item.cellPos.y));
+        }
     }
 
     //internal void SetProvinces(IEnumerable<IProvince> provinces)
@@ -42,7 +52,7 @@ public class MapCanvas : MonoBehaviour, IPointerDownHandler
     //    {
     //        var item = Instantiate<ProvinceUIItem>(defaultProvinceItem, defaultProvinceItem.transform.parent);
     //        item.gmData = province;
-    //        item.cellPos = HuangD.Maps.Utilty.GetCenterPos(province.block.elements);
+    //        item.cellPos = HuangD.Maps.Utilty.GetCenterPos(province.cells.Select(x=>x.position));
 
     //        item.gameObject.SetActive(true);
     //        uiItems.Add(item);
@@ -73,13 +83,13 @@ public class MapCanvas : MonoBehaviour, IPointerDownHandler
     //    }
     //}
 
-    void Start()
-    {
-        //defaultCountryItem.gameObject.SetActive(false);
-        //defaultProvinceItem.gameObject.SetActive(false);
+    //void Start()
+    //{
+    //    defaultCountryItem.gameObject.SetActive(false);
+    //    defaultProvinceItem.gameObject.SetActive(false);
 
-        //UpdateItemsPosition();
-    }
+    //    UpdateItemsPosition();
+    //}
 
     public void OnPointerDown(PointerEventData eventData)
     {
@@ -93,7 +103,20 @@ public class MapCanvas : MonoBehaviour, IPointerDownHandler
         Debug.Log($"POS:{pos}, Height:{block.height}, terrain:{block.terrain}, rain:{block.rain}, wetness:{block.wetness}, biomes:{block.landInfo?.biome}， population{block.landInfo?.population}");
     }
 
-    private void MoveCameraToMapCenter()
+    //private void MoveCameraToMapCenter()
+    //{
+    //    var positions = mapData.blockMap.Select(x => x.position);
+
+    //    var maxX = positions.Max(p => p.x);
+    //    var maxY = positions.Max(p => p.y);
+    //    var minX = positions.Min(p => p.x);
+    //    var minY = positions.Min(p => p.y);
+
+    //    var mapCenterPos = mapGrid.CellToWorld(new Vector3Int((maxX - minX) / 2, (maxY - minY) / 2));
+    //    mapCamera.transform.position = new Vector3(mapCenterPos.x, mapCenterPos.y, mapCamera.transform.position.z);
+    //}
+
+    private Vector3 GetMapCenterPosition()
     {
         var positions = mapData.blockMap.Select(x => x.position);
 
@@ -102,7 +125,6 @@ public class MapCanvas : MonoBehaviour, IPointerDownHandler
         var minX = positions.Min(p => p.x);
         var minY = positions.Min(p => p.y);
 
-        var mapCenterPos = mapGrid.CellToWorld(new Vector3Int((maxX - minX) / 2, (maxY - minY) / 2));
-        mapCamera.transform.position = new Vector3(mapCenterPos.x, mapCenterPos.y, mapCamera.transform.position.z);
+        return mapGrid.CellToWorld(new Vector3Int((maxX - minX) / 2, (maxY - minY) / 2));
     }
 }

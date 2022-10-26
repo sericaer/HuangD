@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class MapCamera : MonoBehaviour
 {
     public Camera mapCamera;
     public MapRender mapRender;
+
+    public UnityEvent OnMoved;
 
     // Start is called before the first frame update
     void Start()
@@ -27,12 +30,16 @@ public class MapCamera : MonoBehaviour
         }
     }
 
-    public void OnMove(Vector3 pos)
+    public void MoveTo(Vector3 pos)
     {
-        Vector3 move = CalcMoveOffset(pos);
+        mapCamera.transform.position = mapCamera.transform.position + pos;
+        OnMoved.Invoke();
+    }
 
-        mapCamera.transform.position = mapCamera.transform.position + move;
-        //mapUIContainer.UpdateItemsPosition();
+    public void MoveOffset(Vector3 offset)
+    {
+        var real = CalcMoveOffset(offset);
+        MoveTo(real);
     }
 
     private void OnScrollWheel(bool flag)
