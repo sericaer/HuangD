@@ -29,7 +29,7 @@ public class MapCanvas : MonoBehaviour, IPointerDownHandler
         mapData = session.map;
 
         mapRender.SetData(session.map);
-        mapRender.SetPliticalMap(session.provinces);
+        mapRender.SetPliticalMap(session.provinces, session.countries);
 
         MoveCameraToMapCenter();
 

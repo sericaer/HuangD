@@ -12,7 +12,6 @@ public class MapRender : MonoBehaviour
     public BlockMap blockMap;
     public EdgeMap edgeMap;
     public TerrainMap terrainMap;
-    public CountryMap countryMap;
     public RiverMap riverMap;
     public NoiseMap noiseMap;
     public RainMap rainMap;
@@ -21,6 +20,7 @@ public class MapRender : MonoBehaviour
     public BiomesMap biomesMap;
     public PopulationMap populationMap;
     public ProvinceMap provinceMap;
+    public CountryMap countryMap;
 
     internal void SetData(IMap map)
     {
@@ -46,11 +46,16 @@ public class MapRender : MonoBehaviour
         }
     }
 
-    internal void SetPliticalMap(IEnumerable<IProvince> provinces)
+    internal void SetPliticalMap(IEnumerable<IProvince> provinces, IEnumerable<ICountry> countries)
     {
         foreach (var province in provinces)
         {
             provinceMap.SetProvince(province);
+        }
+
+        foreach(var country in countries)
+        {
+            countryMap.SetCountry(country);
         }
     }
 

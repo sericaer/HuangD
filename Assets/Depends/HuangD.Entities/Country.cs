@@ -1,6 +1,7 @@
 ﻿using HuangD.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace HuangD.Entities
 {
@@ -9,16 +10,17 @@ namespace HuangD.Entities
         internal static Func<ICountry, IEnumerable<IProvince>> funcGetProvinces;
 
         public string name { get; set; }
-        public (float r, float g, float b) color { get; }
+        public (int r, int g, int b) color { get; }
         public IOfficeGroup officeGroup { get; }
-
-        public IEnumerable<IProvince> provinces => funcGetProvinces(this);
+        public IEnumerable<IProvince> provinces { get; }
         public IPerson leader => officeGroup.leaderOffice.person;
 
-        public Country(string name, (float, float, float) color)
+        public Country(string name, IEnumerable<IProvince> provinces, (int r, int g, int b) color)
         {
             this.name = name;
             this.color = color;
+            this.provinces = provinces.ToList();
+
             this.officeGroup = new OfficeGroup(this);
         }
     }

@@ -16,6 +16,11 @@ namespace HuangD.Entities
 
         public static class Builder
         {
+            private const int maxCellCount = 30;
+            private const int minCellCout = 9;
+            private const int maxPopulation = 5 * 10000;
+            private const int minPopulation = 5 * 1000;
+
             public static IEnumerable<IProvince> Build(IMap map, string seed, IProvinceNameDef def)
             {
                 Province.def = def;
@@ -31,6 +36,16 @@ namespace HuangD.Entities
                 for (int i = 0; i < groups.Count; i++)
                 {
                     list.Add(new Province(randomNames[i], groups[i].cells));
+                }
+
+                for (int i = 0; i < groups.Count; i++)
+                {
+                    var province = list[i] as Province;
+                    province.neighbors = groups[i].neighbors.Select(n=>
+                    {
+                        var index = groups.IndexOf(n);
+                        return list[index];
+                    }).ToArray();
                 }
 
                 return list;
@@ -50,9 +65,9 @@ namespace HuangD.Entities
                 var pos2Group = new Dictionary<(int x, int y), CellGroup>();
                 var rslt = new List<CellGroup>();
 
-                while(orderCells.Any())
-                {
 NewStart:
+                while (orderCells.Any())
+                {
                     var start = orderCells.First();
                     orderCells.Remove(start);
                     vaildCells.Remove(start.position);
@@ -68,13 +83,13 @@ NewStart:
 
                     while (edges.Count != 0)
                     {
-                        var curr = edges.OrderByDescending(cell=> map.blockMap[cell.position].landInfo.population).ElementAt(0);
+                        var curr = edges.OrderBy(cell=> map.blockMap[cell.position].noise).ElementAt(0);
                         edges.Remove(curr);
 
                         var neighors = Hexagon.GetNeighbors(curr.position)
                             .Where(p=> map.blockMap[p] != null && map.blockMap[p].landInfo != null);
 
-                        foreach(var other in neighors.Where(p => !vaildCells.ContainsKey(p)))
+                        foreach(var other in neighors.Where(p => !vaildCells.ContainsKey(p) && !group.cells.Any(g=>g.position == p)))
                         {
                             group.neighbors.Add(pos2Group[other]);
                             pos2Group[other].neighbors.Add(group);
@@ -91,7 +106,7 @@ NewStart:
                             edges.Add(next);
                             pos2Group.Add(next.position, group);
 
-                            if (group.cells.Count > 90 || (group.cells.Count > 20 &&group.cells.Sum(x=>x.landInfo.population) > 10*10000))
+                            if (group.cells.Count > maxCellCount || (group.cells.Count > minCellCout &&group.cells.Sum(x=>x.landInfo.population) > maxPopulation))
                             {
                                 goto NewStart;
                             }
@@ -99,15 +114,37 @@ NewStart:
                     }
                 }
 
-                var smallGroups = rslt.Where(x => x.cells.Count <= 20).ToArray();
+                var smallGroups = new Queue<CellGroup>(rslt.Where(x => x.neighbors.Count != 0)
+                    .Where(x=> x.cells.Count <= minCellCout || x.cells.Sum(x=>x.landInfo.population) < minPopulation));
                 rslt.RemoveAll(x => smallGroups.Contains(x));
 
-                foreach(var group in smallGroups)
+
+                while (smallGroups.Count != 0)
                 {
-                    var mergeTo = group.neighbors.Where(x=> !smallGroups.Contains(x))
-                        .OrderBy(x => x.cells.Count)
-                        .First();
-                    mergeTo.cells.AddRange(group.cells);
+                    var curr = smallGroups.Dequeue();
+
+                    var mergeTo = curr.neighbors.Where(x=>rslt.Contains(x))
+                        .OrderBy(x => x.cells.Sum(x=> x.landInfo.population)).FirstOrDefault();
+                    if(mergeTo == null)
+                    {
+                        smallGroups.Enqueue(curr);
+                        continue;
+                    }
+
+                    mergeTo.cells.AddRange(curr.cells);
+
+                    foreach (var neighbor in curr.neighbors.Where(x => x != mergeTo))
+                    {
+                        mergeTo.neighbors.Add(neighbor);
+
+                        neighbor.neighbors.Remove(curr);
+                        neighbor.neighbors.Add(mergeTo);
+                    }
+                }
+
+                foreach (var group in rslt)
+                {
+                    group.neighbors.IntersectWith(rslt);
                 }
 
                 return rslt;

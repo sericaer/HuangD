@@ -11,7 +11,11 @@ namespace HuangD.Entities
         public static Func<IProvince, Block> funcGetBlock { get; internal set; }
 
         public string name { get; set; }
+
         public ICell[] cells { get; }
+        public IProvince[] neighbors { get; set; }
+
+        public int population => cells.Sum(c => c.landInfo.population);
 
         //public (float r, float g, float b) color { get; set; }
 

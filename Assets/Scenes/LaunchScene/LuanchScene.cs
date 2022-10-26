@@ -30,6 +30,7 @@ public class LuanchScene: MonoBehaviour
         Task.Run(() =>
         {
             var seed = System.Guid.NewGuid().ToString();
+            //var seed = "1ba206dd-5b8d-4d90-bde6-96ddc9453ca0";
             Debug.Log($"Seed:{seed}");
             Facade.session = Session.Builder.Build(new HuangD.Maps.MapInit() { 
                 width = 120, 

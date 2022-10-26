@@ -26,8 +26,8 @@ namespace HuangD.Sessions
                 processInfo.Invoke("创建省份");
                 var provinces = Province.Builder.Build(map, seed, defs.provinceNameDef);
 
-                //processInfo.Invoke("创建国家");
-                //var countries = Country.Builder.Build(provinces.Count() / 3, seed, defs.countryNameDef);
+                processInfo.Invoke("创建国家");
+                var countries = Country.Builder.Build(provinces, seed, defs.countryNameDef);
 
                 //processInfo.Invoke("创建人物");
                 //var persons = Person.Builder.Build(countries.SelectMany(x=>x.officeGroup.offices).Count(), seed, defs.personNameDef);
@@ -36,8 +36,7 @@ namespace HuangD.Sessions
                 session.seed = seed;
                 session.map = map;
                 session.provinces = provinces;
-
-                //session.countries = countries;
+                session.countries = countries;
                 //session.persons = persons;
 
                 //session.playerCountry = countries.First();
