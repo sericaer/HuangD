@@ -22,4 +22,9 @@ public class ProvinceUIItem : MapUIItem
     }
 
     private IProvince _gmData;
+
+    internal void SetAlpha(float alpha)
+    {
+        label.GetComponent<CanvasRenderer>().SetAlpha(alpha);
+    }
 }

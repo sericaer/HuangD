@@ -39,6 +39,22 @@ public class MapCanvas : MonoBehaviour, IPointerDownHandler
         }
     }
 
+    public void OnCameraZoom(float size)
+    {
+        var alpha = Mathf.Min(size * 2, 1f);
+
+        foreach (var item in mapUIContainer.allCountryItem)
+        {
+            item.SetAlpha(alpha);
+            mapRender.countryMap.SetAlpha(alpha);
+        }
+
+        foreach (var item in mapUIContainer.allProvinceItem)
+        {
+            item.SetAlpha(1 - alpha);
+        }
+    }
+
     void Start()
     {
         foreach (var item in mapUIContainer)

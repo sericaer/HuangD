@@ -9,6 +9,10 @@ public class MapCamera : MonoBehaviour
     public MapRender mapRender;
 
     public UnityEvent OnMoved;
+    public UnityEvent<float> OnZoom;
+
+    public int maxOrthoSize = 20;
+    public int minOrthoSize = 6;
 
     // Start is called before the first frame update
     void Start()
@@ -46,10 +50,12 @@ public class MapCamera : MonoBehaviour
     {
         var newSize = mapCamera.orthographicSize + 0.25f * (flag ? 1 : -1);
 
-        if (newSize > 6f && newSize < 20f)
-        {
-            mapCamera.orthographicSize = newSize;
-        }
+        newSize = Mathf.Min(newSize, maxOrthoSize);
+        newSize = Mathf.Max(newSize, minOrthoSize);
+
+        mapCamera.orthographicSize = newSize;
+
+        OnZoom.Invoke((newSize - minOrthoSize) / (maxOrthoSize - minOrthoSize));
     }
 
     private Vector3 CalcMoveOffset(Vector3 pos)
