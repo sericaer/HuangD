@@ -72,7 +72,7 @@ public class MapCanvas : MonoBehaviour, IPointerDownHandler
 
         var block = mapData.blockMap[pos];
 
-        Debug.Log($"POS:{pos}, Height:{block.height}, terrain:{block.terrain}, rain:{block.rain}, wetness:{block.wetness}, biomes:{block.landInfo?.biome}， population{block.landInfo?.population}");
+        Debug.Log($"POS:{pos}, Height:{block.height}, terrain:{block.terrain}, rain:{block.rain}, wetness:{block.wetness}, biomes:{block.landInfo?.biome}, population{block.landInfo?.population}, province{block.province?.name}, country{block.province?.country.name}");
     }
 
     private Vector3 GetMapCenterPosition()

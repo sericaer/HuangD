@@ -1,5 +1,6 @@
 using HuangD.Entities;
 using HuangD.Interfaces;
+using HuangD.Maps;
 using Math.TileMap;
 using System;
 using System.Collections;
@@ -38,8 +39,8 @@ namespace HuangD.Sessions
 
         public Session()
         {
-            Country.funcGetProvinces = (country) => country2Provinces[country];
-            Province.funcGetBlock = (province) => province2Block[province];
+            Cell.funcGetProvince = (cell) => provinces.SingleOrDefault(x => x.cells.Contains(cell));
+            Province.funcGetCountry = (prov) => countries.SingleOrDefault(x => x.provinces.Contains(prov));
             Office.funcGetPerson = (office) => person2Office.SingleOrDefault(x => x.office == office)?.person;
             Person.funcGetOffice = (person) => person2Office.SingleOrDefault(x => x.person == person)?.office;
         }

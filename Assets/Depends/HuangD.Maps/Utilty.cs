@@ -58,7 +58,7 @@ namespace HuangD.Maps
             return rlst;
         }
 
-        public static (int x, int y) GetCenterPos(IEnumerable<(int x, int y)> elements)
+        public static (int x, int y) GetCenterPos(IEnumerable<(int x, int y)> elements, int step = 1)
         {
             return elements.OrderByDescending(e =>
             {
@@ -68,7 +68,7 @@ namespace HuangD.Maps
                 do
                 {
                     rings = Hexagon.GetRing(e, distance);
-                    distance++;
+                    distance += step;
                 }
                 while (rings.All(x => elements.Contains(x)));
 

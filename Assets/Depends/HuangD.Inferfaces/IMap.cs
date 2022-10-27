@@ -39,7 +39,7 @@ namespace HuangD.Interfaces
         public float wetness { get; set; }
         public ILandInfo landInfo { get; set; }
 
-        public int? provinceId { get; set; }
+        public IProvince province { get; }
     }
 
     public interface ILandInfo

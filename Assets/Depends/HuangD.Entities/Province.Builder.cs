@@ -45,7 +45,7 @@ namespace HuangD.Entities
                     {
                         var index = groups.IndexOf(n);
                         return list[index];
-                    }).ToArray();
+                    }).ToHashSet();
                 }
 
                 return list;

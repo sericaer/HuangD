@@ -7,8 +7,6 @@ namespace HuangD.Entities
 {
     public partial class Country : ICountry
     {
-        internal static Func<ICountry, IEnumerable<IProvince>> funcGetProvinces;
-
         public string name { get; set; }
         public (int r, int g, int b) color { get; }
         public IOfficeGroup officeGroup { get; }

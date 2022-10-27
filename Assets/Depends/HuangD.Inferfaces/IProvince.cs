@@ -6,9 +6,10 @@ namespace HuangD.Interfaces
     public interface IProvince
     {
         public string name { get; }
-        public ICell[] cells { get; }
-        public IProvince[] neighbors { get; }
+        public IEnumerable<ICell> cells { get; }
+        public IEnumerable<IProvince> neighbors { get; }
 
+        public ICountry country { get; }
         public int population { get; }
     }
 }

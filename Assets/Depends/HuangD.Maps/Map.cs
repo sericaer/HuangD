@@ -1,5 +1,6 @@
 using HuangD.Interfaces;
 using Math.TileMap;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,8 @@ namespace HuangD.Maps
 
     class Cell : ICell
     {
+        public static Func<ICell, IProvince> funcGetProvince;
+
         public (int x, int y) position { get; set; }
         public float noise { get; set; }
         public int block { get; set; }
@@ -25,8 +28,7 @@ namespace HuangD.Maps
         public float rain { get; set; }
         public float wetness { get; set; }
         public ILandInfo landInfo { get; set; }
-
-        public int? provinceId { get; set; }
+        public IProvince province => funcGetProvince(this);
 
     }
 
