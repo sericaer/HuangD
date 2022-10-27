@@ -65,12 +65,6 @@ public class MapRender : MonoBehaviour
         return noiseMap.tilemap.HasTile(new Vector3Int(cellIndex.x, cellIndex.y));
     }
 
-    //private void MoveCameraToMapCenter()
-    //{
-    //    var bound = terrainMap.tilemap.cellBounds;
-    //    var mapCenterPos = mapGrid.CellToWorld(new Vector3Int((bound.xMax - bound.xMin) / 2, (bound.yMax - bound.yMin) / 2));
-    //    mapCamera.transform.position = new Vector3(mapCenterPos.x, mapCenterPos.y, mapCamera.transform.position.z);
-    //}
 
     //internal void SetProvinces(IEnumerable<IProvince> provinces)
     //{

@@ -20,6 +20,19 @@ public class MapUIContainer : MonoBehaviour, IEnumerable<MapUIItem>
         return ((IEnumerable<MapUIItem>)uiItems).GetEnumerator();
     }
 
+    internal void SetCountris(IEnumerable<ICountry> countries)
+    {
+        foreach (var country in countries)
+        {
+            var item = Instantiate(defaultCountryItem, defaultCountryItem.transform.parent);
+            item.gmData = country;
+            item.cellPos = HuangD.Maps.Utilty.GetCenterPos(country.provinces.SelectMany(x=>x.cells).Select(x => x.position));
+
+            item.gameObject.SetActive(true);
+            uiItems.Add(item);
+        }
+    }
+
     internal void SetProvinces(IEnumerable<IProvince> provinces)
     {
         foreach (var province in provinces)
@@ -32,6 +45,7 @@ public class MapUIContainer : MonoBehaviour, IEnumerable<MapUIItem>
             uiItems.Add(item);
         }
     }
+
 
     IEnumerator IEnumerable.GetEnumerator()
     {
