@@ -60,28 +60,21 @@ namespace HuangD.Maps
 
         public static (int x, int y) GetCenterPos(IEnumerable<(int x, int y)> elements)
         {
-            IEnumerable<(int x, int y)> rings;
-
-            int max = 0;
-            int index = -1;
-            for (int i = 0; i < elements.Count(); i++)
+            return elements.OrderByDescending(e =>
             {
-                var elem = elements.ElementAt(i);
+                IEnumerable<(int x, int y)> rings;
+
                 int distance = 1;
                 do
                 {
-                    rings = Hexagon.GetRing(elem, distance);
+                    rings = Hexagon.GetRing(e, distance);
                     distance++;
                 }
                 while (rings.All(x => elements.Contains(x)));
-                if (distance > max)
-                {
-                    index = i;
-                    max = distance;
-                }
-            }
 
-            return elements.ElementAt(index);
+                return rings.Count(x => elements.Contains(x));
+
+            }).FirstOrDefault();
         }
 
         public static IEnumerable<(int x, int y)> FindPath((int x, int y) startPos, System.Func<(int x, int y), bool> endCondition, IEnumerable<(int x, int y)> baseMap, Dictionary<(int x, int y), float> costMap = null)
