@@ -17,7 +17,7 @@ public class MapCamera : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        OnZoom.Invoke((mapCamera.orthographicSize - minOrthoSize) / (maxOrthoSize - minOrthoSize));
     }
 
     // Update is called once per frame
