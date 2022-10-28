@@ -1,3 +1,4 @@
+using HuangD.Interfaces;
 using Maths;
 using System;
 using System.Collections.Generic;
@@ -84,6 +85,14 @@ namespace Math.TileMap
             };
 
             return lines.SelectMany(x => x).Select(x => ToOffset(x)).Select(e => (center.x + e.x, center.y + e.y)).Distinct();
+        }
+
+        internal static (int x, int y) GetIntersectScale((int x, int y) p1, (int x, int y) p2)
+        {
+            var ns1 = GetNeighbors(ScaleOffset(p1, 2));
+            var ns2 = GetNeighbors(ScaleOffset(p2, 2));
+
+            return ns1.Intersect(ns2).Single();
         }
 
         internal static int GetDistance((int x, int y) target, (int x, int y) origin)

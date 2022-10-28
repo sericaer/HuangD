@@ -21,7 +21,7 @@ public class MapCanvas : MonoBehaviour, IPointerDownHandler
     {
         mapData = session.map;
 
-        mapRender.SetData(session.map);
+        mapRender.SetGeographMap(session.map);
         mapRender.SetPliticalMap(session.provinces, session.countries);
 
         mapUIContainer.SetProvinces(session.provinces);

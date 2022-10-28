@@ -39,6 +39,7 @@ namespace HuangD.Interfaces
         public float wetness { get; set; }
         public ILandInfo landInfo { get; set; }
 
+        public IEnumerable<ICell> neighors { get; }
         public IProvince province { get; }
     }
 

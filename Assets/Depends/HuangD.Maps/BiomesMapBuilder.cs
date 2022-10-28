@@ -270,6 +270,7 @@ namespace HuangD.Maps
 
             var queue = new UniqueQueue<(int x, int y)>();
 
+NewStart:
             var start = forestPositions.First();
             queue.Enqueue(start);
             rslt[start] = BiomeType.Farm_Plain;
@@ -278,6 +279,11 @@ namespace HuangD.Maps
 
             while (forestPositions.Count > rawforestPlainCount * 0.8)
             {
+                if (queue.Count == 0)
+                {
+                    goto NewStart;
+                }
+
                 var curr = queue.Dequeue();
 
                 var neighbors = Hexagon.GetNeighbors(curr)
@@ -286,9 +292,16 @@ namespace HuangD.Maps
 
                 foreach (var neighbor in neighbors)
                 {
-                    if(rslt[neighbor] == BiomeType.Juggle_Plain)
+                    if (rslt[neighbor] == BiomeType.Juggle_Plain)
                     {
-                        if(random.isTrue(70))
+                        if (random.isTrue(70))
+                        {
+                            continue;
+                        }
+                    }
+                    if (rslt[neighbor] == BiomeType.Juggle_Plain)
+                    {
+                        if (random.isTrue(90))
                         {
                             continue;
                         }
@@ -300,21 +313,9 @@ namespace HuangD.Maps
                     queue.Enqueue(neighbor);
                 }
 
-                var newStarts = forestPositions.Take(1);
-
-                foreach (var newStart in newStarts)
+                if(forestPositions.Count % 10 == 0)
                 {
-                    if (rslt[newStart] == BiomeType.Juggle_Plain)
-                    {
-                        if (random.isTrue(90))
-                        {
-                            continue;
-                        }
-                    }
-
-                    rslt[newStart] = BiomeType.Farm_Plain;
-                    forestPositions.Remove(newStart);
-                    queue.Enqueue(newStart);
+                    goto NewStart;
                 }
             }
         }

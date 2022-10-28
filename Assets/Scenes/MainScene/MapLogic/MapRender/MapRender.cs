@@ -22,9 +22,11 @@ public class MapRender : MonoBehaviour
     public ProvinceMap provinceMap;
     public CountryMap countryMap;
 
-    internal void SetData(IMap map)
+    internal void SetGeographMap(IMap map)
     {
-        foreach(var cell in map.blockMap)
+        Debug.Log("SetGeographMap Start");
+
+        foreach (var cell in map.blockMap)
         {
             noiseMap.SetCell(cell.position, cell.noise);
             blockMap.SetCell(cell.position, cell.block, cell.isBlockEdge);
@@ -44,10 +46,14 @@ public class MapRender : MonoBehaviour
         {
             riverMap.SetCell(riverItem.position, riverItem.index);
         }
+
+        Debug.Log("SetGeographMap End");
     }
 
     internal void SetPliticalMap(IEnumerable<IProvince> provinces, IEnumerable<ICountry> countries)
     {
+        Debug.Log("SetPliticalMap Start");
+
         foreach (var province in provinces)
         {
             provinceMap.SetProvince(province);
@@ -57,6 +63,11 @@ public class MapRender : MonoBehaviour
         {
             countryMap.SetCountry(country);
         }
+
+        edgeMap.SetProvinces(provinces);
+        edgeMap.SetCountries(countries);
+
+        Debug.Log("SetPliticalMap End");
     }
 
     internal bool HasTile(Vector3 wordPos)

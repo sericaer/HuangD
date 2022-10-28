@@ -40,6 +40,7 @@ namespace HuangD.Sessions
         public Session()
         {
             Cell.funcGetProvince = (cell) => provinces.SingleOrDefault(x => x.cells.Contains(cell));
+            Cell.funcGetNeighbors = (cell) => Hexagon.GetNeighbors(cell.position).Select(x => map.blockMap[x]).Where(x => x != null);
             Province.funcGetCountry = (prov) => countries.SingleOrDefault(x => x.provinces.Contains(prov));
             Office.funcGetPerson = (office) => person2Office.SingleOrDefault(x => x.office == office)?.person;
             Person.funcGetOffice = (person) => person2Office.SingleOrDefault(x => x.person == person)?.office;

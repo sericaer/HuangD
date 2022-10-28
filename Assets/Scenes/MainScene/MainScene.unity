@@ -2719,7 +2719,6 @@ Transform:
   m_Children:
   - {fileID: 1031795685}
   - {fileID: 105135761}
-  - {fileID: 2138730969}
   - {fileID: 946912881}
   - {fileID: 1858942720}
   - {fileID: 1353954888}
@@ -2727,6 +2726,7 @@ Transform:
   - {fileID: 1665183908}
   - {fileID: 1557426126}
   - {fileID: 31007938}
+  - {fileID: 2138730969}
   - {fileID: 801524476}
   m_Father: {fileID: 1618154116}
   m_RootOrder: -1
@@ -3517,7 +3517,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 6
+  m_SortingOrder: 7
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
@@ -7914,7 +7914,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2138730969
 Transform:
   m_ObjectHideFlags: 0
@@ -7970,7 +7970,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 6
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
@@ -8029,6 +8029,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db8382ab50c69c04997a78c06094d1e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tilemap: {fileID: 2138730971}
+  sprite: {fileID: 2747690628134850419, guid: 53f75fe786bff7e438fedfc10c3fdae5, type: 3}
   tileMap: {fileID: 2138730971}
   provinceEgdes:
   - {fileID: 21300000, guid: 65d84a30639044443808d723b0dfc93d, type: 3}

@@ -26,7 +26,8 @@ public class MapUIContainer : MonoBehaviour, IEnumerable<MapUIItem>
         {
             var item = Instantiate(defaultCountryItem, defaultCountryItem.transform.parent);
             item.gmData = country;
-            item.cellPos = HuangD.Maps.Utilty.GetCenterPos(country.provinces.SelectMany(x=>x.cells).Select(x => x.position), 5);
+
+            item.cellPos = HuangD.Maps.Utilty.GetCenterPos(country.provinces.SelectMany(x=>x.cells).Select(x => x.position).ToHashSet());
 
             item.gameObject.SetActive(true);
             uiItems.Add(item);
@@ -39,7 +40,7 @@ public class MapUIContainer : MonoBehaviour, IEnumerable<MapUIItem>
         {
             var item = Instantiate(defaultProvinceItem, defaultProvinceItem.transform.parent);
             item.gmData = province;
-            item.cellPos = HuangD.Maps.Utilty.GetCenterPos(province.cells.Select(x => x.position));
+            item.cellPos = HuangD.Maps.Utilty.GetCenterPos(province.cells.Select(x => x.position).ToHashSet());
 
             item.gameObject.SetActive(true);
             uiItems.Add(item);

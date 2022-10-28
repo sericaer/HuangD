@@ -18,6 +18,7 @@ namespace HuangD.Maps
     class Cell : ICell
     {
         public static Func<ICell, IProvince> funcGetProvince;
+        public static Func<ICell, IEnumerable<ICell>> funcGetNeighbors;
 
         public (int x, int y) position { get; set; }
         public float noise { get; set; }
@@ -30,6 +31,7 @@ namespace HuangD.Maps
         public ILandInfo landInfo { get; set; }
         public IProvince province => funcGetProvince(this);
 
+        public IEnumerable<ICell> neighors => funcGetNeighbors(this);
     }
 
     class BlockMap : IBlockMap
