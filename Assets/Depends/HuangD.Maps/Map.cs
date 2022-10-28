@@ -30,7 +30,6 @@ namespace HuangD.Maps
         public float wetness { get; set; }
         public ILandInfo landInfo { get; set; }
         public IProvince province => funcGetProvince(this);
-
         public IEnumerable<ICell> neighors => funcGetNeighbors(this);
     }
 

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 public class MapCanvas : MonoBehaviour, IPointerDownHandler
@@ -16,6 +17,8 @@ public class MapCanvas : MonoBehaviour, IPointerDownHandler
     public MapUIContainer mapUIContainer;
 
     private IMap mapData;
+
+    public UnityEvent<IProvince> ProvinceSelected;
 
     public void SetMapData(ISession session)
     {
@@ -73,6 +76,8 @@ public class MapCanvas : MonoBehaviour, IPointerDownHandler
         var block = mapData.blockMap[pos];
 
         Debug.Log($"POS:{pos}, Height:{block.height}, terrain:{block.terrain}, rain:{block.rain}, wetness:{block.wetness}, biomes:{block.landInfo?.biome}, population{block.landInfo?.population}, province{block.province?.name}, country{block.province?.country.name}");
+
+        ProvinceSelected.Invoke(block.province);
     }
 
     void Start()
