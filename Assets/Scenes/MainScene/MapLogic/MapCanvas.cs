@@ -1,4 +1,5 @@
 ﻿using HuangD.Interfaces;
+using HuangD.Maps;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,8 +28,12 @@ public class MapCanvas : MonoBehaviour, IPointerDownHandler
         mapUIContainer.SetProvinces(session.provinces);
         mapUIContainer.SetCountris(session.countries);
 
-        var center = GetMapCenterPosition();
-        mapCamera.MoveTo(new Vector3(center.x, center.y, mapCamera.transform.position.z));
+        var startCellIndex = Utilty.GetCenterPos(session.playerCountry.provinces.SelectMany(x=>x.cells)
+            .Select(x=>x.position));
+
+        var startPos = mapGrid.CellToWorld(new Vector3Int(startCellIndex.x, startCellIndex.y));
+
+        mapCamera.MoveTo(new Vector3(startPos.x, startPos.y, mapCamera.transform.position.z));
     }
 
     public void OnCameraMoved()
@@ -57,10 +62,7 @@ public class MapCanvas : MonoBehaviour, IPointerDownHandler
 
     void Start()
     {
-        foreach (var item in mapUIContainer)
-        {
-            item.transform.position = mapGrid.CellToWorld(new Vector3Int(item.cellPos.x, item.cellPos.y));
-        }
+
     }
 
     public void OnPointerDown(PointerEventData eventData)
