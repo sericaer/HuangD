@@ -22,6 +22,13 @@ public class MainScene : MonoBehaviour
             Terminal.Shell.AddCommand(command);
         }
 
+        commandMgr.GetCmd<CommandChangePlayCountry>().OnChangedListeners.Clear();
+        commandMgr.GetCmd<CommandChangePlayCountry>().OnChangedListeners.Add((country)=> 
+        {
+            mapCanvas.moveCameraTo(country);
+        });
+
+
         //emperorPanel.SetEmperor(session.playerCountry.leader);
         //countryPanel.SetCountry(session.playerCountry);
 
