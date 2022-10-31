@@ -18,7 +18,7 @@ public class MapCanvas : MonoBehaviour, IPointerDownHandler
 
     private IMap mapData;
 
-    public UnityEvent<IProvince> ProvinceSelected;
+    public UnityEvent<object> politcalMapSelected;
 
     public void SetMapData(ISession session)
     {
@@ -77,7 +77,14 @@ public class MapCanvas : MonoBehaviour, IPointerDownHandler
 
         Debug.Log($"POS:{pos}, Height:{block.height}, terrain:{block.terrain}, rain:{block.rain}, wetness:{block.wetness}, biomes:{block.landInfo?.biome}, population{block.landInfo?.population}, province{block.province?.name}, country{block.province?.country.name}");
 
-        ProvinceSelected.Invoke(block.province);
+        if(mapRender.countryMap.GetAlpha() > 0.8)
+        {
+            politcalMapSelected.Invoke(block.province?.country);
+        }
+        else
+        {
+            politcalMapSelected.Invoke(block.province);
+        }
     }
 
     void Start()

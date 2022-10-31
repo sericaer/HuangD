@@ -16,6 +16,11 @@ public class CountryMap : MapBehaviour
         tilemap.color = new Color(tilemap.color.r, tilemap.color.g, tilemap.color.b, alpha);
     }
 
+    internal float GetAlpha()
+    {
+        return tilemap.color.a;
+    }
+
     internal void SetCountry(ICountry country)
     {
         var color = new Color(country.color.r/255f, country.color.g/255f, country.color.b/255f);
