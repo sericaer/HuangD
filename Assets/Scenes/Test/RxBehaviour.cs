@@ -1,11 +1,24 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
-public class RxBehaviour : MonoBehaviour
+public abstract class RxBehaviour<T> : MonoBehaviour
 {
-    protected ReactiveUI rxUI = new ReactiveUI();
+    protected ReactiveUIControl rxUIControl = new ReactiveUIControl();
+    public T dataSource { get; private set; }
+
+    public void SetDataSource(T dataSource)
+    {
+        rxUIControl.Clear();
+
+        this.dataSource = dataSource;
+
+        AssocateData();
+    }
+
+    public abstract void AssocateData();
 
     private void OnDestroy()
     {
-        rxUI.Dispose();
+        rxUIControl.Dispose();
     }
 }
