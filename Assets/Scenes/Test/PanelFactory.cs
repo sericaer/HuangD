@@ -71,7 +71,7 @@ public class PanelFactory : MonoBehaviour
 
         if (reactiveIntList != null)
         {
-            foreach(var item in reactiveIntList.GetDatas())
+            foreach(var item in reactiveIntList)
             {
                 item.Value.SetValue(item.Value.GetValue()+1);
             }

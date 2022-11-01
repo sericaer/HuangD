@@ -1,13 +1,24 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine.UI;
 
 public class ReactiveListTest : RxListBehaviour<Data>
 {
     public ReactiveListItem defaultUIItem;
-    
+
+    public Text totalText;
+
+    public Reactive<int> total = new Reactive<int>();
+
+
     public override void AssocateData()
     {
         rxUIControl.Binding(dataSource, defaultUIItem);
+
+        rxUIControl.Binding(total, totalText);
+
+        dataSource.CombinePropertyTo(d=>d.Value, ()=> { total.SetValue(dataSource.Sum(d => d.Value.GetValue())); });
     }
 
     void Start()
@@ -22,7 +33,7 @@ public class ReactiveListTest : RxListBehaviour<Data>
 
     public void OnRemoveButton()
     {
-        dataSource.Remove(dataSource.GetDatas().Last());
+        dataSource.Remove(dataSource.Last());
     }
 }
 

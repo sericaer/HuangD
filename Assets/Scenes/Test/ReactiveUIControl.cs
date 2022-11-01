@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reactive.Linq;
 using UnityEngine.UI;
 using System.Linq;
+using System.Linq.Expressions;
 
 public class ReactiveUIControl : IDisposable
 {
@@ -23,6 +24,18 @@ public class ReactiveUIControl : IDisposable
         bindItems.Clear();
     }
 
+    internal void Binding<TFrom, TProperty>(
+        ReactiveList<TFrom> reactivelist, 
+        Func<TFrom, IObservable<TProperty>> fromProperty, 
+        Text text, 
+        Func<object> transform)
+    {
+        foreach (var item in reactivelist)
+        {
+            fromProperty(item);
+        }
+    }
+
     public BindItem Binding<T>(Reactive<T> reactiveData, Text text)
     {
         text.text = reactiveData.GetValue().ToString();
@@ -35,7 +48,7 @@ public class ReactiveUIControl : IDisposable
 
     public BindItem Binding<T>(ReactiveList<T> reactivelist, RxBehaviour<T> rxBehaviour)
     {
-        foreach(var item in reactivelist.GetDatas())
+        foreach(var item in reactivelist)
         {
             var newRxBehaviour = UnityEngine.Object.Instantiate(rxBehaviour, rxBehaviour.gameObject.transform.parent);
             newRxBehaviour.SetDataSource(item);
