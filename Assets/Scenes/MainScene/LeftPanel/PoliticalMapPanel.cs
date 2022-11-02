@@ -6,21 +6,26 @@ public class PoliticalMapPanel : MonoBehaviour
     public ProvinceTip provinceTip;
     public CountryTip countryTip;
 
+    private void Start()
+    {
+        provinceTip.gameObject.SetActive(false);
+        countryTip.gameObject.SetActive(false);
+    }
+
     public void OnShow(object obj)
     {
         switch (obj)
         {
             case IProvince province:
-                countryTip.OnShow(null);
-                provinceTip.OnShow(province);
+                provinceTip.dataSource = province;
+                provinceTip.gameObject.SetActive(true);
                 break;
             case ICountry country:
-                provinceTip.OnShow(null);
                 countryTip.OnShow(country);
                 break;
             default:
-                countryTip.OnShow(null);
-                provinceTip.OnShow(null);
+                provinceTip.gameObject.SetActive(false);
+                countryTip.gameObject.SetActive(false);
                 break;
         }
     }

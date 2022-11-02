@@ -1,46 +1,48 @@
 using HuangD.Interfaces;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 using UnityEngine.UI;
 
-public class ProvinceTip : MonoBehaviour
+public class ProvinceTip : UIBehaviour<IProvince>
 {
     public Text provinceName;
     public Text population;
     public Text landCount;
 
-    public PieChartExt landPieChart;
+    public LandChart landChart;
 
-    private IProvince province;
+    private Dictionary<BiomeType, List<ICell>> biome2Cells;
 
-    // Start is called before the first frame update
-    void Start()
+    protected override void AssocDataSource()
     {
-        this.gameObject.SetActive(false);
+        biome2Cells = new Dictionary<BiomeType, List<ICell>>();
+
+        Bind(province => province.name, provinceName);
+        Bind(province => province.population, population);
+        Bind(province => province.cells.Count(), landCount);
+        Bind(province => GroupByBiomeType(province.cells), landChart);
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
+    public IEnumerable<List<ICell>> GroupByBiomeType(IEnumerable<ICell> cells)
     {
-        provinceName.text = province.name;
-        population.text = province.population.ToString();
-        landCount.text = province.cells.Count().ToString();
-
-        if(landPieChart.gameObject.activeInHierarchy)
+        foreach (var list in biome2Cells.Values)
         {
-            foreach(var group in province.cells.GroupBy(x=>x.landInfo.biome))
+            list.Clear();
+        }
+
+        foreach (var cell in cells)
+        {
+            if (!biome2Cells.ContainsKey(cell.landInfo.biome))
             {
-                landPieChart.AddOrUpdate(group.Key.ToString(), group.Count());
+                biome2Cells.Add(cell.landInfo.biome, new List<ICell>() { cell });
+            }
+            else
+            {
+                biome2Cells[cell.landInfo.biome].Add(cell);
             }
         }
-    }
 
-    public void OnShow(IProvince province)
-    {
-        this.province = province;
-        this.gameObject.SetActive(this.province != null);
+        return biome2Cells.Values.Where(v => v.Count > 0);
     }
 }
