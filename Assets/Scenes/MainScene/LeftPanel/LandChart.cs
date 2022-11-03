@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class LandChart : UICollectionBehaviour<List<ICell>>
+public class LandChart : UICollectionBehaviour<List<ICell>, LandChartItem>
 {
     protected override void FixedUpdate()
     {

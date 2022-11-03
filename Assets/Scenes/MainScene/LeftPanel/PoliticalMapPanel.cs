@@ -14,19 +14,23 @@ public class PoliticalMapPanel : MonoBehaviour
 
     public void OnShow(object obj)
     {
+        provinceTip.gameObject.SetActive(false);
+        countryTip.gameObject.SetActive(false);
+
         switch (obj)
         {
             case IProvince province:
                 provinceTip.dataSource = province;
                 provinceTip.gameObject.SetActive(true);
+                provinceTip.transform.SetAsLastSibling();
                 break;
             case ICountry country:
-                countryTip.OnShow(country);
+                countryTip.dataSource = country;
+                countryTip.gameObject.SetActive(true);
+                provinceTip.transform.SetAsLastSibling();
                 break;
             default:
-                provinceTip.gameObject.SetActive(false);
-                countryTip.gameObject.SetActive(false);
-                break;
+                throw new System.Exception();
         }
     }
 }

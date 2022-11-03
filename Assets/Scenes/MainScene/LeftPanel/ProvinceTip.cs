@@ -2,6 +2,7 @@ using HuangD.Interfaces;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class ProvinceTip : UIBehaviour<IProvince>
@@ -10,9 +11,21 @@ public class ProvinceTip : UIBehaviour<IProvince>
     public Text population;
     public Text landCount;
 
+    public Button country;
+
     public LandChart landChart;
 
+    public UnityEvent<ICountry> ShowCountry;
+
     private Dictionary<BiomeType, List<ICell>> biome2Cells;
+
+    protected override void Awake()
+    {
+        country.onClick.AddListener(()=>
+        {
+            ShowCountry.Invoke(dataSource.country);
+        });
+    }
 
     protected override void AssocDataSource()
     {
@@ -21,6 +34,7 @@ public class ProvinceTip : UIBehaviour<IProvince>
         Bind(province => province.name, provinceName);
         Bind(province => province.population, population);
         Bind(province => province.cells.Count(), landCount);
+        Bind(province => province.country.name, country.GetComponentInChildren<Text>());
         Bind(province => GroupByBiomeType(province.cells), landChart);
     }
 

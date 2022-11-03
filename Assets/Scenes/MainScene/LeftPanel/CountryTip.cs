@@ -1,33 +1,21 @@
 ﻿using HuangD.Interfaces;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class CountryTip : MonoBehaviour
+public class CountryTip : UIBehaviour<ICountry>
 {
     public Text countryName;
     public Text population;
     public Text provinceCount;
+    public ProvinceList provinceList;
 
-    private ICountry country;
-
-    // Start is called before the first frame update
-    void Start()
+    protected override void AssocDataSource()
     {
-        this.gameObject.SetActive(false);
-    }
-
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        countryName.text = country.name;
-        population.text = country.provinces.Sum(x => x.population).ToString();
-        provinceCount.text = country.provinces.Count().ToString();
-    }
-
-    public void OnShow(ICountry country)
-    {
-        this.country = country;
-        this.gameObject.SetActive(this.country != null);
+        Bind(country => country.name, countryName);
+        Bind(country => country.provinces.Sum(p=>p.population), population);
+        Bind(country => country.provinces.Count(), provinceCount);
+        Bind(country => country.provinces, provinceList);
     }
 }

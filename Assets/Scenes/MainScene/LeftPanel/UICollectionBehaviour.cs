@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class UICollectionBehaviour<TItem> : MonoBehaviour  where TItem : class
+public class UICollectionBehaviour<TItem, TUIItem> : MonoBehaviour  
+    where TItem : class
+    where TUIItem : UIBehaviour<TItem>
 {
-    public UIBehaviour<TItem> defaultUIItem;
+    public TUIItem defaultUIItem;
     protected Transform uiContainer => defaultUIItem.gameObject.transform.parent;
 
     private object dataSource;

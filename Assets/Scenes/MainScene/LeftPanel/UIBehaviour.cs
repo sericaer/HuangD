@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public abstract class UIBehaviour<T> : MonoBehaviour
+    where T:class
 {
     private T _dataSource;
 
@@ -17,6 +18,10 @@ public abstract class UIBehaviour<T> : MonoBehaviour
         }
         set
         {
+            if(_dataSource == value)
+            {
+                return;
+            }
 
             dictText = new Dictionary<Text, Func<T, object>>();
 
@@ -25,6 +30,17 @@ public abstract class UIBehaviour<T> : MonoBehaviour
             AssocDataSource();
         }
     }
+
+    protected virtual void Awake()
+    {
+
+    }
+
+    protected virtual void Start()
+    {
+
+    }
+
 
     protected virtual void FixedUpdate()
     {
@@ -44,8 +60,9 @@ public abstract class UIBehaviour<T> : MonoBehaviour
         dictText.Add(text, func);
     }
 
-    protected void Bind<TItem>(Func<T, IEnumerable<TItem>> func, UICollectionBehaviour<TItem> uiContainer)
+    protected void Bind<TItem, TUIItem>(Func<T, IEnumerable<TItem>> func, UICollectionBehaviour<TItem, TUIItem> uiContainer)
         where TItem : class
+        where TUIItem : UIBehaviour<TItem>
     {
         Func<object, IEnumerable<TItem>> adpt = (object obj) => func((T)obj);
         uiContainer.SetDataSource(dataSource, adpt);
