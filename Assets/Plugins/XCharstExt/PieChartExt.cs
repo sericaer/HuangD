@@ -59,4 +59,9 @@ public class PieChartExt : MonoBehaviour
         pieChart.series[0].RemoveData(seriaData.index);
 
     }
+
+    public void Clear()
+    {
+        pieChart.ClearData();
+    }
 }

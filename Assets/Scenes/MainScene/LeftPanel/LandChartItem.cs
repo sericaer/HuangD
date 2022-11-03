@@ -24,10 +24,10 @@ public class LandChartItem : UIBehaviour<List<ICell>>
 
                 foreach(BiomeType biomeType in System.Enum.GetValues(typeof(BiomeType)))
                 {
-                    var color = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
-                    while(_dictBiomeColor.Values.Any(c=> ((Vector4)(color - c)).sqrMagnitude < 0.05))
+                    var color = Random.ColorHSV(0f, 1f, 0.8f, 0.8f, 0.8f, 1f);
+                    while(_dictBiomeColor.Values.Any(c=> c == color))
                     {
-                        color = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
+                        color = Random.ColorHSV(0f, 1f, 0.8f, 0.8f, 0.8f, 1f);
                     }
 
                     _dictBiomeColor.Add(biomeType, color);
@@ -45,6 +45,8 @@ public class LandChartItem : UIBehaviour<List<ICell>>
 
     protected override void AssocDataSource()
     {
+        pieChart.Clear();
+
         image.color = dictBiomeColor[dataSource.First().landInfo.biome];
 
         Bind(dataSource => dataSource.First().landInfo.biome, itemName);
