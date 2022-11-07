@@ -9,7 +9,7 @@ public class MainScene : MonoBehaviour
     public MapCanvas mapCanvas;
     public CountryPanel countryPanel;
     public DatePanel datePanel;
-
+    public TreasuryPanel treasuryPanel;
     public void OnTimeElapse()
     {
         Facade.session.date.day++;
@@ -41,6 +41,7 @@ public class MainScene : MonoBehaviour
         mapCanvas.SetMapData(Facade.session);
 
         datePanel.dataSource = Facade.session.date;
+        treasuryPanel.dataSource = Facade.session.playerCountry.treasury;
 
         //mapLogic.SetProvinces(Facade.session.provinces);
         //mapLogic.SetCountries(Facade.session.countries);

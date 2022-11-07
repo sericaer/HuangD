@@ -12,6 +12,8 @@ namespace HuangD.Interfaces
         public IPerson leader { get; }
 
         public IOfficeGroup officeGroup { get; }
+
+        public ITreasury treasury { get; }
     }
 }
 
