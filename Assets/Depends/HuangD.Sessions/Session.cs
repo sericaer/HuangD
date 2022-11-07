@@ -24,6 +24,7 @@ namespace HuangD.Sessions
         public Dictionary<IProvince, Block> province2Block { get; private set; }
 
         private HashSet<Peson2OfficeItem> person2Office { get; set; }
+        public IDate date { get; set; }
 
         private class Peson2OfficeItem
         {

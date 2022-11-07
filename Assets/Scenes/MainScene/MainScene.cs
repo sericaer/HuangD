@@ -8,6 +8,12 @@ public class MainScene : MonoBehaviour
 {
     public MapCanvas mapCanvas;
     public CountryPanel countryPanel;
+    public DatePanel datePanel;
+
+    public void OnTimeElapse()
+    {
+        Facade.session.date.day++;
+    }
 
     // Start is called before the first frame update
     void Awake()
@@ -33,6 +39,9 @@ public class MainScene : MonoBehaviour
         //countryPanel.SetCountry(session.playerCountry);
 
         mapCanvas.SetMapData(Facade.session);
+
+        datePanel.dataSource = Facade.session.date;
+
         //mapLogic.SetProvinces(Facade.session.provinces);
         //mapLogic.SetCountries(Facade.session.countries);
 

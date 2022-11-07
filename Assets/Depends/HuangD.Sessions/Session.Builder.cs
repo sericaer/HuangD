@@ -34,6 +34,7 @@ namespace HuangD.Sessions
                 session.provinces = provinces;
                 session.countries = countries;
                 session.persons = persons;
+                session.date = new Date();
 
                 session.playerCountry = countries.First();
 

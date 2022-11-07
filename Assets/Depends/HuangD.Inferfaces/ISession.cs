@@ -15,6 +15,8 @@ namespace HuangD.Interfaces
         public IEnumerable<IPerson> persons { get; }
 
         public ICountry playerCountry { get; set; }
+
+        public IDate date { get; set; }
     }
 }
 
