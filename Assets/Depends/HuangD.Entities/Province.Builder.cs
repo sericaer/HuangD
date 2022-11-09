@@ -119,6 +119,8 @@ NewStart:
                 rslt.RemoveAll(x => smallGroups.Contains(x));
 
 
+                int noMergeCount = 0;
+
                 while (smallGroups.Count != 0)
                 {
                     var curr = smallGroups.Dequeue();
@@ -128,8 +130,17 @@ NewStart:
                     if(mergeTo == null)
                     {
                         smallGroups.Enqueue(curr);
+                        noMergeCount++;
+
+                        if(noMergeCount == smallGroups.Count)
+                        {
+                            break;
+                        }
+
                         continue;
                     }
+
+                    noMergeCount = 0;
 
                     mergeTo.cells.AddRange(curr.cells);
 
