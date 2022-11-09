@@ -27,13 +27,12 @@ namespace HuangD.Entities
 
         public double surplus => income - spend;
 
-        public double income => _incomeDetail.Sum(x=> x.GetValue());
+        public double income => incomeItems.Sum(x=> x.GetValue());
+        public IEnumerable<ITreasury.IIncomeItem> incomeItems { get; }
 
         public double spend { get; }
 
         private ICountry owner { get; }
-
-        private List<IncomeItem> _incomeDetail = new List<IncomeItem>();
 
         private double? _stock;
 
@@ -41,7 +40,7 @@ namespace HuangD.Entities
         {
             owner = country;
 
-            _incomeDetail.AddRange(owner.provinces.Select(prov => new IncomeItem(ITreasury.IIncomeItem.TYPE.PopulationTax, prov)));
+            incomeItems = owner.provinces.SelectMany(prov => prov.taxItems);
         }
     }
 }

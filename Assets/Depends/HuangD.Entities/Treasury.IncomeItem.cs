@@ -9,8 +9,9 @@ namespace HuangD.Entities
         public class IncomeItem : ITreasury.IIncomeItem
         {
             public object from { get; }
-
             public ITreasury.IIncomeItem.TYPE type { get; }
+
+            public ITreasury.CollectLevel level { get; set; }
 
             public IncomeItem(ITreasury.IIncomeItem.TYPE type, object from)
             {
