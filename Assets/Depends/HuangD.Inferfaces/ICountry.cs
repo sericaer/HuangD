@@ -14,6 +14,8 @@ namespace HuangD.Interfaces
         public IOfficeGroup officeGroup { get; }
 
         public ITreasury treasury { get; }
+
+        void OnDaysInc(int year, int month, int day);
     }
 }
 

@@ -36,6 +36,8 @@ namespace HuangD.Interfaces
             High,
             VeryHigh
         }
+
+        void OnDaysInc(int year, int month, int day);
     }
 }
 

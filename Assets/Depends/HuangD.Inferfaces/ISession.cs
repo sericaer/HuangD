@@ -17,6 +17,8 @@ namespace HuangD.Interfaces
         public ICountry playerCountry { get; set; }
 
         public IDate date { get; set; }
+
+        public void DaysInc();
     }
 }
 

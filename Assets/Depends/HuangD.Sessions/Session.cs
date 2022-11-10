@@ -46,5 +46,15 @@ namespace HuangD.Sessions
             Office.funcGetPerson = (office) => person2Office.SingleOrDefault(x => x.office == office)?.person;
             Person.funcGetOffice = (person) => person2Office.SingleOrDefault(x => x.person == person)?.office;
         }
+
+        public void DaysInc()
+        {
+            date.day++;
+
+            foreach (var country in countries)
+            {
+                country.OnDaysInc(date.year, date.month, date.day);
+            }
+        }
     }
 }

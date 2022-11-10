@@ -42,5 +42,13 @@ namespace HuangD.Entities
 
             incomeItems = owner.provinces.SelectMany(prov => prov.taxItems);
         }
+
+        public void OnDaysInc(int year, int month, int day)
+        {
+            if(day == 30)
+            {
+                stock += surplus;
+            }
+        }
     }
 }

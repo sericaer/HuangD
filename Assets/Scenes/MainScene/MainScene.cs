@@ -12,7 +12,7 @@ public class MainScene : MonoBehaviour
     public TreasuryPanel treasuryPanel;
     public void OnTimeElapse()
     {
-        Facade.session.date.day++;
+        Facade.session.DaysInc();
     }
 
     // Start is called before the first frame update

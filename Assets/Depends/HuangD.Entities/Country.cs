@@ -24,5 +24,10 @@ namespace HuangD.Entities
 
             this.officeGroup = new OfficeGroup(this);
         }
+
+        public void OnDaysInc(int year, int month, int day)
+        {
+            treasury.OnDaysInc(year, month, day);
+        }
     }
 }
