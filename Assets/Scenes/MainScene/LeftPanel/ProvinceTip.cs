@@ -15,6 +15,7 @@ public class ProvinceTip : UIBehaviour<IProvince>
     public Button country;
 
     public LandChart landChart;
+    public TaxDetails taxDetails;
 
     public UnityEvent<ICountry> ShowCountry;
 
@@ -38,6 +39,7 @@ public class ProvinceTip : UIBehaviour<IProvince>
         Bind(province => province.country.name, country.GetComponentInChildren<Text>());
         Bind(province => GroupByBiomeType(province.cells), landChart);
         Bind(province => province.taxItems.Sum(t=>t.GetValue()), taxValue);
+        Bind(province => province.taxItems, taxDetails);
     }
 
     public IEnumerable<List<ICell>> GroupByBiomeType(IEnumerable<ICell> cells)

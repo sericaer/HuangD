@@ -17,6 +17,7 @@ namespace HuangD.Entities
             {
                 this.type = type;
                 this.from = from;
+                this.level = ITreasury.CollectLevel.Mid;
             }
 
             public double GetValue()
