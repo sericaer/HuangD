@@ -10034,6 +10034,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   label: {fileID: 1725884097}
+  leaderPanel: {fileID: 357205044}
+  treasuryPanel: {fileID: 704557994}
+  population: {fileID: 1555936008}
+  ProvinceCountPanel: {fileID: 1796309533}
 --- !u!1 &1252086181
 GameObject:
   m_ObjectHideFlags: 0

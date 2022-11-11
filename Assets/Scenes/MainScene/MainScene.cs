@@ -2,6 +2,7 @@ using CommandTerminal;
 using HuangD.Commands;
 using HuangD.Mods;
 using HuangD.Sessions;
+using System;
 using UnityEngine;
 
 public class MainScene : MonoBehaviour
@@ -9,7 +10,7 @@ public class MainScene : MonoBehaviour
     public MapCanvas mapCanvas;
     public CountryPanel countryPanel;
     public DatePanel datePanel;
-    public TreasuryPanel treasuryPanel;
+
     public void OnTimeElapse()
     {
         Facade.session.DaysInc();
@@ -18,51 +19,42 @@ public class MainScene : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        InitializeLog();
+        InitializeCommand();
+        InitializeTooltip();
 
+        mapCanvas.SetMapData(Facade.session);
+
+        datePanel.dataSource = Facade.session.date;
+
+        FixedUpdate();
+    }
+
+    private static void InitializeTooltip()
+    {
+        UIBehaviourBase.AssocTooltip = (obj, func) =>
+        {
+            obj.GetComponent<DynamicToolTip>().GenerateBody = func;
+        };
+    }
+
+    private static void InitializeLog()
+    {
         HuangD.Commands.Log.INFO = (info) => Terminal.Log(TerminalLogType.Message, info);
         HuangD.Commands.Log.ERRO = (erro) => Terminal.Log(TerminalLogType.Error, erro);
+    }
 
+    private static void InitializeCommand()
+    {
         var commandMgr = new CommandMgr();
         foreach (var command in commandMgr.all)
         {
             Terminal.Shell.AddCommand(command);
         }
-
-        commandMgr.GetCmd<CommandChangePlayCountry>().OnChangedListeners.Clear();
-        commandMgr.GetCmd<CommandChangePlayCountry>().OnChangedListeners.Add((country)=> 
-        {
-            mapCanvas.moveCameraTo(country);
-        });
-
-        UIBehaviourBase.AssocTooltip = (obj, func) =>
-        {
-            obj.GetComponent<DynamicToolTip>().GenerateBody = func;
-        };
-
-        //emperorPanel.SetEmperor(session.playerCountry.leader);
-        //countryPanel.SetCountry(session.playerCountry);
-
-        mapCanvas.SetMapData(Facade.session);
-
-        datePanel.dataSource = Facade.session.date;
-        treasuryPanel.dataSource = Facade.session.playerCountry.treasury;
-
-        //mapLogic.SetProvinces(Facade.session.provinces);
-        //mapLogic.SetCountries(Facade.session.countries);
-
-
     }
 
-    // Update is called once per frame
-    void Update()
+    private void FixedUpdate()
     {
-        //if (Input.GetAxis("Mouse ScrollWheel") > 0)
-        //{
-        //    mapLogic.ScrollWheel(true);
-        //}
-        //if (Input.GetAxis("Mouse ScrollWheel") < 0)
-        //{
-        //    mapLogic.ScrollWheel(false);
-        //}
+        countryPanel.country = Facade.session.playerCountry;
     }
 }
