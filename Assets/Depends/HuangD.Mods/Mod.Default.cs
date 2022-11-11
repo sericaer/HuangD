@@ -1,5 +1,8 @@
 ﻿using HuangD.Mods.Interfaces;
+using System.Collections.Generic;
 using System.Linq;
+using static HuangD.Interfaces.IEffect;
+using static HuangD.Interfaces.ITreasury;
 
 namespace HuangD.Mods
 {
@@ -14,9 +17,64 @@ namespace HuangD.Mods
                     familys = Enumerable.Range(0,100).Select(x=>$"F{x}"),
                     givens = Enumerable.Range(0, 500).Select(x=>$"G{x}")
                 },
-                provinceNameDef = new ProvinceNameDef()
+
+                provinceDef = new ProvinceDef()
                 {
-                    names = Enumerable.Range(0, 500).Select(x => $"P{x}")
+                    names = Enumerable.Range(0, 500).Select(x => $"P{x}"),
+                    popTaxLevelBuffs = new Dictionary<CollectLevel, IBufferDef>()
+                    {
+                        {
+                            CollectLevel.VeryLow, 
+                            new BufferDef()
+                            {
+                                effects = new IEffectDef[]
+                                {
+                                    new EffectDef(){ factor = -0.8, target = Target.ToPopTax }
+                                }
+                            } 
+                        },
+                        {
+                            CollectLevel.Low,
+                            new BufferDef()
+                            {
+                                effects = new IEffectDef[]
+                                {
+                                    new EffectDef(){ factor = -0.5, target = Target.ToPopTax }
+                                }
+                            }
+                        },
+                        {
+                            CollectLevel.Mid,
+                            new BufferDef()
+                            {
+                                effects = new IEffectDef[]
+                                {
+                                    new EffectDef(){ factor = 0, target = Target.ToPopTax }
+                                }
+                            }
+                        },
+                        {
+                            CollectLevel.High,
+                            new BufferDef()
+                            {
+                                effects = new IEffectDef[]
+                                {
+                                    new EffectDef(){ factor = +0.5, target = Target.ToPopTax }
+                                }
+                            }
+                        },
+                        {
+                            CollectLevel.VeryHigh,
+                            new BufferDef()
+                            {
+                                effects = new IEffectDef[]
+                                {
+                                    new EffectDef(){ factor = +0.8, target = Target.ToPopTax }
+                                }
+                            }
+                        }
+                    }
+
                 },
                 countryNameDef = new CountryNameDef()
                 {

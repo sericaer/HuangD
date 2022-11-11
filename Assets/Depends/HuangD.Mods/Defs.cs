@@ -1,5 +1,6 @@
 ﻿using HuangD.Mods.Interfaces;
 using Newtonsoft.Json;
+using System.IO;
 
 namespace HuangD.Mods
 {
@@ -8,13 +9,15 @@ namespace HuangD.Mods
         public IPersonNameDef personNameDef { get; internal set; }
         public ICountryNameDef countryNameDef { get; internal set; }
 
-        public IProvinceNameDef provinceNameDef { get; internal set; }
+        public IProvinceDef provinceDef { get; internal set; }
+
 
         public Defs(ModFileSystem fileSystem)
         {
             personNameDef = JsonConvert.DeserializeObject<PersonNameDef>(fileSystem.personNames);
             countryNameDef = JsonConvert.DeserializeObject<CountryNameDef>(fileSystem.countryNames);
-            provinceNameDef = JsonConvert.DeserializeObject<ProvinceNameDef>(fileSystem.provinceNames);
+
+            provinceDef = ProvinceDef.Builder.Build(Path.Combine(fileSystem.modPath, "Defines", "Province")); //JsonConvert.DeserializeObject<ProvinceDef>(fileSystem.provinceNames);
         }
 
         internal Defs()

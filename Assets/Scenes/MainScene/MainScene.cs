@@ -34,6 +34,10 @@ public class MainScene : MonoBehaviour
             mapCanvas.moveCameraTo(country);
         });
 
+        UIBehaviourBase.AssocTooltip = (obj, func) =>
+        {
+            
+        };
 
         //emperorPanel.SetEmperor(session.playerCountry.leader);
         //countryPanel.SetCountry(session.playerCountry);

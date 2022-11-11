@@ -1,4 +1,5 @@
 ﻿using HuangD.Interfaces;
+using System.Linq;
 using UnityEngine.UI;
 
 public class TaxItem : UIBehaviour<ITreasury.IIncomeItem>
@@ -10,7 +11,11 @@ public class TaxItem : UIBehaviour<ITreasury.IIncomeItem>
     protected override void AssocDataSource()
     {
         Bind(income => income.type, label);
-        Bind(income => income.GetValue(), value);
+
+        Bind(income => income.currValue, value, income => 
+        {
+            return string.Join("\n", income.effects.Select(x => $"{x.value} {x.from}").Append($"baseValue {income.baseValue}"));
+        });
 
         BindTwoWay(income => income.level, levels);
     }

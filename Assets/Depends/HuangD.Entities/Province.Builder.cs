@@ -11,7 +11,7 @@ namespace HuangD.Entities
 {
     public partial class Province
     {
-        private static IProvinceNameDef def;
+        private static IProvinceDef def;
         private static GRandom random;
 
         public static class Builder
@@ -21,7 +21,7 @@ namespace HuangD.Entities
             private const int maxPopulation = 5 * 10000;
             private const int minPopulation = 5 * 1000;
 
-            public static IEnumerable<IProvince> Build(IMap map, string seed, IProvinceNameDef def)
+            public static IEnumerable<IProvince> Build(IMap map, string seed, IProvinceDef def)
             {
                 Province.def = def;
                 random = new GRandom(seed);

@@ -20,7 +20,7 @@ namespace HuangD.Sessions
                 var map = Map.Builder.Build(mapInit, seed, processInfo);
 
                 processInfo.Invoke("创建省份");
-                var provinces = Province.Builder.Build(map, seed, defs.provinceNameDef);
+                var provinces = Province.Builder.Build(map, seed, defs.provinceDef);
 
                 processInfo.Invoke("创建国家");
                 var countries = Country.Builder.Build(provinces, seed, defs.countryNameDef);

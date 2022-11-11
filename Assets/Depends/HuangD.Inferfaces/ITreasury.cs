@@ -1,4 +1,5 @@
 ﻿using HuangD.Entities;
+using System;
 using System.Collections.Generic;
 
 namespace HuangD.Interfaces
@@ -22,10 +23,12 @@ namespace HuangD.Interfaces
 
             public CollectLevel level { get; set; }
 
+            public Action<CollectLevel> onLevelChanged { get; }
             public TYPE type { get; }
             public object from { get; }
-
-            public double GetValue();
+            public double currValue { get; }
+            public double baseValue { get; }
+            public IEnumerable<IEffect> effects { get;}
         }
 
         public enum CollectLevel

@@ -27,7 +27,7 @@ namespace HuangD.Entities
 
         public double surplus => income - spend;
 
-        public double income => incomeItems.Sum(x=> x.GetValue());
+        public double income => incomeItems.Sum(x=> x.currValue);
         public IEnumerable<ITreasury.IIncomeItem> incomeItems { get; }
 
         public double spend { get; }

@@ -15,7 +15,7 @@ namespace HuangD.Mods.Interfaces
     {
         public IPersonNameDef personNameDef { get; }
         public ICountryNameDef countryNameDef { get; }
-        public IProvinceNameDef provinceNameDef { get; }
+        public IProvinceDef provinceDef { get; }
     }
 
     public interface IPersonNameDef

@@ -15,8 +15,6 @@ namespace HuangD.Mods
             fileSystem = new ModFileSystem(modPath);
 
             defs = new Defs(fileSystem);
-
-
         }
 
         private Mod()

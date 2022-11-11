@@ -5,9 +5,15 @@ using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 
-public abstract class UIBehaviour<T> : MonoBehaviour
+public abstract class UIBehaviourBase : MonoBehaviour
+{
+    public static Action<GameObject, Func<string>> AssocTooltip;
+}
+
+public abstract class UIBehaviour<T> : UIBehaviourBase
     where T:class
 {
+
     private T _dataSource;
 
     private Dictionary<Text, Func<T, object>> dictText;
@@ -71,9 +77,14 @@ public abstract class UIBehaviour<T> : MonoBehaviour
 
     }
 
-    protected void Bind(Func<T, object> func, Text text)
+    protected void Bind(Func<T, object> func, Text text, Func<T, string> funcTooltip = null)
     {
         dictText.Add(text, func);
+
+        if(funcTooltip != null)
+        {
+            AssocTooltip(text.gameObject, ()=> funcTooltip(dataSource));
+        }
     }
 
     protected void Bind(Func<T, object> func, NumberText text)

@@ -1,4 +1,5 @@
-﻿using Math.TileMap;
+﻿using HuangD.Interfaces;
+using Math.TileMap;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,5 +13,7 @@ namespace HuangD.Interfaces
         public IEnumerable<ITreasury.IIncomeItem> taxItems { get; }
         public ICountry country { get; }
         public int population { get; }
+
+        public IEnumerable<IBuffer> buffers { get; }
     }
 }

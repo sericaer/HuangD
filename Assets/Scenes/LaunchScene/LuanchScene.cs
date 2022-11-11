@@ -22,35 +22,54 @@ public class LuanchScene: MonoBehaviour
 
     void Awake()
     {
+#if UNITY_EDITOR
+        Facade.mod = Mod.Default;
+#else
         Facade.mod = Mod.Builder.Build(Path.Combine(Application.streamingAssetsPath, "mods"));
+#endif
+    }
+
+    public void OnMock()
+    {
+        NewGame();
     }
 
     public void OnStart()
+    {
+#if UNITY_EDITOR
+        Facade.mod = Mod.Builder.Build(Path.Combine(Application.streamingAssetsPath, "mods"));
+#endif
+        NewGame();
+    }
+
+    private void NewGame()
     {
         Task.Run(() =>
         {
             //var seed = System.Guid.NewGuid().ToString();
             var seed = "9fc2570e-dd2a-4a82-b277-98136a7117f1";
             Debug.Log($"Seed:{seed}");
-            Facade.session = Session.Builder.Build(new HuangD.Maps.MapInit() { 
-                width = 120, 
-                high = 80, 
+            Facade.session = Session.Builder.Build(new HuangD.Maps.MapInit()
+            {
+                width = 120,
+                high = 80,
                 terrainPercents = new Dictionary<TerrainType, int>()
                 {
                     {TerrainType.Plain, 55 },
                     {TerrainType.Hill, 25 },
                     {TerrainType.Mount, 10}
-                }},
+                }
+            },
                 seed,
                 Facade.mod.defs,
-                (info)=> RunOnMainThread.Enqueue(() => UpdateBroad(info)));
+                (info) => RunOnMainThread.Enqueue(() => UpdateBroad(info)));
 
             RunOnMainThread.Enqueue(() =>
             {
                 UpdateBroad("½øÈëÓÎÏ·");
                 SceneManager.LoadScene(nameof(MainScene), LoadSceneMode.Single);
             });
-        }).ContinueWith(_=>
+        }).ContinueWith(_ =>
         {
             if (_.Exception?.InnerException is { } inner)
             {
@@ -61,18 +80,8 @@ public class LuanchScene: MonoBehaviour
             }
         });
 
-        //SceneManager.LoadSceneAsync(nameof(MainScene), LoadSceneMode.Single);
-
-        //Debug.Log("OnClick");
-        //ComputeAsync();
-
-        //var task = GenerateSession();
         menu.SetActive(false);
         board.SetActive(true);
-
-        //Facade.session = task.Result;
-
-        //SceneManager.LoadSceneAsync(nameof(MainScene), LoadSceneMode.Single);
     }
 
     void UpdateBroad(string info)

@@ -9,7 +9,7 @@ namespace HuangD.Mods
         public string countryNames { get; }
         public string provinceNames { get; }
 
-        private string modPath;
+        public string modPath;
 
         private string personNameFile => Path.Combine(modPath, "Defines", "Person", "NameDef.hjson");
         private string countryNameFile => Path.Combine(modPath, "Defines", "Country", "NameDef.hjson");

@@ -1,5 +1,4 @@
 using HuangD.Interfaces;
-using Math.TileMap;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,14 +18,32 @@ namespace HuangD.Entities
 
         public IEnumerable<IIncomeItem> taxItems => _taxItems;
 
+        public IEnumerable<IBuffer> buffers => _buffers;
+
         private List<IIncomeItem> _taxItems = new List<IIncomeItem>();
+        private List<IBuffer> _buffers = new List<IBuffer>();
 
         public Province(string name, IEnumerable<ICell> cells)
         {
             this.name = name;
             this.cells = cells.ToHashSet();
 
-            _taxItems.Add(new Treasury.IncomeItem(IIncomeItem.TYPE.PopulationTax, this));
+            var taxItem = new Treasury.IncomeItem(
+                IIncomeItem.TYPE.PopulationTax, 
+                this,
+                () => population / 1000,
+                () => buffers.SelectMany(x=>x.effects).Where(x=>x.target == IEffect.Target.ToPopTax),
+                (level) =>
+                {
+                    var key = "CURR_POP_TAX_LEVEL";
+                    _buffers.RemoveAll(x => (string)x.key == key);
+
+                    _buffers.Add(new GBuffer(key, def.popTaxLevelBuffs[level]));
+                }
+             );
+
+
+            _taxItems.Add(taxItem);
         }
     }
 }
