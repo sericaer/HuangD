@@ -36,7 +36,7 @@ public class MainScene : MonoBehaviour
 
         UIBehaviourBase.AssocTooltip = (obj, func) =>
         {
-            
+            obj.GetComponent<DynamicToolTip>().GenerateBody = func;
         };
 
         //emperorPanel.SetEmperor(session.playerCountry.leader);
@@ -66,4 +66,3 @@ public class MainScene : MonoBehaviour
         //}
     }
 }
-
