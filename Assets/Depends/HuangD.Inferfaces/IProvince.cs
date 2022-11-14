@@ -21,10 +21,9 @@ namespace HuangD.Interfaces
     public interface IPop
     {
         int count { get; }
-
         IProvince from { get; }
-
         public ILiveliHood liveliHood { get; }
+        public List<IBuffer> buffers { get; }
 
         public interface ILiveliHood
         {

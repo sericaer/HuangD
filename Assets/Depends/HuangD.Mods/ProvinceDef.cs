@@ -8,7 +8,5 @@ namespace HuangD.Mods
     internal partial class ProvinceDef : IProvinceDef
     {
         public IEnumerable<string> names { get;  set; }
-
-        public Dictionary<ITreasury.CollectLevel, IBufferDef> popTaxLevelBuffs { get; set; }
     }
 }

@@ -15,7 +15,6 @@ namespace HuangD.Entities
         public IEnumerable<IProvince> neighbors { get; set; }
         public IPop pop { get; }
         public ICountry country => funcGetCountry(this);
-        public int population => cells.Sum(c => c.landInfo.population);
 
         public IEnumerable<IIncomeItem> taxItems => _taxItems;
 
@@ -28,24 +27,14 @@ namespace HuangD.Entities
         {
             this.name = name;
             this.cells = cells.ToHashSet();
-            this.pop = new Pop(this, popDef);
+            
+            var pop = new Pop(this, popDef);
+            this.pop = pop;
 
-            var taxItem = new Treasury.IncomeItem(
-                IIncomeItem.TYPE.PopulationTax, 
-                this,
-                () => pop.count / 1000,
-                () => buffers.SelectMany(x=>x.effects).Where(x=>x.target == IEffect.Target.ToPopTax),
-                (level) =>
-                {
-                    var key = "CURR_POP_TAX_LEVEL";
-                    _buffers.RemoveAll(x => (string)x.key == key);
+            var popTax = new Pop.PopulationTax(pop);
+            popTax.level = CollectLevel.Mid;
 
-                    _buffers.Add(new GBuffer(key, def.popTaxLevelBuffs[level]));
-                }
-             );
-
-
-            _taxItems.Add(taxItem);
+            _taxItems.Add(popTax);
         }
 
         public void OnDaysInc(int year, int month, int day)

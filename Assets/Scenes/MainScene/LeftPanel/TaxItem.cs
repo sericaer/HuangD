@@ -10,13 +10,18 @@ public class TaxItem : UIBehaviour<ITreasury.IIncomeItem>
 
     protected override void AssocDataSource()
     {
-        Bind(income => income.type, label);
+        Bind(income => income.GetType().Name, label);
 
         Bind(income => income.currValue, value, income => 
         {
             return string.Join("\n", income.effects.Select(x => $"{x.value} {x.from}").Append($"baseValue {income.baseValue}").Reverse());
         });
 
-        BindTwoWay(income => income.level, levels);
+        BindTwoWay(income => income.level, levels, (income, level) =>
+        {
+            var effects = income.GetLevelEffects(level);
+
+            return string.Join("\n", effects.Select(x => $"{x.factor} {x.target}"));
+        });
     }
 }

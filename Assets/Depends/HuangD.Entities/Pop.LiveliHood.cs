@@ -21,7 +21,7 @@ namespace HuangD.Entities
 
             public double currValue { get; set; }
 
-            public IEnumerable<IEffect> details => pop.from.buffers.SelectMany(x => x.effects).Where(e => e.target == IEffect.Target.ToPopLiveliHoodInc);
+            public IEnumerable<IEffect> details => pop.buffers.SelectMany(x => x.effects).Where(e => e.target == IEffect.Target.ToPopLiveliHoodInc);
 
             public double maxValue => pop.def.maxLiveliHood;
 
@@ -29,6 +29,11 @@ namespace HuangD.Entities
 
             public void OnDaysInc(int year, int month, int day)
             {
+                if(day != 1)
+                {
+                    return;
+                }
+
                 currValue += baseInc + details.Sum(x => x.value);
 
                 if(currValue > maxValue)

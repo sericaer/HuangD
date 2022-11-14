@@ -113,7 +113,7 @@ public abstract class UIBehaviour<T> : UIBehaviourBase
         }
     }
 
-    protected void BindTwoWay<TValue>(Expression<Func<T, TValue>> memberLamda, ToggleGroupEx toggles)
+    protected void BindTwoWay<TValue>(Expression<Func<T, TValue>> memberLamda, ToggleGroupEx toggles, Func<T, TValue, string> tooltip = null)
         where TValue: Enum
     {
         toggles.Clear();
@@ -146,6 +146,11 @@ public abstract class UIBehaviour<T> : UIBehaviourBase
             {
                 return toggles.GetEnum<TValue>(toggle).Equals((TValue)property.GetValue(dataSource));
             });
+
+           if (tooltip != null)
+           {
+                toggle.GetComponent<DynamicToolTip>().GenerateBody = () => tooltip(dataSource, toggles.GetEnum<TValue>(toggle));
+           }
         }
     }
 

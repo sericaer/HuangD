@@ -1,4 +1,5 @@
 ﻿using HuangD.Entities;
+using HuangD.Mods.Interfaces;
 using System;
 using System.Collections.Generic;
 
@@ -16,19 +17,14 @@ namespace HuangD.Interfaces
 
         public interface IIncomeItem
         {
-            public enum TYPE
-            {
-                PopulationTax
-            }
-
             public CollectLevel level { get; set; }
-
-            public Action<CollectLevel> onLevelChanged { get; }
-            public TYPE type { get; }
             public object from { get; }
             public double currValue { get; }
             public double baseValue { get; }
             public IEnumerable<IEffect> effects { get;}
+
+            public IEnumerable<IEffectDef> GetLevelEffects(CollectLevel level);
+
         }
 
         public enum CollectLevel

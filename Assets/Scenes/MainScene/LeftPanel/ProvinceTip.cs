@@ -36,7 +36,11 @@ public class ProvinceTip : UIBehaviour<IProvince>
 
         Bind(province => province.name, provinceName);
         Bind(province => province.pop.count, population);
-        Bind(province => province.pop.liveliHood.currValue, liveliHood);
+        Bind(province => province.pop.liveliHood.currValue, liveliHood, province=> 
+        {
+            return string.Join("\n", province.pop.liveliHood.details.Select(x => $"{x.value} {x.from}").Prepend($"baseValue {province.pop.liveliHood.baseInc}"));
+        });
+
         Bind(province => province.cells.Count(), landCount);
         Bind(province => province.country.name, country.GetComponentInChildren<Text>());
         Bind(province => GroupByBiomeType(province.cells), landChart);

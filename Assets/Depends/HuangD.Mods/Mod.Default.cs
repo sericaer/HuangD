@@ -20,60 +20,6 @@ namespace HuangD.Mods
                 provinceDef = new ProvinceDef()
                 {
                     names = Enumerable.Range(0, 500).Select(x => $"P{x}"),
-                    popTaxLevelBuffs = new Dictionary<CollectLevel, IBufferDef>()
-                    {
-                        {
-                            CollectLevel.VeryLow, 
-                            new BufferDef()
-                            {
-                                effects = new IEffectDef[]
-                                {
-                                    new EffectDef(){ factor = -0.8, target = Target.ToPopTax }
-                                }
-                            } 
-                        },
-                        {
-                            CollectLevel.Low,
-                            new BufferDef()
-                            {
-                                effects = new IEffectDef[]
-                                {
-                                    new EffectDef(){ factor = -0.5, target = Target.ToPopTax }
-                                }
-                            }
-                        },
-                        {
-                            CollectLevel.Mid,
-                            new BufferDef()
-                            {
-                                effects = new IEffectDef[]
-                                {
-                                    new EffectDef(){ factor = 0, target = Target.ToPopTax }
-                                }
-                            }
-                        },
-                        {
-                            CollectLevel.High,
-                            new BufferDef()
-                            {
-                                effects = new IEffectDef[]
-                                {
-                                    new EffectDef(){ factor = +0.5, target = Target.ToPopTax }
-                                }
-                            }
-                        },
-                        {
-                            CollectLevel.VeryHigh,
-                            new BufferDef()
-                            {
-                                effects = new IEffectDef[]
-                                {
-                                    new EffectDef(){ factor = +0.8, target = Target.ToPopTax }
-                                }
-                            }
-                        }
-                    }
-
                 },
                 countryNameDef = new CountryNameDef()
                 {
@@ -83,6 +29,64 @@ namespace HuangD.Mods
                 {
                     maxLiveliHood = 100,
                     minLiveliHood = 0,
+                    popTaxLevelBuffs = new Dictionary<CollectLevel, IBufferDef>()
+                    {
+                        {
+                            CollectLevel.VeryLow,
+                            new BufferDef()
+                            {
+                                effects = new IEffectDef[]
+                                {
+                                    new EffectDef(){ factor = -0.8, target = Target.ToPopTax },
+                                    new EffectDef(){ factor = -0.1, target = Target.ToPopLiveliHoodInc }
+                                }
+                            }
+                        },
+                        {
+                            CollectLevel.Low,
+                            new BufferDef()
+                            {
+                                effects = new IEffectDef[]
+                                {
+                                    new EffectDef(){ factor = -0.5, target = Target.ToPopTax },
+                                    new EffectDef(){ factor = -0.2, target = Target.ToPopLiveliHoodInc }
+                                }
+                            }
+                        },
+                        {
+                            CollectLevel.Mid,
+                            new BufferDef()
+                            {
+                                effects = new IEffectDef[]
+                                {
+                                    new EffectDef(){ factor = 0, target = Target.ToPopTax },
+                                    new EffectDef(){ factor = -0.3, target = Target.ToPopLiveliHoodInc }
+                                }
+                            }
+                        },
+                        {
+                            CollectLevel.High,
+                            new BufferDef()
+                            {
+                                effects = new IEffectDef[]
+                                {
+                                    new EffectDef(){ factor = +0.5, target = Target.ToPopTax },
+                                    new EffectDef(){ factor = -0.5, target = Target.ToPopLiveliHoodInc }
+                                }
+                            }
+                        },
+                        {
+                            CollectLevel.VeryHigh,
+                            new BufferDef()
+                            {
+                                effects = new IEffectDef[]
+                                {
+                                    new EffectDef(){ factor = +0.8, target = Target.ToPopTax },
+                                    new EffectDef(){ factor = -0.8, target = Target.ToPopLiveliHoodInc }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         };
@@ -98,5 +102,6 @@ namespace HuangD.Mods
         public double maxLiveliHood { get; set; }
 
         public double minLiveliHood { get; set; }
+        public Dictionary<CollectLevel, IBufferDef> popTaxLevelBuffs { get; set; }
     }
 }

@@ -6,7 +6,6 @@ namespace HuangD.Mods.Interfaces
     public interface IProvinceDef
     {
         public IEnumerable<string> names { get; }
-        public Dictionary<ITreasury.CollectLevel, IBufferDef> popTaxLevelBuffs { get; }
     }
 
     public interface IBufferDef
@@ -18,5 +17,7 @@ namespace HuangD.Mods.Interfaces
     {
         double maxLiveliHood { get; }
         double minLiveliHood { get; }
+
+        public Dictionary<ITreasury.CollectLevel, IBufferDef> popTaxLevelBuffs { get; set; }
     }
 }
