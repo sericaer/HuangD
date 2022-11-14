@@ -1,0 +1,76 @@
+{
+    VeryLow:
+    {
+        effects:
+        [
+            {
+                target:"ToPopTax"
+                factor:-0.8
+            }
+            {
+                target:"ToPopLiveliHoodInc"
+                factor:-0.1
+            }
+        ]
+    }
+
+    Low:
+    {
+        effects:
+        [
+            {
+                target:"ToPopTax"
+                factor:-0.5
+            }
+            {
+                target:"ToPopLiveliHoodInc"
+                factor:-0.2
+            }
+        ]
+    }
+
+    Mid:
+    {
+        effects:
+        [
+            {
+                target:"ToPopTax"
+                factor:0
+            }
+            {
+                target:"ToPopLiveliHoodInc"
+                factor:-0.3
+            }
+        ]
+    }
+
+    High:
+    {
+        effects:
+        [
+            {
+                target:"ToPopTax"
+                factor:0.5
+            }
+            {
+                target:"ToPopLiveliHoodInc"
+                factor:-0.5
+            }
+        ]
+    }
+
+    VeryHigh:
+    {
+        effects:
+        [
+            {
+                target:"ToPopTax"
+                factor:0.8
+            }
+            {
+                target:"ToPopLiveliHoodInc"
+                factor:-0.8
+            }
+        ]
+    }
+}

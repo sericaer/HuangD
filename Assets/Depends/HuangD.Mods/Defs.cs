@@ -18,9 +18,11 @@ namespace HuangD.Mods
             personNameDef = JsonConvert.DeserializeObject<PersonNameDef>(fileSystem.personNames);
             countryNameDef = JsonConvert.DeserializeObject<CountryNameDef>(fileSystem.countryNames);
 
-            provinceDef = ProvinceDef.Builder.Build(Path.Combine(fileSystem.modPath, "Defines", "Province")); //JsonConvert.DeserializeObject<ProvinceDef>(fileSystem.provinceNames);
+            //provinceDef = ProvinceDef.Builder.Build(Path.Combine(fileSystem.modPath, "Defines", "Province")); 
 
-            
+            provinceDef = JsonConvert.DeserializeObject<ProvinceDef>(fileSystem.provinceNames);
+
+            popDef = PopDef.Builder.Build(fileSystem);
         }
 
         internal Defs()

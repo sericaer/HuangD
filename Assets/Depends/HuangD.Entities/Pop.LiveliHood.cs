@@ -23,9 +23,9 @@ namespace HuangD.Entities
 
             public IEnumerable<IEffect> details => pop.buffers.SelectMany(x => x.effects).Where(e => e.target == IEffect.Target.ToPopLiveliHoodInc);
 
-            public double maxValue => pop.def.maxLiveliHood;
+            public double maxValue => pop.def.liveliHood.max;
 
-            public double minValue => pop.def.minLiveliHood;
+            public double minValue => pop.def.liveliHood.min;
 
             public void OnDaysInc(int year, int month, int day)
             {

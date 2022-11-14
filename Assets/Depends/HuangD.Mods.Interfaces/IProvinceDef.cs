@@ -15,9 +15,14 @@ namespace HuangD.Mods.Interfaces
 
     public interface IPopDef
     {
-        double maxLiveliHood { get; }
-        double minLiveliHood { get; }
+        public LiveliHood liveliHood { get; }
 
         public Dictionary<ITreasury.CollectLevel, IBufferDef> popTaxLevelBuffs { get; set; }
+
+        public class LiveliHood
+        {
+            public double max { get; set; }
+            public double min { get; set; }
+        }
     }
 }

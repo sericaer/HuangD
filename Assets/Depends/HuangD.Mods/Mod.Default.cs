@@ -27,8 +27,11 @@ namespace HuangD.Mods
                 },
                 popDef = new PopDef()
                 {
-                    maxLiveliHood = 100,
-                    minLiveliHood = 0,
+                    liveliHood = new IPopDef.LiveliHood
+                    {
+                        min = 0,
+                        max = 100
+                    },
                     popTaxLevelBuffs = new Dictionary<CollectLevel, IBufferDef>()
                     {
                         {
@@ -95,13 +98,5 @@ namespace HuangD.Mods
         {
 
         }
-    }
-
-    internal class PopDef : IPopDef
-    {
-        public double maxLiveliHood { get; set; }
-
-        public double minLiveliHood { get; set; }
-        public Dictionary<CollectLevel, IBufferDef> popTaxLevelBuffs { get; set; }
     }
 }
