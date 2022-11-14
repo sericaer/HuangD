@@ -11,6 +11,7 @@ namespace HuangD.Mods
 
         public IProvinceDef provinceDef { get; internal set; }
 
+        public IPopDef popDef { get; internal set; }
 
         public Defs(ModFileSystem fileSystem)
         {
@@ -18,6 +19,8 @@ namespace HuangD.Mods
             countryNameDef = JsonConvert.DeserializeObject<CountryNameDef>(fileSystem.countryNames);
 
             provinceDef = ProvinceDef.Builder.Build(Path.Combine(fileSystem.modPath, "Defines", "Province")); //JsonConvert.DeserializeObject<ProvinceDef>(fileSystem.provinceNames);
+
+            
         }
 
         internal Defs()

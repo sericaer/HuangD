@@ -1,4 +1,5 @@
 using HuangD.Interfaces;
+using HuangD.Mods.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace HuangD.Entities
         public string name { get; set; }
         public IEnumerable<ICell> cells { get; }
         public IEnumerable<IProvince> neighbors { get; set; }
-
+        public IPop pop { get; }
         public ICountry country => funcGetCountry(this);
         public int population => cells.Sum(c => c.landInfo.population);
 
@@ -23,15 +24,16 @@ namespace HuangD.Entities
         private List<IIncomeItem> _taxItems = new List<IIncomeItem>();
         private List<IBuffer> _buffers = new List<IBuffer>();
 
-        public Province(string name, IEnumerable<ICell> cells)
+        public Province(string name, IEnumerable<ICell> cells, IPopDef popDef)
         {
             this.name = name;
             this.cells = cells.ToHashSet();
+            this.pop = new Pop(this, popDef);
 
             var taxItem = new Treasury.IncomeItem(
                 IIncomeItem.TYPE.PopulationTax, 
                 this,
-                () => population / 1000,
+                () => pop.count / 1000,
                 () => buffers.SelectMany(x=>x.effects).Where(x=>x.target == IEffect.Target.ToPopTax),
                 (level) =>
                 {
@@ -44,6 +46,11 @@ namespace HuangD.Entities
 
 
             _taxItems.Add(taxItem);
+        }
+
+        public void OnDaysInc(int year, int month, int day)
+        {
+            pop.OnDaysInc(year, month, day);
         }
     }
 }

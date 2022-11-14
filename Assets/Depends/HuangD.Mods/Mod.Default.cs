@@ -17,7 +17,6 @@ namespace HuangD.Mods
                     familys = Enumerable.Range(0,100).Select(x=>$"F{x}"),
                     givens = Enumerable.Range(0, 500).Select(x=>$"G{x}")
                 },
-
                 provinceDef = new ProvinceDef()
                 {
                     names = Enumerable.Range(0, 500).Select(x => $"P{x}"),
@@ -79,6 +78,11 @@ namespace HuangD.Mods
                 countryNameDef = new CountryNameDef()
                 {
                     names = Enumerable.Range(0,100).Select(x=> $"C{x}")
+                },
+                popDef = new PopDef()
+                {
+                    maxLiveliHood = 100,
+                    minLiveliHood = 0,
                 }
             }
         };
@@ -87,5 +91,12 @@ namespace HuangD.Mods
         {
 
         }
+    }
+
+    internal class PopDef : IPopDef
+    {
+        public double maxLiveliHood { get; set; }
+
+        public double minLiveliHood { get; set; }
     }
 }

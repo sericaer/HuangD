@@ -13,4 +13,10 @@ namespace HuangD.Mods.Interfaces
     {
         IEnumerable<IEffectDef> effects { get; }
     }
+
+    public interface IPopDef
+    {
+        double maxLiveliHood { get; }
+        double minLiveliHood { get; }
+    }
 }

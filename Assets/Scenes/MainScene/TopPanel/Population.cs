@@ -11,6 +11,6 @@ public class Population : UIBehaviour<ICountry>
 
     protected override void AssocDataSource()
     {
-        Bind(country => country.provinces.Sum(p => p.population), count);
+        Bind(country => country.provinces.Sum(p => p.pop.count), count);
     }
 }

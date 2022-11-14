@@ -9,6 +9,7 @@ public class ProvinceTip : UIBehaviour<IProvince>
 {
     public Text provinceName;
     public Text population;
+    public Text liveliHood;
     public Text landCount;
     public Text taxValue;
 
@@ -34,7 +35,8 @@ public class ProvinceTip : UIBehaviour<IProvince>
         biome2Cells = new Dictionary<BiomeType, List<ICell>>();
 
         Bind(province => province.name, provinceName);
-        Bind(province => province.population, population);
+        Bind(province => province.pop.count, population);
+        Bind(province => province.pop.liveliHood.currValue, liveliHood);
         Bind(province => province.cells.Count(), landCount);
         Bind(province => province.country.name, country.GetComponentInChildren<Text>());
         Bind(province => GroupByBiomeType(province.cells), landChart);

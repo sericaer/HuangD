@@ -63,7 +63,7 @@ namespace HuangD.Entities
             private double CalcPoxTax(IProvince province)
             {
                 var totalEffectValue = province.buffers.SelectMany(b=>b.effects).Where(x=>x.target == IEffect.Target.ToPopTax).Sum(x => x.value);
-                return province.population / 1000.0 * (1+totalEffectValue);
+                return province.pop.count / 1000.0 * (1+totalEffectValue);
             }
         }
     }

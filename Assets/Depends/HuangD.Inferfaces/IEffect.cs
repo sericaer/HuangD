@@ -16,6 +16,7 @@ namespace HuangD.Interfaces
         public enum Target
         {
             ToPopTax,
+            ToPopLiveliHoodInc,
         }
     }
 }

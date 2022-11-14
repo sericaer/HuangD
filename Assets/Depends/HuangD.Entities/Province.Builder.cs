@@ -21,7 +21,7 @@ namespace HuangD.Entities
             private const int maxPopulation = 5 * 10000;
             private const int minPopulation = 5 * 1000;
 
-            public static IEnumerable<IProvince> Build(IMap map, string seed, IProvinceDef def)
+            public static IEnumerable<IProvince> Build(IMap map, string seed, IProvinceDef def, IPopDef popDef)
             {
                 Province.def = def;
                 random = new GRandom(seed);
@@ -35,7 +35,7 @@ namespace HuangD.Entities
                 var list = new List<IProvince>();
                 for (int i = 0; i < groups.Count; i++)
                 {
-                    list.Add(new Province(randomNames[i], groups[i].cells));
+                    list.Add(new Province(randomNames[i], groups[i].cells, popDef));
                 }
 
                 for (int i = 0; i < groups.Count; i++)

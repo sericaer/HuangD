@@ -14,7 +14,7 @@ public class CountryTip : UIBehaviour<ICountry>
     protected override void AssocDataSource()
     {
         Bind(country => country.name, countryName);
-        Bind(country => country.provinces.Sum(p=>p.population), population);
+        Bind(country => country.provinces.Sum(p=>p.pop.count), population);
         Bind(country => country.provinces.Count(), provinceCount);
         Bind(country => country.provinces, provinceList);
     }

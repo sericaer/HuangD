@@ -55,6 +55,11 @@ namespace HuangD.Sessions
             {
                 country.OnDaysInc(date.year, date.month, date.day);
             }
+
+            foreach (var province in provinces)
+            {
+                province.OnDaysInc(date.year, date.month, date.day);
+            }
         }
     }
 }
