@@ -1,4 +1,5 @@
 ﻿using HuangD.Interfaces;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 
 namespace HuangD.Mods.Interfaces
@@ -15,21 +16,27 @@ namespace HuangD.Mods.Interfaces
 
     public interface IPopDef
     {
-        public LiveliHood liveliHood { get; }
+        public ILiveliHood liveliHood { get; }
 
         public Dictionary<ITreasury.CollectLevel, IBufferDef> popTaxLevelBuffs { get; set; }
 
-        public class LiveliHood
+        public interface ILiveliHood
         {
             public double max { get; set; }
             public double min { get; set; }
 
-            public Dictionary<string, Level> levels { get; set; }
+            public Dictionary<string, ILevel> levels { get; set; }
 
-            public class Level
+            public interface ILevel : IBufferDef
             {
-                public (int min, int max) range { get; set; }
-                public IBufferDef bufferDef { get; set; }
+                public Range range { get; set; }
+
+
+                public class Range
+                {
+                    public int min { get; set; }
+                    public int max { get; set; }
+                }
             }
         }
     }

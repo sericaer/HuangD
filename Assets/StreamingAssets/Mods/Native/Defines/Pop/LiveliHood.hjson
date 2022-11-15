@@ -6,7 +6,11 @@
     {
         starve:
         {
-            range:[0,20]
+            range:
+            {
+                min:0
+                max:20
+            }
             effects:
             [
                 {
@@ -17,7 +21,11 @@
         }
         poor:
         {
-            range:[20,50]
+            range:
+            {
+                min:20
+                max:50
+            }
             effects:
             [
                 {
@@ -28,21 +36,33 @@
         }
         midding:
         {
-            range:[50,70]
+            range:
+            {
+                min:50
+                max:70
+            }
             effects:
             [
             ]
         }
         secure:
         {
-            range:[70,90]
+            range:
+            {
+                min:70
+                max:90
+            }
             effects:
             [
             ]
         }
         rish:
         {
-            range:[90,100]
+            range:
+            {
+                min:90
+                max:100
+            }
             effects:
             [
             ]

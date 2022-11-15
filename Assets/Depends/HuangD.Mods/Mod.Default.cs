@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using static HuangD.Interfaces.IEffect;
 using static HuangD.Interfaces.ITreasury;
+using static HuangD.Mods.Interfaces.IPopDef.ILiveliHood;
 
 namespace HuangD.Mods
 {
@@ -14,8 +15,8 @@ namespace HuangD.Mods
             {
                 personNameDef = new PersonNameDef()
                 {
-                    familys = Enumerable.Range(0,100).Select(x=>$"F{x}"),
-                    givens = Enumerable.Range(0, 500).Select(x=>$"G{x}")
+                    familys = Enumerable.Range(0, 100).Select(x => $"F{x}"),
+                    givens = Enumerable.Range(0, 500).Select(x => $"G{x}")
                 },
                 provinceDef = new ProvinceDef()
                 {
@@ -23,42 +24,45 @@ namespace HuangD.Mods
                 },
                 countryNameDef = new CountryNameDef()
                 {
-                    names = Enumerable.Range(0,100).Select(x=> $"C{x}")
+                    names = Enumerable.Range(0, 100).Select(x => $"C{x}")
                 },
                 popDef = new PopDef()
                 {
-                    liveliHood = new IPopDef.LiveliHood
+                    liveliHood = new PopDef.LiveliHood
                     {
                         min = 0,
                         max = 100,
-                        levels = new Dictionary<string, IPopDef.LiveliHood.Level>()
+                        levels = new Dictionary<string, ILevel>()
                         {
-                            { 
-                                "starve", 
-                                new IPopDef.LiveliHood.Level()
-                                { 
-                                    range = (0,20),
-                                    bufferDef = new BufferDef()
+                            {
+                                "starve",
+                                new PopDef.LiveliHood.Level()
+                                {
+                                    range = new ILevel.Range()
                                     {
-                                        effects = new EffectDef[]
+                                        min = 0,
+                                        max = 20
+                                    },
+                                    effects = new EffectDef[]
+                                    {
+                                        new EffectDef()
                                         {
-                                            new EffectDef()
-                                            {
-                                                factor = -0.99,
-                                                target = Target.ToPopTax
-                                            }
+                                            factor = -0.99,
+                                            target = Target.ToPopTax
                                         }
                                     }
-                                } 
+                                }
                             },
                             {
                                 "poor",
-                                new IPopDef.LiveliHood.Level()
+                                new PopDef.LiveliHood.Level()
                                 {
-                                    range = (20,50),
-                                    bufferDef = new BufferDef()
+                                    range = new ILevel.Range()
                                     {
-                                        effects = new EffectDef[]
+                                        min = 20,
+                                        max = 50
+                                    },
+                                    effects = new EffectDef[]
                                         {
                                             new EffectDef()
                                             {
@@ -66,40 +70,42 @@ namespace HuangD.Mods
                                                 target = Target.ToPopTax
                                             }
                                         }
-                                    }
                                 }
                             },
                             {
                                 "midding",
-                                new IPopDef.LiveliHood.Level()
+                                new PopDef.LiveliHood.Level()
                                 {
-                                    range = (50,70),
-                                    bufferDef = new BufferDef()
+                                    range = new ILevel.Range()
                                     {
-                                        effects = new EffectDef[]{ }
-                                    }
+                                        min = 50,
+                                        max = 70
+                                    },
+                                    effects = new EffectDef[]{ }
                                 }
                             },
                             {
                                 "secure",
-                                new IPopDef.LiveliHood.Level()
+                                new PopDef.LiveliHood.Level()
                                 {
-                                    range = (70,90),
-                                    bufferDef = new BufferDef()
+                                    range = new ILevel.Range()
                                     {
-                                        effects = new EffectDef[]{ }
-                                    }
+                                        min = 70,
+                                        max = 90
+                                    },
+                                    effects = new EffectDef[]{ }
                                 }
                             },
                             {
                                 "rish",
-                                new IPopDef.LiveliHood.Level()
+                                new PopDef.LiveliHood.Level()
                                 {
-                                    range = (90,100),
-                                    bufferDef = new BufferDef()
+                                    range = new ILevel.Range()
                                     {
-                                        effects = new EffectDef[]{ }
-                                    }
+                                        min = 90,
+                                        max = 100
+                                    },
+                                    effects = new EffectDef[]{ }
                                 }
                             }
                         }

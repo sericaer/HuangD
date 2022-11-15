@@ -7,9 +7,9 @@ using static HuangD.Interfaces.ITreasury;
 
 namespace HuangD.Mods
 {
-    internal class PopDef : IPopDef
+    internal partial class PopDef : IPopDef
     {
-        public IPopDef.LiveliHood liveliHood { get; set; }
+        public IPopDef.ILiveliHood liveliHood { get; set; }
 
         public Dictionary<CollectLevel, IBufferDef> popTaxLevelBuffs { get; set; }
 
@@ -19,7 +19,7 @@ namespace HuangD.Mods
             {
                 var def = new PopDef()
                 {
-                    liveliHood = JsonConvert.DeserializeObject<IPopDef.LiveliHood>(fileSystem.popLiveliHood),
+                    liveliHood = JsonConvert.DeserializeObject<LiveliHood>(fileSystem.popLiveliHood),
                     popTaxLevelBuffs = JsonConvert.DeserializeObject<Dictionary<CollectLevel, BufferDef>>(fileSystem.popTaxLevels)
                         .ToDictionary(p => p.Key, p => (IBufferDef)p.Value)
                 };

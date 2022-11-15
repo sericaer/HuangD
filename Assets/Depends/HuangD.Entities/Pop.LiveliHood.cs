@@ -2,6 +2,7 @@
 using HuangD.Mods.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
+using static HuangD.Mods.Interfaces.IPopDef.ILiveliHood;
 
 namespace HuangD.Entities
 {
@@ -37,7 +38,7 @@ namespace HuangD.Entities
                     var buff = pop.buffers.SingleOrDefault(x => (string)x.key == key) as GBuffer;
                     if(buff != null)
                     {
-                        if (buff.def == level.bufferDef)
+                        if (buff.def == level)
                         {
                             return;
                         }
@@ -46,11 +47,11 @@ namespace HuangD.Entities
                             pop.buffers.Remove(buff);
                         }
                     }
-                    pop.buffers.Add(new GBuffer(key, level.bufferDef));
+                    pop.buffers.Add(new GBuffer(key, level));
                 }
             }
 
-            private IPopDef.LiveliHood.Level GetCurrLevel(double currValue)
+            private ILevel GetCurrLevel(double currValue)
             {
                 return pop.def.liveliHood.levels.Values.SingleOrDefault(x => (int)currValue >= x.range.min && (int)currValue < x.range.max);
             }
