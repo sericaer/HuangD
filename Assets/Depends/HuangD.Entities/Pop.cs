@@ -59,7 +59,7 @@ namespace HuangD.Entities
 
             public object from => pop;
 
-            public double currValue => baseValue * (1 + effects.Sum(x => x.value));
+            public double currValue => baseValue * (System.Math.Max(0, (1 + effects.Sum(x => x.value))));
 
             public double baseValue => pop.count / 1000;
 

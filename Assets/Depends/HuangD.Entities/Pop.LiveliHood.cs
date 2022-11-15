@@ -1,4 +1,5 @@
 ﻿using HuangD.Interfaces;
+using HuangD.Mods.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -19,7 +20,40 @@ namespace HuangD.Entities
 
             public double baseInc => 1;
 
-            public double currValue { get; set; }
+            public double currValue
+            {
+                get
+                {
+                    return _currValue;
+                }
+                set
+                {
+                    _currValue = value;
+
+                    var level = GetCurrLevel(currValue);
+
+                    var key = "CURR_POP_LIVLIHOOD_LEVEL";
+
+                    var buff = pop.buffers.SingleOrDefault(x => (string)x.key == key) as GBuffer;
+                    if(buff != null)
+                    {
+                        if (buff.def == level.bufferDef)
+                        {
+                            return;
+                        }
+                        else
+                        {
+                            pop.buffers.Remove(buff);
+                        }
+                    }
+                    pop.buffers.Add(new GBuffer(key, level.bufferDef));
+                }
+            }
+
+            private IPopDef.LiveliHood.Level GetCurrLevel(double currValue)
+            {
+                return pop.def.liveliHood.levels.Values.SingleOrDefault(x => (int)currValue >= x.range.min && (int)currValue < x.range.max);
+            }
 
             public IEnumerable<IEffect> details => pop.buffers.SelectMany(x => x.effects).Where(e => e.target == IEffect.Target.ToPopLiveliHoodInc);
 
@@ -27,6 +61,7 @@ namespace HuangD.Entities
 
             public double minValue => pop.def.liveliHood.min;
 
+            private double _currValue;
             public void OnDaysInc(int year, int month, int day)
             {
                 if(day != 1)

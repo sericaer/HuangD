@@ -12,7 +12,7 @@ namespace HuangD.Entities
 
         public IEnumerable<IEffect> effects { get; }
 
-        private IBufferDef def { get; }
+        public IBufferDef def { get; }
 
         public GBuffer(string from, IBufferDef def)
         {

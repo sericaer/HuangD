@@ -30,7 +30,79 @@ namespace HuangD.Mods
                     liveliHood = new IPopDef.LiveliHood
                     {
                         min = 0,
-                        max = 100
+                        max = 100,
+                        levels = new Dictionary<string, IPopDef.LiveliHood.Level>()
+                        {
+                            { 
+                                "starve", 
+                                new IPopDef.LiveliHood.Level()
+                                { 
+                                    range = (0,20),
+                                    bufferDef = new BufferDef()
+                                    {
+                                        effects = new EffectDef[]
+                                        {
+                                            new EffectDef()
+                                            {
+                                                factor = -0.99,
+                                                target = Target.ToPopTax
+                                            }
+                                        }
+                                    }
+                                } 
+                            },
+                            {
+                                "poor",
+                                new IPopDef.LiveliHood.Level()
+                                {
+                                    range = (20,50),
+                                    bufferDef = new BufferDef()
+                                    {
+                                        effects = new EffectDef[]
+                                        {
+                                            new EffectDef()
+                                            {
+                                                factor = -0.6,
+                                                target = Target.ToPopTax
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                "midding",
+                                new IPopDef.LiveliHood.Level()
+                                {
+                                    range = (50,70),
+                                    bufferDef = new BufferDef()
+                                    {
+                                        effects = new EffectDef[]{ }
+                                    }
+                                }
+                            },
+                            {
+                                "secure",
+                                new IPopDef.LiveliHood.Level()
+                                {
+                                    range = (70,90),
+                                    bufferDef = new BufferDef()
+                                    {
+                                        effects = new EffectDef[]{ }
+                                    }
+                                }
+                            },
+                            {
+                                "rish",
+                                new IPopDef.LiveliHood.Level()
+                                {
+                                    range = (90,100),
+                                    bufferDef = new BufferDef()
+                                    {
+                                        effects = new EffectDef[]{ }
+                                    }
+                                }
+                            }
+                        }
                     },
                     popTaxLevelBuffs = new Dictionary<CollectLevel, IBufferDef>()
                     {
@@ -89,7 +161,8 @@ namespace HuangD.Mods
                                 }
                             }
                         }
-                    }
+                    },
+
                 }
             }
         };

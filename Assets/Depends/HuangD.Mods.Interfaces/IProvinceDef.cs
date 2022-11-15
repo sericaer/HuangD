@@ -23,6 +23,14 @@ namespace HuangD.Mods.Interfaces
         {
             public double max { get; set; }
             public double min { get; set; }
+
+            public Dictionary<string, Level> levels { get; set; }
+
+            public class Level
+            {
+                public (int min, int max) range { get; set; }
+                public IBufferDef bufferDef { get; set; }
+            }
         }
     }
 }

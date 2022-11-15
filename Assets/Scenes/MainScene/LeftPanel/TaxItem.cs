@@ -14,7 +14,7 @@ public class TaxItem : UIBehaviour<ITreasury.IIncomeItem>
 
         Bind(income => income.currValue, value, income => 
         {
-            return string.Join("\n", income.effects.Select(x => $"{x.value} {x.from}").Append($"baseValue {income.baseValue}").Reverse());
+            return string.Join("\n", income.effects.Select(x => $"{x.value*100}% {x.from}").Append($"baseValue {income.baseValue}").Reverse());
         });
 
         BindTwoWay(income => income.level, levels, (income, level) =>

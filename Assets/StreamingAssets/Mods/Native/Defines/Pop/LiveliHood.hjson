@@ -1,4 +1,51 @@
 {
     max:100
     min:0
+
+    levels:
+    {
+        starve:
+        {
+            range:[0,20]
+            effects:
+            [
+                {
+                    target:"ToPopTax"
+                    factor:-0.99
+                }
+            ]
+        }
+        poor:
+        {
+            range:[20,50]
+            effects:
+            [
+                {
+                    target:"ToPopTax"
+                    factor:-0.6
+                }
+            ]
+        }
+        midding:
+        {
+            range:[50,70]
+            effects:
+            [
+            ]
+        }
+        secure:
+        {
+            range:[70,90]
+            effects:
+            [
+            ]
+        }
+        rish:
+        {
+            range:[90,100]
+            effects:
+            [
+            ]
+        }
+    }
 }

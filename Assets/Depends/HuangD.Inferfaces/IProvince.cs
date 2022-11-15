@@ -29,7 +29,7 @@ namespace HuangD.Interfaces
         {
             public double baseInc { get; }
 
-            public double currValue { get; }
+            public double currValue { get; set; }
 
             public double maxValue { get; }
             public double minValue { get; }
