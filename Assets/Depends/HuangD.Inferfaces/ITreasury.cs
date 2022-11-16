@@ -29,11 +29,11 @@ namespace HuangD.Interfaces
 
         public enum CollectLevel
         {
-            VeryLow,
-            Low,
-            Mid,
-            High,
-            VeryHigh
+            极低,
+            低,
+            中,
+            高,
+            极高
         }
 
         void OnDaysInc(int year, int month, int day);

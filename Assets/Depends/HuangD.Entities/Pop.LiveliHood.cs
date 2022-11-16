@@ -46,11 +46,10 @@ namespace HuangD.Entities
 
             public IEnumerable<IEffect> details => pop.buffers.SelectMany(x => x.effects).Where(e => e.target == IEffect.Target.ToPopLiveliHoodInc);
 
-            public double maxValue => pop.def.liveliHood.max;
-
-            public double minValue => pop.def.liveliHood.min;
+            public IBuffer level => pop.buffers.SingleOrDefault(x => pop.def.liveliHood.levels.ContainsValue(((GBuffer)x).def as ILevel));
 
             private double _currValue;
+
             public void OnDaysInc(int year, int month, int day)
             {
                 if(day != 1)
@@ -60,13 +59,13 @@ namespace HuangD.Entities
 
                 currValue += baseInc + details.Sum(x => x.value);
 
-                if(currValue > maxValue)
+                if (currValue > pop.def.liveliHood.max)
                 {
-                    currValue = maxValue;
+                    currValue = pop.def.liveliHood.max;
                 }
-                if (currValue < minValue)
+                if (currValue < pop.def.liveliHood.min)
                 {
-                    currValue = minValue;
+                    currValue = pop.def.liveliHood.min;
                 }
             }
         }

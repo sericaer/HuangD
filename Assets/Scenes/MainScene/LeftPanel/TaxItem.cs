@@ -16,7 +16,7 @@ public class TaxItem : UIBehaviour<ITreasury.IIncomeItem>
 
         AddToolTip(value, income =>
         {
-            return string.Join("\n", income.effects.Select(x => $"{x.value * 100}% {x.from.title}").Append($"baseValue {income.baseValue}").Reverse());
+            return string.Join("\n", income.effects.Select(x => (x.value > 0 ? "+" : "") + $"{x.value * 100}% {x.from.title}").Append($"基础值 {income.baseValue}").Reverse());
         });
 
         AddTooltip<ITreasury.CollectLevel>(levels, (income, level) =>

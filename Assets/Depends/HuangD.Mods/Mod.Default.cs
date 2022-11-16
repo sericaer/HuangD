@@ -151,10 +151,10 @@ namespace HuangD.Mods
                     popTaxLevelBuffs = new Dictionary<CollectLevel, IBufferDef>()
                     {
                         {
-                            CollectLevel.VeryLow,
+                            CollectLevel.极低,
                             new BufferDef()
                             {
-                                title = CollectLevel.VeryLow.ToString(),
+                                title = CollectLevel.极低.ToString(),
                                 effects = new IEffectDef[]
                                 {
                                     new EffectDef(){ factor = 0, target = Target.ToPopTax },
@@ -163,10 +163,10 @@ namespace HuangD.Mods
                             }
                         },
                         {
-                            CollectLevel.Low,
+                            CollectLevel.低,
                             new BufferDef()
                             {
-                                title = CollectLevel.Low.ToString(),
+                                title = CollectLevel.低.ToString(),
                                 effects = new IEffectDef[]
                                 {
                                     new EffectDef(){ factor = +0.1, target = Target.ToPopTax },
@@ -175,10 +175,10 @@ namespace HuangD.Mods
                             }
                         },
                         {
-                            CollectLevel.Mid,
+                            CollectLevel.中,
                             new BufferDef()
                             {
-                                title = CollectLevel.Mid.ToString(),
+                                title = CollectLevel.中.ToString(),
                                 effects = new IEffectDef[]
                                 {
                                     new EffectDef(){ factor = +0.2, target = Target.ToPopTax },
@@ -187,10 +187,10 @@ namespace HuangD.Mods
                             }
                         },
                         {
-                            CollectLevel.High,
+                            CollectLevel.高,
                             new BufferDef()
                             {
-                                title = CollectLevel.High.ToString(),
+                                title = CollectLevel.高.ToString(),
 
                                 effects = new IEffectDef[]
                                 {
@@ -200,10 +200,10 @@ namespace HuangD.Mods
                             }
                         },
                         {
-                            CollectLevel.VeryHigh,
+                            CollectLevel.极高,
                             new BufferDef()
                             {
-                                title = CollectLevel.VeryHigh.ToString(),
+                                title = CollectLevel.极高.ToString(),
 
                                 effects = new IEffectDef[]
                                 {

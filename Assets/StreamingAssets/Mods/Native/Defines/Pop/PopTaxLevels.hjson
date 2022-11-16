@@ -1,7 +1,7 @@
 {
-    VeryLow:
+    极低:
     {
-        title:"VeryLow_PopTax"
+        title:"极低的人口税"
         effects:
         [
             {
@@ -15,9 +15,9 @@
         ]
     }
 
-    Low:
+    低:
     {
-        title:"Low_PopTax"
+        title:"较低的人口税"
         effects:
         [
             {
@@ -31,9 +31,9 @@
         ]
     }
 
-    Mid:
+    中:
     {
-        title:"Mid_PopTax"
+        title:"适中的人口税"
         effects:
         [
             {
@@ -47,9 +47,9 @@
         ]
     }
 
-    High:
+    高:
     {
-        title:"High_PopTax"
+        title:"较高的人口税"
         effects:
         [
             {
@@ -63,9 +63,9 @@
         ]
     }
 
-    VeryHigh:
+    极高:
     {
-        title:"VeryHigh_PopTax"
+        title:"极高的人口税"
         effects:
         [
             {

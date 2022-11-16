@@ -32,7 +32,7 @@ namespace HuangD.Entities
             this.pop = pop;
 
             var popTax = new Pop.PopulationTax(pop);
-            popTax.level = CollectLevel.Mid;
+            popTax.level = CollectLevel.жа;
 
             _taxItems.Add(popTax);
         }
