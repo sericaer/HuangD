@@ -77,14 +77,9 @@ public abstract class UIBehaviour<T> : UIBehaviourBase
 
     }
 
-    protected void Bind(Func<T, object> func, Text text, Func<T, string> funcTooltip = null)
+    protected void Bind(Func<T, object> func, Text text)
     {
         dictText.Add(text, func);
-
-        if(funcTooltip != null)
-        {
-            AssocTooltip(text.gameObject, ()=> funcTooltip(dataSource));
-        }
     }
 
     protected void Bind(Func<T, object> func, NumberText text)
@@ -113,7 +108,7 @@ public abstract class UIBehaviour<T> : UIBehaviourBase
         }
     }
 
-    protected void BindTwoWay<TValue>(Expression<Func<T, TValue>> memberLamda, ToggleGroupEx toggles, Func<T, TValue, string> tooltip = null)
+    protected void BindTwoWay<TValue>(Expression<Func<T, TValue>> memberLamda, ToggleGroupEx toggles)
         where TValue: Enum
     {
         toggles.Clear();
@@ -146,13 +141,23 @@ public abstract class UIBehaviour<T> : UIBehaviourBase
             {
                 return toggles.GetEnum<TValue>(toggle).Equals((TValue)property.GetValue(dataSource));
             });
-
-           if (tooltip != null)
-           {
-                toggle.GetComponent<DynamicToolTip>().GenerateBody = () => tooltip(dataSource, toggles.GetEnum<TValue>(toggle));
-           }
         }
     }
+
+    protected void AddToolTip(Text text, Func<T, string> func)
+    {
+        AssocTooltip(text.gameObject, () => func(dataSource));
+    }
+
+    protected void AddTooltip<TValue>(ToggleGroupEx toggleGroup, Func<T, TValue, string> tooltip)
+        where TValue : Enum
+    {
+        foreach(var toggle in toggleGroup.toggles)
+        {
+            toggle.GetComponent<DynamicToolTip>().GenerateBody = () => tooltip(dataSource, toggleGroup.GetEnum<TValue>(toggle));
+        }
+    }
+
 
     protected abstract void AssocDataSource();
 }

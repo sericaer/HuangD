@@ -36,16 +36,17 @@ public class ProvinceTip : UIBehaviour<IProvince>
 
         Bind(province => province.name, provinceName);
         Bind(province => province.pop.count, population);
-        Bind(province => province.pop.liveliHood.currValue, liveliHood, province=> 
-        {
-            return string.Join("\n", province.pop.liveliHood.details.Select(x => $"{x.value} {x.from}").Prepend($"baseValue {province.pop.liveliHood.baseInc}"));
-        });
-
+        Bind(province => province.pop.liveliHood.currValue, liveliHood);
         Bind(province => province.cells.Count(), landCount);
         Bind(province => province.country.name, country.GetComponentInChildren<Text>());
         Bind(province => GroupByBiomeType(province.cells), landChart);
         Bind(province => province.taxItems.Sum(t=>t.currValue), taxValue);
         Bind(province => province.taxItems, taxDetails);
+
+        AddToolTip(liveliHood, province =>
+        {
+            return string.Join("\n", province.pop.liveliHood.details.Select(x => $"{x.value} {x.from}").Prepend($"baseValue {province.pop.liveliHood.baseInc}"));
+        });
     }
 
     public IEnumerable<List<ICell>> GroupByBiomeType(IEnumerable<ICell> cells)
@@ -68,5 +69,15 @@ public class ProvinceTip : UIBehaviour<IProvince>
         }
 
         return biome2Cells.Values.Where(v => v.Count > 0);
+    }
+
+    protected override void FixedUpdate()
+    {
+        base.FixedUpdate();
+
+        if(taxDetails.gameObject.activeInHierarchy)
+        {
+            taxDetails.SetInteractive(dataSource.country == Facade.session.playerCountry);
+        }
     }
 }

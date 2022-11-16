@@ -8,6 +8,8 @@ public class ToggleGroupEx : MonoBehaviour
 {
     public Toggle defaultItem;
 
+    public IEnumerable<Toggle> toggles => toggle2Enum.Keys;
+
     private Dictionary<Toggle, Enum> toggle2Enum = new Dictionary<Toggle, Enum>();
 
     private void Start()

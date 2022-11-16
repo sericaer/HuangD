@@ -41,7 +41,7 @@ namespace HuangD.Mods
                                     range = new ILevel.Range()
                                     {
                                         min = 0,
-                                        max = 20
+                                        max = 10
                                     },
                                     effects = new EffectDef[]
                                     {
@@ -54,19 +54,38 @@ namespace HuangD.Mods
                                 }
                             },
                             {
-                                "poor",
+                                "struggle",
                                 new PopDef.LiveliHood.Level()
                                 {
                                     range = new ILevel.Range()
                                     {
                                         min = 20,
+                                        max = 30
+                                    },
+                                    effects = new EffectDef[]
+                                        {
+                                            new EffectDef()
+                                            {
+                                                factor = -0.7,
+                                                target = Target.ToPopTax
+                                            }
+                                        }
+                                }
+                            },
+                            {
+                                "poor",
+                                new PopDef.LiveliHood.Level()
+                                {
+                                    range = new ILevel.Range()
+                                    {
+                                        min = 30,
                                         max = 50
                                     },
                                     effects = new EffectDef[]
                                         {
                                             new EffectDef()
                                             {
-                                                factor = -0.6,
+                                                factor = -0.3,
                                                 target = Target.ToPopTax
                                             }
                                         }
@@ -91,6 +110,18 @@ namespace HuangD.Mods
                                     range = new ILevel.Range()
                                     {
                                         min = 70,
+                                        max = 80
+                                    },
+                                    effects = new EffectDef[]{ }
+                                }
+                            },
+                            {
+                                "prosperous",
+                                new PopDef.LiveliHood.Level()
+                                {
+                                    range = new ILevel.Range()
+                                    {
+                                        min = 80,
                                         max = 90
                                     },
                                     effects = new EffectDef[]{ }
@@ -118,7 +149,7 @@ namespace HuangD.Mods
                             {
                                 effects = new IEffectDef[]
                                 {
-                                    new EffectDef(){ factor = -0.8, target = Target.ToPopTax },
+                                    new EffectDef(){ factor = 0, target = Target.ToPopTax },
                                     new EffectDef(){ factor = -0.1, target = Target.ToPopLiveliHoodInc }
                                 }
                             }
@@ -129,7 +160,7 @@ namespace HuangD.Mods
                             {
                                 effects = new IEffectDef[]
                                 {
-                                    new EffectDef(){ factor = -0.5, target = Target.ToPopTax },
+                                    new EffectDef(){ factor = +0.1, target = Target.ToPopTax },
                                     new EffectDef(){ factor = -0.2, target = Target.ToPopLiveliHoodInc }
                                 }
                             }
@@ -140,8 +171,8 @@ namespace HuangD.Mods
                             {
                                 effects = new IEffectDef[]
                                 {
-                                    new EffectDef(){ factor = 0, target = Target.ToPopTax },
-                                    new EffectDef(){ factor = -0.3, target = Target.ToPopLiveliHoodInc }
+                                    new EffectDef(){ factor = +0.2, target = Target.ToPopTax },
+                                    new EffectDef(){ factor = -0.4, target = Target.ToPopLiveliHoodInc }
                                 }
                             }
                         },
@@ -151,8 +182,8 @@ namespace HuangD.Mods
                             {
                                 effects = new IEffectDef[]
                                 {
-                                    new EffectDef(){ factor = +0.5, target = Target.ToPopTax },
-                                    new EffectDef(){ factor = -0.5, target = Target.ToPopLiveliHoodInc }
+                                    new EffectDef(){ factor = +0.4, target = Target.ToPopTax },
+                                    new EffectDef(){ factor = -0.8, target = Target.ToPopLiveliHoodInc }
                                 }
                             }
                         },
@@ -163,7 +194,7 @@ namespace HuangD.Mods
                                 effects = new IEffectDef[]
                                 {
                                     new EffectDef(){ factor = +0.8, target = Target.ToPopTax },
-                                    new EffectDef(){ factor = -0.8, target = Target.ToPopLiveliHoodInc }
+                                    new EffectDef(){ factor = -1.2, target = Target.ToPopLiveliHoodInc }
                                 }
                             }
                         }

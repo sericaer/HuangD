@@ -9,7 +9,7 @@
             range:
             {
                 min:0
-                max:20
+                max:10
             }
             effects:
             [
@@ -19,18 +19,33 @@
                 }
             ]
         }
+        struggle:
+        {
+            range:
+            {
+                min:10
+                max:30
+            }
+            effects:
+            [
+                {
+                    target:"ToPopTax"
+                    factor:-0.7
+                }
+            ]
+        }
         poor:
         {
             range:
             {
-                min:20
+                min:30
                 max:50
             }
             effects:
             [
                 {
                     target:"ToPopTax"
-                    factor:-0.6
+                    factor:-0.3
                 }
             ]
         }
@@ -50,6 +65,17 @@
             range:
             {
                 min:70
+                max:80
+            }
+            effects:
+            [
+            ]
+        }
+        prosperous:
+        {
+            range:
+            {
+                min:80
                 max:90
             }
             effects:
