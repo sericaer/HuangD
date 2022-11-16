@@ -9,7 +9,7 @@ namespace HuangD.Interfaces
     public interface IEffect
     {
         public double value { get; }
-        public object from { get; }
+        public IBuffer from { get; }
 
         public Target target { get; }
 

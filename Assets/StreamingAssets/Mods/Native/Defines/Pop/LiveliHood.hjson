@@ -4,7 +4,7 @@
 
     levels:
     {
-        starve:
+        starve_livelihood:
         {
             range:
             {
@@ -19,7 +19,7 @@
                 }
             ]
         }
-        struggle:
+        struggle_livelihood:
         {
             range:
             {
@@ -34,7 +34,7 @@
                 }
             ]
         }
-        poor:
+        poor_livelihood:
         {
             range:
             {
@@ -49,7 +49,7 @@
                 }
             ]
         }
-        midding:
+        midding_livelihood:
         {
             range:
             {
@@ -60,7 +60,7 @@
             [
             ]
         }
-        secure:
+        secure_livelihood:
         {
             range:
             {
@@ -71,7 +71,7 @@
             [
             ]
         }
-        prosperous:
+        prosperous_livelihood:
         {
             range:
             {
@@ -82,7 +82,7 @@
             [
             ]
         }
-        rish:
+        rish_livelihood:
         {
             range:
             {

@@ -38,6 +38,7 @@ namespace HuangD.Mods
                                 "starve",
                                 new PopDef.LiveliHood.Level()
                                 {
+                                    title = "starve",
                                     range = new ILevel.Range()
                                     {
                                         min = 0,
@@ -57,6 +58,7 @@ namespace HuangD.Mods
                                 "struggle",
                                 new PopDef.LiveliHood.Level()
                                 {
+                                    title = "struggle",
                                     range = new ILevel.Range()
                                     {
                                         min = 20,
@@ -76,6 +78,7 @@ namespace HuangD.Mods
                                 "poor",
                                 new PopDef.LiveliHood.Level()
                                 {
+                                    title = "poor",
                                     range = new ILevel.Range()
                                     {
                                         min = 30,
@@ -95,6 +98,7 @@ namespace HuangD.Mods
                                 "midding",
                                 new PopDef.LiveliHood.Level()
                                 {
+                                    title = "midding",
                                     range = new ILevel.Range()
                                     {
                                         min = 50,
@@ -107,6 +111,7 @@ namespace HuangD.Mods
                                 "secure",
                                 new PopDef.LiveliHood.Level()
                                 {
+                                    title = "secure",
                                     range = new ILevel.Range()
                                     {
                                         min = 70,
@@ -119,6 +124,7 @@ namespace HuangD.Mods
                                 "prosperous",
                                 new PopDef.LiveliHood.Level()
                                 {
+                                    title = "prosperous",
                                     range = new ILevel.Range()
                                     {
                                         min = 80,
@@ -131,6 +137,7 @@ namespace HuangD.Mods
                                 "rish",
                                 new PopDef.LiveliHood.Level()
                                 {
+                                    title = "rish",
                                     range = new ILevel.Range()
                                     {
                                         min = 90,
@@ -147,6 +154,7 @@ namespace HuangD.Mods
                             CollectLevel.VeryLow,
                             new BufferDef()
                             {
+                                title = CollectLevel.VeryLow.ToString(),
                                 effects = new IEffectDef[]
                                 {
                                     new EffectDef(){ factor = 0, target = Target.ToPopTax },
@@ -158,6 +166,7 @@ namespace HuangD.Mods
                             CollectLevel.Low,
                             new BufferDef()
                             {
+                                title = CollectLevel.Low.ToString(),
                                 effects = new IEffectDef[]
                                 {
                                     new EffectDef(){ factor = +0.1, target = Target.ToPopTax },
@@ -169,6 +178,7 @@ namespace HuangD.Mods
                             CollectLevel.Mid,
                             new BufferDef()
                             {
+                                title = CollectLevel.Mid.ToString(),
                                 effects = new IEffectDef[]
                                 {
                                     new EffectDef(){ factor = +0.2, target = Target.ToPopTax },
@@ -180,6 +190,8 @@ namespace HuangD.Mods
                             CollectLevel.High,
                             new BufferDef()
                             {
+                                title = CollectLevel.High.ToString(),
+
                                 effects = new IEffectDef[]
                                 {
                                     new EffectDef(){ factor = +0.4, target = Target.ToPopTax },
@@ -191,6 +203,8 @@ namespace HuangD.Mods
                             CollectLevel.VeryHigh,
                             new BufferDef()
                             {
+                                title = CollectLevel.VeryHigh.ToString(),
+
                                 effects = new IEffectDef[]
                                 {
                                     new EffectDef(){ factor = +0.8, target = Target.ToPopTax },

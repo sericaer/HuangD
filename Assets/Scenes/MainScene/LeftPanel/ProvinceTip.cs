@@ -45,7 +45,7 @@ public class ProvinceTip : UIBehaviour<IProvince>
 
         AddToolTip(liveliHood, province =>
         {
-            return string.Join("\n", province.pop.liveliHood.details.Select(x => $"{x.value} {x.from}").Prepend($"baseValue {province.pop.liveliHood.baseInc}"));
+            return string.Join("\n", province.pop.liveliHood.details.Select(x => $"{x.value} {x.from.title}").Prepend($"baseValue {province.pop.liveliHood.baseInc}"));
         });
     }
 

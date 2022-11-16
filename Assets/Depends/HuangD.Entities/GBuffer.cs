@@ -8,15 +8,13 @@ namespace HuangD.Entities
 {
     internal class GBuffer : IBuffer
     {
-        public string key { get; }
-
+        public string title => def.title;
         public IEnumerable<IEffect> effects { get; }
 
         public IBufferDef def { get; }
 
-        public GBuffer(string from, IBufferDef def)
+        public GBuffer(IBufferDef def)
         {
-            this.key = from;
             this.def = def;
 
             effects = def.effects.Select(x => new Effect(x, this)).ToArray();

@@ -4,7 +4,7 @@ namespace HuangD.Interfaces
 {
     public interface IBuffer
     {
-        public string key { get; }
+        public string title { get; }
         public IEnumerable<IEffect> effects { get; }
     }
 }

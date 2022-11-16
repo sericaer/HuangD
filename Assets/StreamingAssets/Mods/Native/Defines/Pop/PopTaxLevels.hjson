@@ -1,6 +1,7 @@
 {
     VeryLow:
     {
+        title:"VeryLow_PopTax"
         effects:
         [
             {
@@ -16,6 +17,7 @@
 
     Low:
     {
+        title:"Low_PopTax"
         effects:
         [
             {
@@ -31,6 +33,7 @@
 
     Mid:
     {
+        title:"Mid_PopTax"
         effects:
         [
             {
@@ -46,6 +49,7 @@
 
     High:
     {
+        title:"High_PopTax"
         effects:
         [
             {
@@ -61,6 +65,7 @@
 
     VeryHigh:
     {
+        title:"VeryHigh_PopTax"
         effects:
         [
             {

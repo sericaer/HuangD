@@ -10,5 +10,6 @@ namespace HuangD.Mods
         [JsonConverter(typeof(ConcreteTypeConverter<IEnumerable<EffectDef>>))]
         public IEnumerable<IEffectDef> effects { get; set; }
 
+        public string title { get; set; }
     }
 }

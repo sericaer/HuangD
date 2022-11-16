@@ -33,21 +33,9 @@ namespace HuangD.Entities
 
                     var level = GetCurrLevel(currValue);
 
-                    var key = "CURR_POP_LIVLIHOOD_LEVEL";
+                    pop.buffers.RemoveAll(x => pop.def.liveliHood.levels.ContainsValue(((GBuffer)x).def as ILevel));
 
-                    var buff = pop.buffers.SingleOrDefault(x => (string)x.key == key) as GBuffer;
-                    if(buff != null)
-                    {
-                        if (buff.def == level)
-                        {
-                            return;
-                        }
-                        else
-                        {
-                            pop.buffers.Remove(buff);
-                        }
-                    }
-                    pop.buffers.Add(new GBuffer(key, level));
+                    pop.buffers.Add(new GBuffer(level));
                 }
             }
 

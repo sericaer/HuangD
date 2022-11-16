@@ -24,6 +24,15 @@ namespace HuangD.Mods
             {
                 this.min = min;
                 this.max = max;
+
+                foreach(var pair in levels)
+                {
+                    if(pair.Value.title == null)
+                    {
+                        pair.Value.title = pair.Key;
+                    }
+                }
+
                 this.levels = levels.ToDictionary(p => p.Key, p => (ILevel)p.Value);
             }
 

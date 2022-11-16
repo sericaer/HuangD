@@ -10,7 +10,7 @@ namespace HuangD.Effects
     {
         private IEffectDef def;
 
-        public Effect(IEffectDef def, object from)
+        public Effect(IEffectDef def, IBuffer from)
         {
             this.def = def;
             this.from = from;
@@ -19,7 +19,7 @@ namespace HuangD.Effects
         public double value => def.factor;
         public IEffect.Target target => def.target;
 
-        public object from { get; }
+        public IBuffer from { get; }
 
     }
 }

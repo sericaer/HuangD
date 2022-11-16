@@ -49,11 +49,9 @@ namespace HuangD.Entities
 
                     _level = value;
 
-                    var key = "CURR_POP_TAX_LEVEL";
+                    pop.buffers.RemoveAll(x => pop.def.popTaxLevelBuffs.ContainsValue(((GBuffer)x).def));
 
-                    pop.buffers.RemoveAll(x => (string)x.key == key);
-
-                    pop.buffers.Add(new GBuffer(key, pop.def.popTaxLevelBuffs[level]));
+                    pop.buffers.Add(new GBuffer(pop.def.popTaxLevelBuffs[level]));
                 }
             }
 

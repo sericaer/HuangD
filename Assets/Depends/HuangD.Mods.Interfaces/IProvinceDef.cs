@@ -11,6 +11,7 @@ namespace HuangD.Mods.Interfaces
 
     public interface IBufferDef
     {
+        public string title { get; }
         IEnumerable<IEffectDef> effects { get; }
     }
 
