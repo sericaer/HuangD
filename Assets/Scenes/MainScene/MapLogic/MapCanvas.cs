@@ -34,7 +34,17 @@ public class MapCanvas : MonoBehaviour, IPointerDownHandler
 
     }
 
-    internal void moveCameraTo(ICountry country)
+    public void moveCameraTo(IProvince province)
+    {
+        var startCellIndex = Utilty.GetCenterPos(province.cells.Select(x => x.position));
+
+        var startPos = mapGrid.CellToWorld(new Vector3Int(startCellIndex.x, startCellIndex.y));
+
+        mapCamera.MoveTo(new Vector3(startPos.x, startPos.y, mapCamera.transform.position.z));
+    }
+
+
+    public void moveCameraTo(ICountry country)
     {
         var startCellIndex = Utilty.GetCenterPos(country.provinces.SelectMany(x => x.cells)
             .Select(x => x.position));

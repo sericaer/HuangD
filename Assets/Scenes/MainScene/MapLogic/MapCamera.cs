@@ -36,7 +36,7 @@ public class MapCamera : MonoBehaviour
 
     public void MoveTo(Vector3 pos)
     {
-        mapCamera.transform.position = mapCamera.transform.position + pos;
+        mapCamera.transform.position = pos;
         OnMoved.Invoke();
     }
 
@@ -96,7 +96,7 @@ public class MapCamera : MonoBehaviour
             }
         }
 
-        return move;
+        return mapCamera.transform.position + move;
     }
 
 }
