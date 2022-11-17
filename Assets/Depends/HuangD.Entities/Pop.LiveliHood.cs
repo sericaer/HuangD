@@ -48,6 +48,8 @@ namespace HuangD.Entities
 
             public IBuffer level => pop.buffers.SingleOrDefault(x => pop.def.liveliHood.levels.ContainsValue(((GBuffer)x).def as ILevel));
 
+            public double surplus => baseInc + details.Sum(x => x.value);
+
             private double _currValue;
 
             public void OnDaysInc(int year, int month, int day)
@@ -57,15 +59,19 @@ namespace HuangD.Entities
                     return;
                 }
 
-                currValue += baseInc + details.Sum(x => x.value);
+                var newValue = currValue + surplus;
 
-                if (currValue > pop.def.liveliHood.max)
+                if (newValue > pop.def.liveliHood.max)
                 {
                     currValue = pop.def.liveliHood.max;
                 }
-                if (currValue < pop.def.liveliHood.min)
+                else if (newValue < pop.def.liveliHood.min)
                 {
                     currValue = pop.def.liveliHood.min;
+                }
+                else
+                {
+                    currValue = newValue;
                 }
             }
         }

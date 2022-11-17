@@ -10,8 +10,14 @@ public class ProvinceTip : UIBehaviour<IProvince>
     public Text provinceName;
     public Text population;
     public Text liveliHood;
+    public Text liveliHoodIncFlag;
+    public Text populationDetail;
+    public Text liveliHoodDetail;
+    public Text liveliHoodValue;
+    public NumberText liveliHoodInc;
     public Text landCount;
     public Text taxValue;
+
 
     public Button country;
 
@@ -37,11 +43,17 @@ public class ProvinceTip : UIBehaviour<IProvince>
         Bind(province => province.name, provinceName);
         Bind(province => province.pop.count, population);
         Bind(province => province.pop.liveliHood.level.title, liveliHood);
+        Bind(province => province.pop.liveliHood.surplus > 0 ? "¡ü" : "¡ý", liveliHoodIncFlag);
         Bind(province => province.cells.Count(), landCount);
         Bind(province => province.country.name, country.GetComponentInChildren<Text>());
         Bind(province => GroupByBiomeType(province.cells), landChart);
         Bind(province => province.taxItems.Sum(t=>t.currValue), taxValue);
         Bind(province => province.taxItems, taxDetails);
+
+        Bind(province => province.pop.count, populationDetail);
+        Bind(province => province.pop.liveliHood.level.title, liveliHoodDetail);
+        Bind(province => province.pop.liveliHood.currValue, liveliHoodValue);
+        Bind(province => province.pop.liveliHood.surplus, liveliHoodInc);
 
         //AddToolTip(liveliHood, province =>
         //{

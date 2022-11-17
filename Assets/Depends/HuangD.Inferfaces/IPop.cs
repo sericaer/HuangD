@@ -15,6 +15,7 @@ namespace HuangD.Interfaces
 
             public double currValue { get; set; }
 
+            public double surplus { get; }
             public IBuffer level { get; }
 
             public IEnumerable<IEffect> details { get; }

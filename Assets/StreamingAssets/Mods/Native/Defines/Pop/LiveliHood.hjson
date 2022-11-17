@@ -95,7 +95,7 @@
             range:
             {
                 min:90
-                max:100
+                max:101
             }
             effects:
             [
