@@ -15,8 +15,9 @@ namespace HuangD.Interfaces
 
         public enum Target
         {
-            ToPopTax,
-            ToPopLiveliHoodInc,
+            人口税,
+            生活水平,
+            民户增长
         }
     }
 }

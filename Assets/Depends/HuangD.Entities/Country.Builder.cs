@@ -110,7 +110,7 @@ NewGroup:
 
                             prov2Country.Add(next, group);
 
-                            if (group.provinces.Count > maxProvinceCount || (group.provinces.Count > minProvinceCount && group.provinces.Sum(p=>p.pop.count) > maxPopulationCount))
+                            if (group.provinces.Count > maxProvinceCount || (group.provinces.Count > minProvinceCount && group.provinces.Sum(p=>p.pop.count.currValue) > maxPopulationCount))
                             {
                                 goto NewGroup;
                             }
@@ -119,7 +119,7 @@ NewGroup:
                 }
 
                 var smallGroups = new Queue<ProvinceGroup>(rslt.Where(x => x.neighbors.Count > 0)
-                    .Where(x=> x.provinces.Count < minProvinceCount || x.provinces.Sum(p => p.pop.count) < minPopulationCount));
+                    .Where(x=> x.provinces.Count < minProvinceCount || x.provinces.Sum(p => p.pop.count.currValue) < minPopulationCount));
 
                 rslt.RemoveAll(x => smallGroups.Contains(x));
 
@@ -129,7 +129,7 @@ NewGroup:
 
                     var mergeTo = curr.neighbors
                         .Where(x=> rslt.Contains(x))
-                        .OrderBy(x => x.provinces.Sum(p => p.pop.count)).FirstOrDefault();
+                        .OrderBy(x => x.provinces.Sum(p => p.pop.count.currValue)).FirstOrDefault();
                     if(mergeTo == null)
                     {
                         smallGroups.Enqueue(curr);

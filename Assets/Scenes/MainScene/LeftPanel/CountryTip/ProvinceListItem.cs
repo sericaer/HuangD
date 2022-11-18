@@ -27,7 +27,7 @@ public class ProvinceListItem : UIBehaviour<IProvince>
     protected override void AssocDataSource()
     {
         Bind(province => province.name, provinceName);
-        Bind(province => province.pop.count, population);
+        Bind(province => province.pop.count.currValue, population);
         Bind(province => province.cells.Count(), landCount);
         Bind(province => province.pop.liveliHood.level.title, liveliHood);
         Bind(province => province.taxItems.Sum(x=>x.currValue), tax);

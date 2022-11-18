@@ -44,7 +44,7 @@ namespace HuangD.Entities
                 return pop.def.liveliHood.levels.Values.SingleOrDefault(x => (int)currValue >= x.range.min && (int)currValue < x.range.max);
             }
 
-            public IEnumerable<IEffect> details => pop.buffers.SelectMany(x => x.effects).Where(e => e.target == IEffect.Target.ToPopLiveliHoodInc);
+            public IEnumerable<IEffect> details => pop.buffers.SelectMany(x => x.effects).Where(e => e.target == IEffect.Target.生活水平);
 
             public IBuffer level => pop.buffers.SingleOrDefault(x => pop.def.liveliHood.levels.ContainsValue(((GBuffer)x).def as ILevel));
 

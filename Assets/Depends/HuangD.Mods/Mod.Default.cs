@@ -49,7 +49,7 @@ namespace HuangD.Mods
                                         new EffectDef()
                                         {
                                             factor = -0.99,
-                                            target = Target.ToPopTax
+                                            target = Target.人口税
                                         }
                                     }
                                 }
@@ -69,7 +69,7 @@ namespace HuangD.Mods
                                             new EffectDef()
                                             {
                                                 factor = -0.7,
-                                                target = Target.ToPopTax
+                                                target = Target.人口税
                                             }
                                         }
                                 }
@@ -89,7 +89,7 @@ namespace HuangD.Mods
                                             new EffectDef()
                                             {
                                                 factor = -0.3,
-                                                target = Target.ToPopTax
+                                                target = Target.人口税
                                             }
                                         }
                                 }
@@ -157,8 +157,8 @@ namespace HuangD.Mods
                                 title = CollectLevel.极低.ToString(),
                                 effects = new IEffectDef[]
                                 {
-                                    new EffectDef(){ factor = 0, target = Target.ToPopTax },
-                                    new EffectDef(){ factor = -0.1, target = Target.ToPopLiveliHoodInc }
+                                    new EffectDef(){ factor = 0, target = Target.人口税 },
+                                    new EffectDef(){ factor = -0.1, target = Target.生活水平 }
                                 }
                             }
                         },
@@ -169,8 +169,8 @@ namespace HuangD.Mods
                                 title = CollectLevel.低.ToString(),
                                 effects = new IEffectDef[]
                                 {
-                                    new EffectDef(){ factor = +0.1, target = Target.ToPopTax },
-                                    new EffectDef(){ factor = -0.2, target = Target.ToPopLiveliHoodInc }
+                                    new EffectDef(){ factor = +0.1, target = Target.人口税 },
+                                    new EffectDef(){ factor = -0.2, target = Target.生活水平 }
                                 }
                             }
                         },
@@ -181,8 +181,8 @@ namespace HuangD.Mods
                                 title = CollectLevel.中.ToString(),
                                 effects = new IEffectDef[]
                                 {
-                                    new EffectDef(){ factor = +0.2, target = Target.ToPopTax },
-                                    new EffectDef(){ factor = -0.4, target = Target.ToPopLiveliHoodInc }
+                                    new EffectDef(){ factor = +0.2, target = Target.人口税 },
+                                    new EffectDef(){ factor = -0.4, target = Target.生活水平 }
                                 }
                             }
                         },
@@ -194,8 +194,8 @@ namespace HuangD.Mods
 
                                 effects = new IEffectDef[]
                                 {
-                                    new EffectDef(){ factor = +0.4, target = Target.ToPopTax },
-                                    new EffectDef(){ factor = -0.8, target = Target.ToPopLiveliHoodInc }
+                                    new EffectDef(){ factor = +0.4, target = Target.人口税 },
+                                    new EffectDef(){ factor = -0.8, target = Target.生活水平 }
                                 }
                             }
                         },
@@ -207,8 +207,8 @@ namespace HuangD.Mods
 
                                 effects = new IEffectDef[]
                                 {
-                                    new EffectDef(){ factor = +0.8, target = Target.ToPopTax },
-                                    new EffectDef(){ factor = -1.2, target = Target.ToPopLiveliHoodInc }
+                                    new EffectDef(){ factor = +0.8, target = Target.人口税 },
+                                    new EffectDef(){ factor = -1.2, target = Target.生活水平 }
                                 }
                             }
                         }

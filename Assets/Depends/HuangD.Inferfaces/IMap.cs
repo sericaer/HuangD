@@ -47,6 +47,8 @@ namespace HuangD.Interfaces
     {
         public BiomeType biome { get; set; }
         public int population { get; set; }
+
+        void PopInc(double currInc);
     }
 
     public enum BiomeType

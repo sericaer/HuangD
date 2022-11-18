@@ -4,9 +4,9 @@ namespace HuangD.Interfaces
 {
     public interface IPop
     {
-        int count { get; }
         IProvince from { get; }
         public ILiveliHood liveliHood { get; }
+        public ICount count { get; }
         public List<IBuffer> buffers { get; }
 
         public interface ILiveliHood
@@ -17,6 +17,16 @@ namespace HuangD.Interfaces
 
             public double surplus { get; }
             public IBuffer level { get; }
+
+            public IEnumerable<IEffect> details { get; }
+
+            void OnDaysInc(int year, int month, int day);
+        }
+
+        public interface ICount
+        {
+            public int currValue { get; }
+            public double currInc { get; }
 
             public IEnumerable<IEffect> details { get; }
 

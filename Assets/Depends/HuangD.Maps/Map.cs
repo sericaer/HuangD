@@ -101,6 +101,22 @@ namespace HuangD.Maps
     class LandInfo : ILandInfo
     {
         public BiomeType biome { get; set; }
-        public int population { get; set; }
+        public int population
+        {
+            get
+            {
+                return (int)_population;
+            }
+            set
+            {
+                _population = value;
+            }
+        }
+
+        private double _population;
+        public void PopInc(double currInc)
+        {
+            _population += _population * currInc;
+        }
     }
 }
