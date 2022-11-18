@@ -51,24 +51,23 @@ namespace HuangD.Interfaces
 
     public enum BiomeType
     {
-        Desert_Plain,
-        Desert_Hill,
-        Desert_Mount,
+        沙漠,
+        戈壁,
+        荒山,
 
-        Grass_Plain,
-        Grass_Hill,
-        Grass_Mount,
+        草原,
+        山丘草原,
+        高山草原,
 
-        Farm_Plain,
-        Farm_Hill,
+        农田,
+        梯田,
 
-        Forest_Plain,
-        Forest_Hill,
+        林地,
+        山丘林地,
 
-        Juggle_Plain,
-        Juggle_Hill,
+        雨林,
 
-        Marsh_Plain
+        沼泽
     }
 }
 

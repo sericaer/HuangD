@@ -10,47 +10,46 @@ namespace HuangD.Maps
     {
         internal static Dictionary<(int x, int y), int> Build(Dictionary<(int x, int y), BiomeType> biomesMap, GRandom random)
         {
-            return biomesMap.ToDictionary(k=>k.Key, v=>
+            return biomesMap.ToDictionary(k => k.Key, (Func<KeyValuePair<(int x, int y), BiomeType>, int>)(v=>
             {
                 switch(v.Value)
                 {
-                    case BiomeType.Desert_Plain:
-                    case BiomeType.Desert_Hill:
-                    case BiomeType.Desert_Mount:
+                    case BiomeType.沙漠:
+                    case BiomeType.戈壁:
+                    case BiomeType.荒山:
                         return random.getNum(0,100);
 
-                    case BiomeType.Grass_Mount:
+                    case BiomeType.高山草原:
                         return random.getNum(100, 200);
 
-                    case BiomeType.Grass_Hill:
+                    case BiomeType.山丘草原:
                         return random.getNum(200, 500);
 
-                    case BiomeType.Grass_Plain:
+                    case BiomeType.草原:
                         return random.getNum(500, 1000);
 
-                    case BiomeType.Farm_Hill:
+                    case BiomeType.梯田:
                         return random.getNum(3000, 5000);
 
-                    case BiomeType.Farm_Plain:
+                    case BiomeType.农田:
                         return random.getNum(6000, 10000);
 
-                    case BiomeType.Forest_Plain:
+                    case BiomeType.林地:
                         return random.getNum(500, 1000);
 
-                    case BiomeType.Forest_Hill:
+                    case BiomeType.山丘林地:
                         return random.getNum(300, 500);
 
-                    case BiomeType.Juggle_Plain:
-                    case BiomeType.Juggle_Hill:
+                    case BiomeType.雨林:
                         return random.getNum(100, 200);
 
-                    case BiomeType.Marsh_Plain:
+                    case BiomeType.沼泽:
                         return random.getNum(0, 100);
 
                     default:
                         throw new Exception();
                 }
-            });
+            }));
         }
     }
 }

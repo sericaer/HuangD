@@ -89,15 +89,15 @@ namespace HuangD.Maps
             {
                 if (terrains[position] == TerrainType.Hill)
                 {
-                    rslt.Add(position, BiomeType.Grass_Hill);
+                    rslt.Add(position, BiomeType.山丘草原);
                 }
                 else if (terrains[position] == TerrainType.Plain)
                 {
-                    rslt.Add(position, BiomeType.Grass_Plain);
+                    rslt.Add(position, BiomeType.草原);
                 }
                 else if (terrains[position] == TerrainType.Mount)
                 {
-                    rslt.Add(position, BiomeType.Grass_Mount);
+                    rslt.Add(position, BiomeType.高山草原);
                 }
                 else
                 {
@@ -114,16 +114,16 @@ namespace HuangD.Maps
             {
                 if (terrains[position] == TerrainType.Hill)
                 {
-                    rslt.Add(position, BiomeType.Forest_Hill);
+                    rslt.Add(position, BiomeType.山丘林地);
                 }
                 else if (terrains[position] == TerrainType.Plain)
                 {
-                    rslt.Add(position, BiomeType.Forest_Plain);
+                    rslt.Add(position, BiomeType.林地);
                 }
 
                 else if (terrains[position] == TerrainType.Mount)
                 {
-                    rslt.Add(position, BiomeType.Grass_Mount);
+                    rslt.Add(position, BiomeType.高山草原);
                 }
                 else
                 {
@@ -131,20 +131,20 @@ namespace HuangD.Maps
                 }
             }
 
-            var orderPositions = rslt.Where(x=>x.Value == BiomeType.Juggle_Hill || x.Value == BiomeType.Juggle_Plain)
+            var orderPositions = rslt.Where(x=>x.Value == BiomeType.山丘林地 || x.Value == BiomeType.雨林)
                 .Select(p => p.Key)
                 .OrderByDescending(key => key.x)
                 .ToArray();
 
             foreach (var position in orderPositions.Take(orderPositions.Count() / 5 ))
             {
-                if (rslt[position] == BiomeType.Juggle_Hill)
+                if (rslt[position] == BiomeType.山丘林地)
                 {
-                    rslt[position] = BiomeType.Forest_Hill;
+                    rslt[position] = BiomeType.山丘林地;
                 }
-                else if (rslt[position] == BiomeType.Juggle_Plain)
+                else if (rslt[position] == BiomeType.雨林)
                 {
-                    rslt[position] = BiomeType.Forest_Plain;
+                    rslt[position] = BiomeType.林地;
                 }
             }
         }
@@ -160,7 +160,7 @@ namespace HuangD.Maps
             {
                 if (terrains[position] == TerrainType.Plain)
                 {
-                    rslt.Add(position, BiomeType.Marsh_Plain);
+                    rslt.Add(position, BiomeType.沼泽);
                 }
             }
 
@@ -168,15 +168,15 @@ namespace HuangD.Maps
             {
                 if (terrains[position] == TerrainType.Plain)
                 {
-                    rslt.Add(position, BiomeType.Juggle_Plain);
+                    rslt.Add(position, BiomeType.雨林);
                 }
                 else if (terrains[position] == TerrainType.Hill)
                 {
-                    rslt.Add(position, BiomeType.Juggle_Hill);
+                    rslt.Add(position, BiomeType.山丘林地);
                 }
                 else if (terrains[position] == TerrainType.Mount)
                 {
-                    rslt.Add(position, BiomeType.Grass_Mount);
+                    rslt.Add(position, BiomeType.高山草原);
                 }
                 else
                 {
@@ -193,15 +193,15 @@ namespace HuangD.Maps
             {
                 if (terrains[position] == TerrainType.Hill)
                 {
-                    rslt.Add(position, BiomeType.Desert_Hill);
+                    rslt.Add(position, BiomeType.戈壁);
                 }
                 else if (terrains[position] == TerrainType.Plain)
                 {
-                    rslt.Add(position, BiomeType.Desert_Plain);
+                    rslt.Add(position, BiomeType.沙漠);
                 }
                 else if (terrains[position] == TerrainType.Mount)
                 {
-                    rslt.Add(position, BiomeType.Desert_Mount);
+                    rslt.Add(position, BiomeType.荒山);
                 }
                 else
                 {
@@ -213,7 +213,7 @@ namespace HuangD.Maps
         private static void BuildFarmHill(ref Dictionary<(int x, int y), BiomeType> rslt, GRandom random)
         {
 
-            var forestPositions = rslt.Where(x => x.Value == BiomeType.Forest_Hill)
+            var forestPositions = rslt.Where(x => x.Value == BiomeType.山丘林地)
                             .OrderBy(_ => random.getNum(0, int.MaxValue))
                             .Select(p => p.Key)
                             .ToList();
@@ -224,7 +224,7 @@ namespace HuangD.Maps
 
             var start = forestPositions.First();
             queue.Enqueue(start);
-            rslt[start] = BiomeType.Farm_Hill;
+            rslt[start] = BiomeType.梯田;
 
             forestPositions.Remove(start);
 
@@ -240,7 +240,7 @@ namespace HuangD.Maps
                 {
                     if(random.isTrue(10))
                     {
-                        rslt[neighbor] = BiomeType.Farm_Hill;
+                        rslt[neighbor] = BiomeType.梯田;
 
                         forestPositions.Remove(neighbor);
                         queue.Enqueue(neighbor);
@@ -250,7 +250,7 @@ namespace HuangD.Maps
                 var newStarts = forestPositions.Take(3);
                 foreach (var newStart in newStarts)
                 {
-                    rslt[newStart] = BiomeType.Farm_Hill;
+                    rslt[newStart] = BiomeType.梯田;
                     forestPositions.Remove(newStart);
                     queue.Enqueue(newStart);
                 }
@@ -260,7 +260,7 @@ namespace HuangD.Maps
         private static void BuildFarmPlain(ref Dictionary<(int x, int y), BiomeType> rslt, GRandom random)
         {
             var maxX = rslt.Max(p => p.Key.x);
-            var forestPositions = rslt.Where(x => x.Value == BiomeType.Forest_Plain || x.Value == BiomeType.Juggle_Plain)
+            var forestPositions = rslt.Where(x => x.Value == BiomeType.林地 || x.Value == BiomeType.雨林)
                 .Select(x => x.Key)
                 .Where(k => k.x < maxX * 0.9)
                 .OrderBy(_ => random.getNum(0, int.MaxValue))
@@ -273,7 +273,7 @@ namespace HuangD.Maps
 NewStart:
             var start = forestPositions.First();
             queue.Enqueue(start);
-            rslt[start] = BiomeType.Farm_Plain;
+            rslt[start] = BiomeType.农田;
 
             forestPositions.Remove(start);
 
@@ -292,14 +292,14 @@ NewStart:
 
                 foreach (var neighbor in neighbors)
                 {
-                    if (rslt[neighbor] == BiomeType.Juggle_Plain)
+                    if (rslt[neighbor] == BiomeType.雨林)
                     {
                         if (random.isTrue(70))
                         {
                             continue;
                         }
                     }
-                    if (rslt[neighbor] == BiomeType.Juggle_Plain)
+                    if (rslt[neighbor] == BiomeType.雨林)
                     {
                         if (random.isTrue(90))
                         {
@@ -307,7 +307,7 @@ NewStart:
                         }
                     }
 
-                    rslt[neighbor] = BiomeType.Farm_Plain;
+                    rslt[neighbor] = BiomeType.农田;
 
                     forestPositions.Remove(neighbor);
                     queue.Enqueue(neighbor);
