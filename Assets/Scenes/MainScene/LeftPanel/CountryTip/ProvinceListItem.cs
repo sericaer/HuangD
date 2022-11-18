@@ -8,6 +8,9 @@ public class ProvinceListItem : UIBehaviour<IProvince>
     public Text provinceName;
     public Text population;
     public Text landCount;
+    public Text liveliHood;
+    public Text tax;
+
     public Button button;
 
     public UnityEvent<IProvince> ShowProvince;
@@ -26,5 +29,7 @@ public class ProvinceListItem : UIBehaviour<IProvince>
         Bind(province => province.name, provinceName);
         Bind(province => province.pop.count, population);
         Bind(province => province.cells.Count(), landCount);
+        Bind(province => province.pop.liveliHood.level.title, liveliHood);
+        Bind(province => province.taxItems.Sum(x=>x.currValue), tax);
     }
 }
