@@ -27,12 +27,36 @@ public class NumberText : MonoBehaviour
     }
 
     [SerializeField]
+    public string Format
+    {
+        get
+        {
+            return _Format;
+        }
+        set
+        {
+            _Format = value;
+            SetNumberValue(Value);
+        }
+    }
+
+    [SerializeField]
     private double _Value;
+
+    [SerializeField]
+    private string _Format;
     private Text text => GetComponent<Text>();
 
     private void SetNumberValue(double Value)
     {
-        text.text = System.Math.Round(Value, decimals).ToString();
+        if(_Format  == null || _Format == "")
+        {
+            text.text = System.Math.Round(Value, decimals).ToString();
+        }
+        else
+        {
+            text.text = String.Format(Format, System.Math.Round(Value, decimals));
+        }
 
         if (showSign && !(Value < 0))
         {

@@ -1,8 +1,8 @@
-﻿using HuangD.Mods.Interfaces;
+﻿using HuangD.Interfaces;
+using HuangD.Mods.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 using static HuangD.Interfaces.IEffect;
-using static HuangD.Interfaces.ITreasury;
 using static HuangD.Mods.Interfaces.IPopDef.ILiveliHood;
 
 namespace HuangD.Mods
@@ -148,13 +148,13 @@ namespace HuangD.Mods
                             }
                         }
                     },
-                    popTaxLevelBuffs = new Dictionary<CollectLevel, IBufferDef>()
+                    popTaxLevelBuffs = new Dictionary<ITreasury.CollectLevel, IBufferDef>()
                     {
                         {
-                            CollectLevel.极低,
+                            ITreasury.CollectLevel.极低,
                             new BufferDef()
                             {
-                                title = CollectLevel.极低.ToString(),
+                                title = "人口税率极低",
                                 effects = new IEffectDef[]
                                 {
                                     new EffectDef(){ factor = 0, target = Target.人口税 },
@@ -163,10 +163,10 @@ namespace HuangD.Mods
                             }
                         },
                         {
-                            CollectLevel.低,
+                            ITreasury.CollectLevel.低,
                             new BufferDef()
                             {
-                                title = CollectLevel.低.ToString(),
+                                title = "人口税率低",
                                 effects = new IEffectDef[]
                                 {
                                     new EffectDef(){ factor = +0.1, target = Target.人口税 },
@@ -175,10 +175,10 @@ namespace HuangD.Mods
                             }
                         },
                         {
-                            CollectLevel.中,
+                            ITreasury.CollectLevel.中,
                             new BufferDef()
                             {
-                                title = CollectLevel.中.ToString(),
+                                title = "人口税率中",
                                 effects = new IEffectDef[]
                                 {
                                     new EffectDef(){ factor = +0.2, target = Target.人口税 },
@@ -187,10 +187,10 @@ namespace HuangD.Mods
                             }
                         },
                         {
-                            CollectLevel.高,
+                            ITreasury.CollectLevel.高,
                             new BufferDef()
                             {
-                                title = CollectLevel.高.ToString(),
+                                title = "人口税率高",
 
                                 effects = new IEffectDef[]
                                 {
@@ -200,10 +200,10 @@ namespace HuangD.Mods
                             }
                         },
                         {
-                            CollectLevel.极高,
+                            ITreasury.CollectLevel.极高,
                             new BufferDef()
                             {
-                                title = CollectLevel.极高.ToString(),
+                                title = "人口税率极高",
 
                                 effects = new IEffectDef[]
                                 {
@@ -213,7 +213,74 @@ namespace HuangD.Mods
                             }
                         }
                     },
+                    ConscriptLevelBuffs = new Dictionary<IMilitary.CollectLevel, IBufferDef>()
+                    {
+                        {
+                            IMilitary.CollectLevel.极低,
+                            new BufferDef()
+                            {
+                                title = "征兵规模极低",
 
+                                effects = new IEffectDef[]
+                                {
+                                    new EffectDef(){ factor = 0, target = Target.征兵规模 },
+                                    new EffectDef(){ factor = -0.1, target = Target.生活水平 }
+                                }
+                            }
+                        },
+                        {
+                            IMilitary.CollectLevel.低,
+                            new BufferDef()
+                            {
+                                title = "征兵规模低",
+
+                                effects = new IEffectDef[]
+                                {
+                                    new EffectDef(){ factor = +0.5, target = Target.征兵规模 },
+                                    new EffectDef(){ factor = -0.2, target = Target.生活水平 }
+                                }
+                            }
+                        },
+                        {
+                            IMilitary.CollectLevel.中,
+                            new BufferDef()
+                            {
+                                title = "征兵规模中",
+
+                                effects = new IEffectDef[]
+                                {
+                                    new EffectDef(){ factor = +1, target = Target.征兵规模 },
+                                    new EffectDef(){ factor = -0.4, target = Target.生活水平 }
+                                }
+                            }
+                        },
+                        {
+                            IMilitary.CollectLevel.高,
+                            new BufferDef()
+                            {
+                                title = "征兵规模高",
+
+                                effects = new IEffectDef[]
+                                {
+                                    new EffectDef(){ factor = +2, target = Target.征兵规模 },
+                                    new EffectDef(){ factor = -0.8, target = Target.生活水平 }
+                                }
+                            }
+                        },
+                        {
+                            IMilitary.CollectLevel.极高,
+                            new BufferDef()
+                            {
+                                title = "征兵规模极高",
+
+                                effects = new IEffectDef[]
+                                {
+                                    new EffectDef(){ factor = +3, target = Target.征兵规模 },
+                                    new EffectDef(){ factor = -1.2, target = Target.生活水平 }
+                                }
+                            }
+                        }
+                    },
                 }
             }
         };

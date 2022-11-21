@@ -15,12 +15,15 @@ namespace HuangD.Entities
 
         public ITreasury treasury { get; }
 
+        public IMilitary military { get; }
+
         public Country(string name, IEnumerable<IProvince> provinces, (int r, int g, int b) color)
         {
             this.name = name;
             this.color = color;
             this.provinces = provinces.ToList();
             this.treasury = new Treasury(this);
+            this.military = new Military(this);
 
             this.officeGroup = new OfficeGroup(this);
         }
@@ -28,6 +31,7 @@ namespace HuangD.Entities
         public void OnDaysInc(int year, int month, int day)
         {
             treasury.OnDaysInc(year, month, day);
+            military.OnDaysInc(year, month, day);
         }
     }
 }

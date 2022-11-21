@@ -20,6 +20,7 @@ namespace HuangD.Mods.Interfaces
         public ILiveliHood liveliHood { get; }
 
         public Dictionary<ITreasury.CollectLevel, IBufferDef> popTaxLevelBuffs { get; set; }
+        public Dictionary<IMilitary.CollectLevel, IBufferDef> ConscriptLevelBuffs { get; set; }
 
         public interface ILiveliHood
         {

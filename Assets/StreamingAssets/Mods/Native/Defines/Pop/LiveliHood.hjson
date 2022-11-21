@@ -19,7 +19,7 @@
                 }
                 {
                     target:"民户增长"
-                    factor:-8
+                    factor:-0.08
                 }
             ]
         }
@@ -38,7 +38,7 @@
                 }
                 {
                     target:"民户增长"
-                    factor:-3
+                    factor:-0.03
                 }
             ]
         }
@@ -57,7 +57,7 @@
                 }
                 {
                     target:"民户增长"
-                    factor:-1
+                    factor:-0.01
                 }
             ]
         }
@@ -87,7 +87,7 @@
                 }
                 {
                     target:"民户增长"
-                    factor:0.8
+                    factor:0.008
                 }
             ]
         }
@@ -106,7 +106,7 @@
                 }
                 {
                     target:"民户增长"
-                    factor:2
+                    factor:0.02
                 }
             ]
         }
@@ -125,7 +125,7 @@
                 }
                 {
                     target:"民户增长"
-                    factor:5
+                    factor:0.05
                 }
             ]
         }

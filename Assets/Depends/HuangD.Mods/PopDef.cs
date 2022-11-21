@@ -1,4 +1,5 @@
-﻿using HuangD.Mods.Interfaces;
+﻿using HuangD.Interfaces;
+using HuangD.Mods.Interfaces;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace HuangD.Mods
         public IPopDef.ILiveliHood liveliHood { get; set; }
 
         public Dictionary<CollectLevel, IBufferDef> popTaxLevelBuffs { get; set; }
+        public Dictionary<IMilitary.CollectLevel, IBufferDef> ConscriptLevelBuffs { get; set; }
 
         public class Builder
         {

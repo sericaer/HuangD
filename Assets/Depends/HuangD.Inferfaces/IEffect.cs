@@ -17,7 +17,8 @@ namespace HuangD.Interfaces
         {
             人口税,
             生活水平,
-            民户增长
+            民户增长,
+            征兵规模
         }
     }
 }

@@ -14,6 +14,7 @@ public class CountryPanel : MonoBehaviour
     public TreasuryPanel treasuryPanel;
     public Population population;
     public ProvinceCountPanel ProvinceCountPanel;
+    public MilitaryPanel militaryPanel;
 
     public ICountry country
     {
@@ -33,6 +34,7 @@ public class CountryPanel : MonoBehaviour
             treasuryPanel.dataSource = _country.treasury;
             population.dataSource = _country;
             ProvinceCountPanel.dataSource = _country;
+            militaryPanel.dataSource = _country.military;
 
             FixedUpdate();
         }

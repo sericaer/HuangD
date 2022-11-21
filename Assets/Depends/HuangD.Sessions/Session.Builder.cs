@@ -35,7 +35,7 @@ namespace HuangD.Sessions
                 session.countries = countries;
                 session.persons = persons;
                 session.date = new Date();
-
+                
                 session.playerCountry = countries.First();
 
                 processInfo.Invoke("关联数据");

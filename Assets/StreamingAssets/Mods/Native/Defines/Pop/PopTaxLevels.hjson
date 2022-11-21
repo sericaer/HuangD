@@ -5,11 +5,11 @@
         effects:
         [
             {
-                target:"ToPopTax"
+                target:"人口税"
                 factor:0
             }
             {
-                target:"ToPopLiveliHoodInc"
+                target:"生活水平"
                 factor:-0.1
             }
         ]
@@ -21,11 +21,11 @@
         effects:
         [
             {
-                target:"ToPopTax"
+                target:"人口税"
                 factor:0.1
             }
             {
-                target:"ToPopLiveliHoodInc"
+                target:"生活水平"
                 factor:-0.2
             }
         ]
@@ -37,11 +37,11 @@
         effects:
         [
             {
-                target:"ToPopTax"
+                target:"人口税"
                 factor:0.2
             }
             {
-                target:"ToPopLiveliHoodInc"
+                target:"生活水平"
                 factor:-0.4
             }
         ]
@@ -53,11 +53,11 @@
         effects:
         [
             {
-                target:"ToPopTax"
+                target:"人口税"
                 factor:0.4
             }
             {
-                target:"ToPopLiveliHoodInc"
+                target:"生活水平"
                 factor:-0.8
             }
         ]
@@ -69,11 +69,11 @@
         effects:
         [
             {
-                target:"ToPopTax"
+                target:"人口税"
                 factor:0.8
             }
             {
-                target:"ToPopLiveliHoodInc"
+                target:"生活水平"
                 factor:-1.2
             }
         ]

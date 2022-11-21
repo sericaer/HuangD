@@ -11,6 +11,7 @@ namespace HuangD.Interfaces
         public IEnumerable<ICell> cells { get; }
         public IEnumerable<IProvince> neighbors { get; }
         public IEnumerable<ITreasury.IIncomeItem> taxItems { get; }
+        public IEnumerable<IMilitary.IItem> militaryItems { get; }
         public ICountry country { get; }
         public IPop pop { get; }
         public IEnumerable<IBuffer> buffers { get; }

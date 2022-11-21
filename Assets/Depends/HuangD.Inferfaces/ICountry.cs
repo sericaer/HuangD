@@ -15,6 +15,8 @@ namespace HuangD.Interfaces
 
         public ITreasury treasury { get; }
 
+        public IMilitary military { get; }
+
         void OnDaysInc(int year, int month, int day);
     }
 }

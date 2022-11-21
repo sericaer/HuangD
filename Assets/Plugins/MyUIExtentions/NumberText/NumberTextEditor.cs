@@ -61,6 +61,14 @@ public class NumberTextEditor : Editor
             numberText.Value = Value;
             EditorUtility.SetDirty(numberText);
         }
+
+        var Format = EditorGUILayout.TextField("Format", numberText.Format);
+
+        if (EditorGUI.EndChangeCheck())
+        {
+            numberText.Format = Format;
+            EditorUtility.SetDirty(numberText);
+        }
     }
 }
 #endif

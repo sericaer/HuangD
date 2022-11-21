@@ -28,7 +28,7 @@ public class PopPanel : UIBehaviour<IPop>
         Bind(pop => pop.liveliHood.surplus > 0 ? "¡ü" : "¡ý", liveliHoodIncFlag);
 
         Bind(pop => pop.count.currValue, populationDetail);
-        Bind(pop => pop.count.currInc, liveliHoodInc);
+        Bind(pop => pop.count.currInc*100, populationInc);
 
         Bind(pop => pop.liveliHood.level.title, liveliHoodDetail);
         Bind(pop => pop.liveliHood.currValue, liveliHoodValue);
