@@ -1,7 +1,5 @@
 using HuangD.Interfaces;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
@@ -13,6 +11,7 @@ public class ProvinceTip : UIBehaviour<IProvince>
     public PopPanel popPanel;
     public LandPanel landPanel;
     public TaxPanel taxPanel;
+    public MilitaryProvPanel militaryPanel;
 
     public UnityEvent<ICountry> ShowCountry;
 
@@ -32,6 +31,7 @@ public class ProvinceTip : UIBehaviour<IProvince>
         popPanel.dataSource = dataSource.pop;
         landPanel.dataSource = dataSource.cells;
         taxPanel.dataSource = dataSource.taxItems;
+        militaryPanel.dataSource = dataSource.militaryItems;
 
         //AddToolTip(liveliHood, province =>
         //{

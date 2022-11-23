@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEngine.UI;
 
-public class TaxItem : UIBehaviour<ITreasury.IIncomeItem>
+public class MilitaryItem : UIBehaviour<IMilitary.IItem>
 {
     public Text label;
     public Text value;
@@ -16,10 +16,10 @@ public class TaxItem : UIBehaviour<ITreasury.IIncomeItem>
 
         AddToolTip(value, income =>
         {
-            return string.Join("\n", income.effects.Select(x => (x.value > 0 ? "+" : "") + $"{x.value * 100}% {x.from.title}").Prepend($"基础值 {income.baseValue}"));
+            return string.Join("\n", income.effects.Select(x => (x.value > 0 ? "+" : "") + $"{x.value * 100}% {x.from.title}"));
         });
 
-        AddTooltip<ITreasury.CollectLevel>(levels, (income, level) =>
+        AddTooltip<IMilitary.CollectLevel>(levels, (income, level) =>
         {
             var effects = income.GetLevelEffects(level);
 
