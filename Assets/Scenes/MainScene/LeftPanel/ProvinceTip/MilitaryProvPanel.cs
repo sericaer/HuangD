@@ -10,7 +10,7 @@ public class MilitaryProvPanel : UIBehaviour<IEnumerable<IMilitary.IItem>>
 
     protected override void AssocDataSource()
     {
-        Bind(items => items.Sum(t => t.currValue), taxValue);
+        Bind(items => items.Sum(t => t.currValue)/1000, taxValue);
         Bind(items => items, militaryDetails);
     }
 }

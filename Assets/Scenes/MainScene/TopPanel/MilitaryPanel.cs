@@ -7,13 +7,11 @@ using UnityEngine.UI;
 public class MilitaryPanel : UIBehaviour<IMilitary>
 {
     public Text current;
-    public Text max;
-    public NumberText Inc;
+    public IncFlag incFlag;
 
     protected override void AssocDataSource()
     {
-        Bind(military => military.currValue, current);
-        Bind(military => military.maxValue, max);
-        Bind(military => military.incValue, Inc);
+        Bind(military => $"{System.Math.Round(military.currValue / 1000.0, 2)}K", current);
+        Bind(military => military.incValue > 0, incFlag);
     }
 }

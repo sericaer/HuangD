@@ -19,6 +19,7 @@ public abstract class UIBehaviour<T> : UIBehaviourBase
     private Dictionary<Text, Func<T, object>> dictText;
     private Dictionary<NumberText, Func<T, object>> dictNumberText;
     private Dictionary<Toggle, Func<T, bool>> dictToggles;
+    private Dictionary<IncFlag, Func<T, bool>> dictIncFlag;
 
     public T dataSource
     {
@@ -36,6 +37,7 @@ public abstract class UIBehaviour<T> : UIBehaviourBase
             dictText = new Dictionary<Text, Func<T, object>>();
             dictNumberText = new Dictionary<NumberText, Func<T, object>>();
             dictToggles = new Dictionary<Toggle, Func<T, bool>>();
+            dictIncFlag = new Dictionary<IncFlag, Func<T, bool>>();
 
             _dataSource = value;
 
@@ -70,6 +72,11 @@ public abstract class UIBehaviour<T> : UIBehaviourBase
         {
             pair.Key.isOn = pair.Value(dataSource);
         }
+
+        foreach(var pair in dictIncFlag)
+        {
+            pair.Key.isInc = pair.Value(dataSource);
+        }
     }
 
     protected virtual void OnDestroy()
@@ -85,6 +92,11 @@ public abstract class UIBehaviour<T> : UIBehaviourBase
     protected void Bind(Func<T, object> func, NumberText text)
     {
         dictNumberText.Add(text, func);
+    }
+
+    protected void Bind(Func<T, bool> func, IncFlag flag)
+    {
+        dictIncFlag.Add(flag, func);
     }
 
     protected void Bind<TItem, TUIItem>(Func<T, IEnumerable<TItem>> func, UICollectionBehaviour<TItem, TUIItem> uiContainer)
