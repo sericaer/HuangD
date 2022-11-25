@@ -11,6 +11,7 @@ namespace HuangD.Mods
 
         public string popLiveliHood { get; }
         public string popTaxLevels { get; }
+        public string conscriptLevels { get; }
 
         public string modPath;
 
@@ -19,6 +20,8 @@ namespace HuangD.Mods
         private string provinceNameFile => Path.Combine(modPath, "Defines", "Province", "NameDef.hjson");
         private string popLiveliHoodFile => Path.Combine(modPath, "Defines", "Pop", "LiveliHood.hjson");
         private string popTaxLevelsFile => Path.Combine(modPath, "Defines", "Pop", "popTaxLevels.hjson");
+        private string conscriptLevelsFile => Path.Combine(modPath, "Defines", "Pop", "conscriptLevels.hjson");
+
         public ModFileSystem(string modPath)
         {
             this.modPath = modPath;
@@ -28,6 +31,7 @@ namespace HuangD.Mods
             provinceNames = HjsonValue.Load(provinceNameFile).ToString();
             popLiveliHood = HjsonValue.Load(popLiveliHoodFile).ToString();
             popTaxLevels = HjsonValue.Load(popTaxLevelsFile).ToString();
+            conscriptLevels = HjsonValue.Load(conscriptLevelsFile).ToString();
         }
     }
 }
