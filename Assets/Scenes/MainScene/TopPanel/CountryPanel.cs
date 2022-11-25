@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class CountryPanel : MonoBehaviour
@@ -15,6 +16,8 @@ public class CountryPanel : MonoBehaviour
     public Population population;
     public ProvinceCountPanel ProvinceCountPanel;
     public MilitaryPanel militaryPanel;
+
+    public UnityEvent<ICountry> ShowCountry;
 
     public ICountry country
     {
@@ -42,6 +45,10 @@ public class CountryPanel : MonoBehaviour
 
     private ICountry _country;
 
+    public void OnClick()
+    {
+        ShowCountry.Invoke(country);
+    }
     // Start is called before the first frame update
     void Start()
     {

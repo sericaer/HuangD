@@ -19,11 +19,11 @@ public class MapToggles : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        var defaultItem = toggleItems.Single(x => x.toggle.isOn);
-        defaultItem.map.SetActive(true);
 
         foreach (var item in toggleItems)
         {
+            item.map.SetActive(item.toggle.isOn);
+
             item.toggle.onValueChanged.AddListener((isOn) =>
             {
                 item.map.SetActive(isOn);

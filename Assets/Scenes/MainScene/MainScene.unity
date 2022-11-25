@@ -4055,7 +4055,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &327711914
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4073,9 +4073,9 @@ RectTransform:
   m_Father: {fileID: 486410270}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 35, y: -190}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 70, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &327711915
@@ -4121,11 +4121,11 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1929190188}
   toggleTransition: 1
   graphic: {fileID: 361597824}
-  m_Group: {fileID: 486410273}
+  m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_IsOn: 0
+  m_IsOn: 1
 --- !u!1 &341228414
 GameObject:
   m_ObjectHideFlags: 0
@@ -4565,11 +4565,11 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1470639327}
   toggleTransition: 1
   graphic: {fileID: 1810014292}
-  m_Group: {fileID: 486410273}
+  m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_IsOn: 0
+  m_IsOn: 1
 --- !u!1 &350520589
 GameObject:
   m_ObjectHideFlags: 0
@@ -5489,7 +5489,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 784555408}
   toggleTransition: 1
   graphic: {fileID: 1043295585}
-  m_Group: {fileID: 486410273}
+  m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -7154,7 +7154,6 @@ GameObject:
   - component: {fileID: 486410271}
   - component: {fileID: 486410275}
   - component: {fileID: 486410274}
-  - component: {fileID: 486410273}
   - component: {fileID: 486410276}
   - component: {fileID: 486410277}
   m_Layer: 0
@@ -7233,19 +7232,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 486410269}
   m_CullTransparentMesh: 1
---- !u!114 &486410273
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 486410269}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2fafe2cfe61f6974895a912c3755e8f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AllowSwitchOff: 0
 --- !u!114 &486410274
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7903,7 +7889,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 578559902}
   toggleTransition: 1
   graphic: {fileID: 237074051}
-  m_Group: {fileID: 486410273}
+  m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -9011,11 +8997,11 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1981876523}
   toggleTransition: 1
   graphic: {fileID: 1052491140}
-  m_Group: {fileID: 486410273}
+  m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_IsOn: 0
+  m_IsOn: 1
 --- !u!1 &634161524
 GameObject:
   m_ObjectHideFlags: 0
@@ -14646,7 +14632,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 170719846}
   toggleTransition: 1
   graphic: {fileID: 988585927}
-  m_Group: {fileID: 486410273}
+  m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -14890,7 +14876,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1281099938}
   toggleTransition: 1
   graphic: {fileID: 1126475789}
-  m_Group: {fileID: 486410273}
+  m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -16657,7 +16643,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1235100592}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1235100594}
+        m_TargetAssemblyTypeName: CountryPanel, Assembly-CSharp
+        m_MethodName: OnClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1235100592
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16714,6 +16712,21 @@ MonoBehaviour:
   population: {fileID: 1555936008}
   ProvinceCountPanel: {fileID: 1796309533}
   militaryPanel: {fileID: 1220008187}
+  ShowCountry:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 498392712}
+        m_TargetAssemblyTypeName: PoliticalMapPanel, Assembly-CSharp
+        m_MethodName: OnShow
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1235100595
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17015,7 +17028,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1359732626}
   toggleTransition: 1
   graphic: {fileID: 1196678501}
-  m_Group: {fileID: 486410273}
+  m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -19029,7 +19042,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 324877938}
   toggleTransition: 1
   graphic: {fileID: 667301933}
-  m_Group: {fileID: 486410273}
+  m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -22236,7 +22249,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1346341330}
   toggleTransition: 1
   graphic: {fileID: 883157729}
-  m_Group: {fileID: 486410273}
+  m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -26138,7 +26151,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1850365830}
   toggleTransition: 1
   graphic: {fileID: 345920987}
-  m_Group: {fileID: 486410273}
+  m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
       m_Calls: []
