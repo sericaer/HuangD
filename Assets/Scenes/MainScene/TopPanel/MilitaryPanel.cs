@@ -11,7 +11,7 @@ public class MilitaryPanel : UIBehaviour<IMilitary>
 
     protected override void AssocDataSource()
     {
-        Bind(military => $"{System.Math.Round(military.currValue / 1000.0, 2)}K", current);
+        Bind(military => $"{System.Math.Round(military.currValue / 1000.0, 1)}K", current);
         Bind(military => military.incValue > 0, incFlag);
     }
 }
