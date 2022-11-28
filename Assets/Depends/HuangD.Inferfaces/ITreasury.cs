@@ -14,7 +14,8 @@ namespace HuangD.Interfaces
         public double spend { get; }
 
         public IEnumerable<IIncomeItem> incomeItems { get; }
-
+        public IEnumerable<ISpendItem> spendItems { get; }
+        
         public interface IIncomeItem
         {
             public CollectLevel level { get; set; }
@@ -24,7 +25,16 @@ namespace HuangD.Interfaces
             public IEnumerable<IEffect> effects { get;}
 
             public IEnumerable<IEffectDef> GetLevelEffects(CollectLevel level);
+        }
 
+        public interface ISpendItem
+        {
+            public object from { get; }
+            public double currValue { get; }
+            //public double baseValue { get; }
+            //public IEnumerable<IEffect> effects { get; }
+
+            //public IEnumerable<IEffectDef> GetLevelEffects(CollectLevel level);
         }
 
         public enum CollectLevel

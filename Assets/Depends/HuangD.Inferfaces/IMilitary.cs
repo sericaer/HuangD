@@ -11,6 +11,8 @@ namespace HuangD.Interfaces
 
         public IEnumerable<IItem> items { get;}
 
+        public ITreasury.ISpendItem spend { get; }
+
         public enum CollectLevel
         {
             极低,

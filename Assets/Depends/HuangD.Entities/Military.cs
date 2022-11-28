@@ -14,12 +14,15 @@ namespace HuangD.Entities
 
         public IEnumerable<IMilitary.IItem> items { get; }
 
+        public ITreasury.ISpendItem spend { get; }
+
         private ICountry owner { get; }
 
         public Military(ICountry country)
         {
             owner = country;
             items = country.provinces.SelectMany(x => x.militaryItems);
+            spend = new Spend(this);
         }
 
         public void OnDaysInc(int year, int month, int day)

@@ -22,8 +22,9 @@ namespace HuangD.Entities
             this.name = name;
             this.color = color;
             this.provinces = provinces.ToList();
-            this.treasury = new Treasury(this);
             this.military = new Military(this);
+
+            this.treasury = new Treasury(this);
 
             this.officeGroup = new OfficeGroup(this);
         }

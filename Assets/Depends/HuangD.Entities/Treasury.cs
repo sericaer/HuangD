@@ -30,7 +30,8 @@ namespace HuangD.Entities
         public double income => incomeItems.Sum(x=> x.currValue);
         public IEnumerable<ITreasury.IIncomeItem> incomeItems { get; }
 
-        public double spend { get; }
+        public double spend => spendItems.Sum(x => x.currValue);
+        public IEnumerable<ITreasury.ISpendItem> spendItems { get; }
 
         private ICountry owner { get; }
 
@@ -41,6 +42,7 @@ namespace HuangD.Entities
             owner = country;
 
             incomeItems = owner.provinces.SelectMany(prov => prov.taxItems);
+            spendItems = new ITreasury.ISpendItem[] { owner.military.spend };
         }
 
         public void OnDaysInc(int year, int month, int day)
