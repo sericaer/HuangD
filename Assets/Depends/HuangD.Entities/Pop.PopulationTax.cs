@@ -34,7 +34,7 @@ namespace HuangD.Entities
 
             public double currValue => baseValue * (System.Math.Max(0, (1 + effects.Sum(x => x.value))));
 
-            public double baseValue => pop.count.currValue / 1000;
+            public double baseValue => pop.count.currValue;
 
             public IEnumerable<IEffect> effects => pop.buffers.SelectMany(x => x.effects).Where(x => x.target == IEffect.Target.人口税);
 
