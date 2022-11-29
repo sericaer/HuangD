@@ -1,5 +1,6 @@
 using CommandTerminal;
 using HuangD.Commands;
+using HuangD.Interfaces;
 using HuangD.Mods;
 using HuangD.Sessions;
 using System;
@@ -8,12 +9,21 @@ using UnityEngine;
 public class MainScene : MonoBehaviour
 {
     public MapCanvas mapCanvas;
+    public Canvas uiCanvas;
+
     public CountryPanel countryPanel;
     public DatePanel datePanel;
+
+    public TreasuryDetailPanel treasuryDetailPrefab;
 
     public void OnTimeElapse()
     {
         Facade.session.DaysInc();
+    }
+
+    public void OnShowTreasuryDetailPanel(ITreasury treasury)
+    {
+        Instantiate(treasuryDetailPrefab, uiCanvas.transform);
     }
 
     // Start is called before the first frame update

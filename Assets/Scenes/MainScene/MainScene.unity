@@ -9902,6 +9902,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stock: {fileID: 373264723}
   incFlag: {fileID: 1175370729}
+  showTreasuryDetail:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1061828436}
+        m_TargetAssemblyTypeName: MainScene, Assembly-CSharp
+        m_MethodName: OnShowTreasuryDetailPanel
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &704557995
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9971,7 +9986,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 704557998}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 704557994}
+        m_TargetAssemblyTypeName: TreasuryPanel, Assembly-CSharp
+        m_MethodName: OnClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &704557998
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14670,8 +14697,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapCanvas: {fileID: 1618154120}
+  uiCanvas: {fileID: 2097431401}
   countryPanel: {fileID: 1235100594}
   datePanel: {fileID: 341228419}
+  treasuryDetailPrefab: {fileID: 192592420113872869, guid: 24eec38762129ef4fa626b0bd369c446, type: 3}
 --- !u!1 &1080016001
 GameObject:
   m_ObjectHideFlags: 0
