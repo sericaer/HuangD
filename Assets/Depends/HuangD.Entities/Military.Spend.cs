@@ -9,6 +9,8 @@ namespace HuangD.Entities
             public object from => _owner;
             public double currValue => _owner.currValue;
 
+            public string key { get; } = "军务开支";
+
             private Military _owner;
 
             public Spend(Military military)

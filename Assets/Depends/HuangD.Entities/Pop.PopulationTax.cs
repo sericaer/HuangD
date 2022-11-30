@@ -38,6 +38,8 @@ namespace HuangD.Entities
 
             public IEnumerable<IEffect> effects => pop.buffers.SelectMany(x => x.effects).Where(x => x.target == IEffect.Target.人口税);
 
+            public string key { get; }
+
             private readonly Pop pop;
             private ITreasury.CollectLevel _level;
 
@@ -49,6 +51,7 @@ namespace HuangD.Entities
             public PopulationTax(Pop pop)
             {
                 this.pop = pop;
+                this.key = $"{pop.from.name}人头税";
             }
 
         }

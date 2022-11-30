@@ -23,7 +23,8 @@ public class MainScene : MonoBehaviour
 
     public void OnShowTreasuryDetailPanel(ITreasury treasury)
     {
-        Instantiate(treasuryDetailPrefab, uiCanvas.transform);
+        var treasuryDetail = Instantiate(treasuryDetailPrefab, uiCanvas.transform);
+        treasuryDetail.dataSource = treasury;
     }
 
     // Start is called before the first frame update

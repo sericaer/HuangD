@@ -18,6 +18,7 @@ namespace HuangD.Interfaces
         
         public interface IIncomeItem
         {
+            public string key { get; }
             public CollectLevel level { get; set; }
             public object from { get; }
             public double currValue { get; }
@@ -29,6 +30,7 @@ namespace HuangD.Interfaces
 
         public interface ISpendItem
         {
+            public string key { get; }
             public object from { get; }
             public double currValue { get; }
             //public double baseValue { get; }
